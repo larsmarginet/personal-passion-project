@@ -4,9 +4,9 @@ From the first time I heard about Vue, my interest was sparked. Many developers 
 ## Core Project Statement
 While researching Vue I tried to figure out what it was really good at. It turns out Vue is quite good at animations and transitions, but it’s also used a lot for advanced user interaction. By this I mean interactions that aren’t standard features in html or css and need a lot of customized code, such as swipe gestures, drag and drop, data visualisation and so on.
  
-In the past I always avoided these kinds of ui elements, because I was busy with other features and meeting deadlines. In this project I want to make it my mission to learn about all these things, because they are present in most web apps. 
+I will build a platform that enhances the live concert experience by letting users buy drinks, merchandise online and interact with the artists on stage. There will be different kinds of users: venues, bands and shoppers. They will all have a different views based on what they can do. For more details, you can read [this blog post](https://larsmarginet1.wixsite.com/blog/post/project-overview-concery).
 
-So the goal is to deliver a functional web app. This means I will have to learn the basics of Vue, such as the composition api, routing, state management, … But I want to go further with advanced animations and transitions, authentication with Firebase, a real time database with Firebase, working with a design framework, such as Vuetify, building good unit tests and accessibility. 
+On top of Vue, I will be using Vuetify as UI framework. 
 
 ## Deliverables 
 * Learn Vue to become a Vue developer.
