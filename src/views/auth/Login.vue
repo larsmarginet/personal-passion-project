@@ -22,7 +22,6 @@ export default {
         return {
             email: '',
             password: '',
-            passwordConfirm: '',
             show: false,
             emailRules: [ 
                 v => !!v || 'Please enter an email', 
@@ -35,7 +34,7 @@ export default {
     }, methods: {
         handleLogin() {
             if (this.$refs.form.validate()) {
-                console.log('form submitting...')
+                this.$store.dispatch('login', {email: this.email, password: this.password})
             }
         }
     }

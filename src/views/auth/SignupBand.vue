@@ -109,7 +109,19 @@ export default {
         },
         handleSignup() {
             if (this.$refs.generalForm.validate() && this.$refs.socialForm.validate()) {
-                console.log('form submitting...')
+                const user = {
+                    name: this.name,
+                    logo: this.logo,
+                    email: this.email,
+                    password: this.password,
+                    facebook: this.facebook,
+                    instagram: this.instagram,
+                    itunes: this.itunes,
+                    spotify: this.spotify,
+                    youtube: this.youtube,
+                    type: 'band'
+                }
+                this.$store.dispatch('signup', user)
             }
         }
     }

@@ -56,7 +56,14 @@ export default {
     }, methods: {
         handleSignup() {
             if (this.$refs.form.validate()) {
-                console.log('form submitting...')
+                const user = {
+                    name: this.name,
+                    logo: this.logo,
+                    email: this.email,
+                    password: this.password,
+                    type: 'venue'
+                }
+                this.$store.dispatch('signup', user)
             }
         }
     }
