@@ -16,8 +16,12 @@
             <v-stepper-items > 
                 <v-stepper-content step="1">
                     <v-form ref="generalForm" class="pb-5">
+                       <v-container>
+                            <p :class="`${fileError ? 'error--text': 'grey--text text--darken-1'} mb-1`">Logo</p>
+                            <FileDrop @fileDropped="handleUploadFile" @fileRemoved="handleRemoveFile" :rules="logoRules"/>
+                            <p v-if="fileError" class="error--text caption">{{fileError}}</p>
+                        </v-container>
                         <v-text-field validate-on-blur label="Band name" v-model="name" prepend-icon="album" :rules="nameRules" clearable counter="25"></v-text-field>
-                        <v-file-input validate-on-blur label="Logo" show-size v-model="logo" accept="image/png, image/jpeg" :rules="logoRules" prepend-icon="add_a_photo" clearable></v-file-input>
                         <v-text-field validate-on-blur label="Email" v-model="email" prepend-icon="email" :rules="emailRules" clearable></v-text-field>
                         <v-text-field validate-on-blur :append-icon="show ? 'visibility' : 'visibility_off'" :type="show ? 'text' : 'password'" label="Password" v-model="password" prepend-icon="vpn_key" :rules="passwordRules" clearable @click:append="show = !show"></v-text-field>
                         <v-text-field validate-on-blur :append-icon="show ? 'visibility' : 'visibility_off'" :type="show ? 'text' : 'password'"  label="Password Confirm" v-model="passwordConfirm" prepend-icon="vpn_key" :rules="passwordConfirmRules" clearable @click:append="show = !show"></v-text-field>
@@ -60,11 +64,14 @@
 </template>
 
 <script>
+import { nameRules, logoRules, emailRules, passwordRules, linkRules } from '../../helpers/signupRules'
 import Alert from '../../components/shared/Alert'
+import FileDrop from '../../components/shared/FileDrop';
 export default {
     name: 'SignupBand',
      components: {
-        Alert
+        Alert,
+        FileDrop
     },
     data() {
         return {
@@ -80,32 +87,16 @@ export default {
             spotify: '',
             youtube: '',
             show: false,
-            nameRules: [
-                v => v.length > 0 || 'Please enter a name',
-                v => v.length < 25 || 'Your name can not be more than 25 characters' 
-            ],
-            logoRules: [
-                v => v != null || 'Please upload a logo' ,
-                v => !v || v.size < 2000000 || 'Avatar size should be less than 2 MB',
-            ],
-            emailRules: [ 
-                v => !!v || 'Email is required', 
-                v => /.+@.+/.test(v) || 'E-mail must be valid' 
-            ],
-            passwordRules: [ 
-                v => !!v || 'Password is required', 
-                v => (v && v.length >= 8) || 'Password must have 8+ characters',
-                v => /(?=.*[A-Z])/.test(v) || 'Must have one uppercase character', 
-                v => /(?=.*\d)/.test(v) || 'Must have one number', 
-                v => /([_.!@$%])/.test(v) || 'Must have one special character'  
-            ],
+            fileError: null,
+            nameRules,
+            logoRules,
+            emailRules,
+            passwordRules,
             passwordConfirmRules: [
                 v => !!v || 'Please confirm your password',
                 v => v === this.password || 'Please make sure your password matches'  
             ],
-            linkRules: [
-                v => v ? /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/.test(v) || 'Input must be a valid link' : true
-            ]
+            linkRules
         }
     },
     computed: {
@@ -117,12 +108,27 @@ export default {
         }
     },
     methods: {
+        handleUploadFile(file) {
+            this.fileError = null;
+            this.logo = file;
+        },
+        handleRemoveFile() {
+            this.logo = null;
+        },
         handleNextGeneral() {
+            if (!this.logo) {
+                this.fileError = 'You are required to upload a logo';
+                return;
+            }
             if (this.$refs.generalForm.validate()) {
-                this.stepper = 2
+                this.stepper = 2;
             }
         },
         handleSignup() {
+            if (!this.logo) {
+                this.fileError = 'You are required to upload a logo';
+                return;
+            }
             if (this.$refs.generalForm.validate() && this.$refs.socialForm.validate()) {
                 const user = {
                     name: this.name,
