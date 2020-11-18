@@ -94,9 +94,16 @@ export default {
         },
 
         async logout(ctx) {
-          await firebase.auth.signOut()
-          ctx.commit('setUserProfile', {})
-          router.push('/login')
+          ctx.commit('setLoading', true);
+          ctx.commit('clearError');
+          try {
+            await firebase.auth.signOut();
+            ctx.commit('setUserProfile', {});
+            router.push('/login');
+          } catch (error) {
+            ctx.commit('setError', error);
+          }
+          ctx.commit('setLoading', false);
         }
     },
     getters: {

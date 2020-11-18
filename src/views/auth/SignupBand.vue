@@ -47,7 +47,7 @@
                             <v-text-field validate-on-blur type="url" label="YouTube" v-model="youtube" :rules="linkRules"></v-text-field>
                         </v-row>
                         <v-btn color="primary" class="mr-2" text @click="stepper = 1" depressed>Previous</v-btn>
-                        <v-btn color="primary" @click="handleSignup" depressed>Continue</v-btn>
+                        <v-btn color="primary" @click="handleSignup" depressed :loading="loading">Continue</v-btn>
                     </v-form>
                 </v-stepper-content>
             </v-stepper-items>
@@ -109,6 +109,9 @@ export default {
         }
     },
     computed: {
+        loading () {
+            return this.$store.getters.loading;
+        },
         error() {
             return this.$store.getters.error;
         }
