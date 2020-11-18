@@ -1,5 +1,8 @@
 <template>
     <v-card max-width="600px" flat class="mx-auto my-10" rounded="xl">
+        <v-expand-transition>
+            <Alert @dismissed="onDismissed" :text="error" v-if="error"/>
+        </v-expand-transition>
         <v-card-title class="justify-center">
             <h2 class="primary--text mt-5 mb-2">Login</h2>
         </v-card-title>
@@ -16,8 +19,12 @@
 </template>
 
 <script>
+import Alert from '../../components/shared/Alert'
 export default {
-    name: 'Signup',
+    name: 'Login',
+     components: {
+        Alert
+    },
     data() {
         return {
             email: '',
@@ -31,11 +38,20 @@ export default {
                 v => !!v || 'Please enter a password',
             ]
         }
-    }, methods: {
+    }, 
+    computed: {
+        error() {
+            return this.$store.getters.error;
+        }
+    },
+    methods: {
         handleLogin() {
             if (this.$refs.form.validate()) {
                 this.$store.dispatch('login', {email: this.email, password: this.password})
             }
+        }, 
+        onDismissed() {
+            this.$store.dispatch('clearError');
         }
     }
 }

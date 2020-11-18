@@ -1,5 +1,8 @@
 <template>
     <v-card max-width="600px" flat class="mx-auto my-10" rounded="xl">
+        <v-expand-transition>
+            <Alert @dismissed="onDismissed" :text="error" v-if="error"/>
+        </v-expand-transition>
         <v-card-title class="justify-center">
             <h2 class="primary--text mt-5 mb-2">Sign up</h2>
         </v-card-title>
@@ -57,8 +60,12 @@
 </template>
 
 <script>
+import Alert from '../../components/shared/Alert'
 export default {
-    name: 'Signup',
+    name: 'SignupBand',
+     components: {
+        Alert
+    },
     data() {
         return {
             stepper: 1,
@@ -101,6 +108,11 @@ export default {
             ]
         }
     },
+    computed: {
+        error() {
+            return this.$store.getters.error;
+        }
+    },
     methods: {
         handleNextGeneral() {
             if (this.$refs.generalForm.validate()) {
@@ -123,6 +135,9 @@ export default {
                 }
                 this.$store.dispatch('signup', user)
             }
+        }, 
+        onDismissed() {
+            this.$store.dispatch('clearError');
         }
     }
 }
