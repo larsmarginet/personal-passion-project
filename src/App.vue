@@ -1,7 +1,7 @@
 <template>
   <v-app style="background: #F2F2F2">
     <TheHeader />
-    <v-main>
+    <v-main class="ma-4">
       <router-view></router-view>
     </v-main>
   </v-app>

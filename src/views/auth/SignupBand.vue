@@ -25,7 +25,7 @@
                         <v-text-field validate-on-blur label="Email" v-model="email" prepend-icon="email" :rules="emailRules" clearable></v-text-field>
                         <v-text-field validate-on-blur :append-icon="show ? 'visibility' : 'visibility_off'" :type="show ? 'text' : 'password'" label="Password" v-model="password" prepend-icon="vpn_key" :rules="passwordRules" clearable @click:append="show = !show"></v-text-field>
                         <v-text-field validate-on-blur :append-icon="show ? 'visibility' : 'visibility_off'" :type="show ? 'text' : 'password'"  label="Password Confirm" v-model="passwordConfirm" prepend-icon="vpn_key" :rules="passwordConfirmRules" clearable @click:append="show = !show"></v-text-field>
-                        <v-btn color="primary" class="mt-2" @click="handleNextGeneral" depressed>Continue</v-btn>
+                        <v-btn color="primary" class="mt-2 ml-8" @click="handleNextGeneral" depressed>Continue</v-btn>
                     </v-form>
                 </v-stepper-content>
                 <v-stepper-content step="2">
@@ -50,7 +50,7 @@
                             <v-img class="ml-3 mr-2" src="@/assets/youtube.svg" alt="youtube logo" max-width="35" height="35"></v-img>
                             <v-text-field validate-on-blur type="url" label="YouTube" v-model="youtube" :rules="linkRules"></v-text-field>
                         </v-row>
-                        <v-btn color="primary" class="mr-2" text @click="stepper = 1" depressed>Previous</v-btn>
+                        <v-btn color="primary" class="mr-2 ml-8" text @click="stepper = 1" depressed>Previous</v-btn>
                         <v-btn color="primary" @click="handleSignup" depressed :loading="loading">Continue</v-btn>
                     </v-form>
                 </v-stepper-content>

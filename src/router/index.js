@@ -83,6 +83,13 @@ const routes = [
       }
     ]
   },
+  {
+    path: '*',
+    meta: {
+      requiresAuth: true
+    },
+    component: () => import(/* webpackChunkName: "NotFound" */ '../views/NotFound.vue'),
+  }
 ]
 
 const router = new VueRouter({
