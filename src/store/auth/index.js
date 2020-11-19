@@ -65,6 +65,7 @@ export default {
                     youtube: payload.youtube,
                     type: payload.type
                   });
+                  ctx.dispatch('fetchUserProfile', user)
                   // no need for ctx.dispatch('fetchUserProfile', user); here, because onauthchanges in main.js triggers this
                   console.log('fetching user (band)...')
                 } catch (error) {
@@ -77,6 +78,7 @@ export default {
                     logoUrl: downloadURL,
                     type: payload.type
                   });
+                  ctx.dispatch('fetchUserProfile', user)
                   // no need for ctx.dispatch('fetchUserProfile', user); here, because onauthchanges in main.js triggers this
                   console.log('fetching user (venue)...')
                 } catch (error) {
@@ -92,14 +94,20 @@ export default {
 
         async fetchUserProfile(ctx, payload) {
           const userProfile = await firebase.usersCollection.doc(payload.uid).get();
-          ctx.commit('setUserProfile', userProfile.data());
-          if (router.currentRoute.path === '/login' || router.currentRoute.path === '/signup/band' || router.currentRoute.path === '/signup/venue') {
-            if (userProfile.data().type === 'venue') {
-              console.log('routing venue')
-              router.push('/venue/events');
-            } else if (userProfile.data().type === 'band') {
-              console.log('routing band')
-              router.push('/band/events');
+          // when signing up onAutChanges triggers this fuction
+          // before user is set in firestore, thus check if user exists
+          // then, after setting the user to firestore this function
+          // is called again, but now the user is known in firestore
+          if (userProfile.data()) {
+            ctx.commit('setUserProfile', userProfile.data());
+            if (router.currentRoute.path === '/login' || router.currentRoute.path === '/signup/band' || router.currentRoute.path === '/signup/venue') {
+              if (userProfile.data().type === 'venue') {
+                console.log('routing venue')
+                router.push('/venue/events');
+              } else if (userProfile.data().type === 'band') {
+                console.log('routing band')
+                router.push('/band/events');
+              }
             }
           }
         },
