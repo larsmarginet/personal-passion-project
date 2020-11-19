@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { auth } from '../firebase'
+import store from '../store/index'
 
 Vue.use(VueRouter)
 
@@ -98,6 +99,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, _, next) => {
+  store.dispatch('setLoadingComponent', true);
   const requiresAuth = to.matched.some(x => x.meta.requiresAuth);
   const userType = to.meta.userType;
   if (requiresAuth && !auth.currentUser) {
@@ -107,6 +109,10 @@ router.beforeEach((to, _, next) => {
   } else {
     next();
   }
-})
+});
+
+// router.afterEach(() => {
+//   store.dispatch('setLoadingComponent', false);
+// })
 
 export default router

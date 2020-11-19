@@ -1,10 +1,11 @@
 <template>
     <v-app-bar app color="primary" flat>
+         <v-progress-linear :active="loadingComponent" :indeterminate="loadingComponent" absolute bottom color="light-blue accent-4"></v-progress-linear>
         <router-link to="/">
             <v-toolbar-title class="headline grey--text text--lighten-5 font-weight-bold">
                 Concery
             </v-toolbar-title>
-        </router-link> 
+        </router-link>
         <v-spacer></v-spacer>
         <div v-if="!user">
             <v-btn href="/login" class="primary--text mr-2" depressed>login</v-btn>
@@ -22,6 +23,9 @@ export default {
         },
         loading () {
             return this.$store.getters.loading;
+        },
+        loadingComponent() {
+            return this.$store.getters.loadingComponent;
         }
     }, 
     methods: {

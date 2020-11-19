@@ -89,6 +89,9 @@ export default {
         onDismissed() {
             this.$store.dispatch('clearError');
         }
+    },
+    mounted() {
+        this.$store.dispatch('setLoadingComponent', false)
     }
 }
 </script>
