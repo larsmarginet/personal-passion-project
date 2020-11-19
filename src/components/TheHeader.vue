@@ -18,7 +18,7 @@
 export default {
     computed: {
         user() {
-            return this.$store.getters.user.name;
+            return this.$store.getters.user ? this.$store.getters.user.name : null;
         },
         loading () {
             return this.$store.getters.loading;

@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+// import store from '../store/index'
 import { auth } from '../firebase'
-import Home from '../views/Home.vue'
+// import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
@@ -12,28 +13,79 @@ const routes = [
     meta: {
       requiresAuth: true
     },
-    component: Home
+    // redirect based on user!
+    redirect: '/band'
   },
   {
     path: '/login',
     name: 'Login',
-    component: () => import(/* webpackChunkName: "about" */ '../views/auth/Login.vue')
+    component: () => import(/* webpackChunkName: "Login" */ '../views/auth/Login.vue')
   },
   {
     path: '/signup',
     name: 'Signup',
-    component: () => import(/* webpackChunkName: "about" */ '../views/auth/Signup.vue')
+    component: () => import(/* webpackChunkName: "Signup" */ '../views/Signup.vue'),
+    redirect: '/signup/choose',
+    children : [
+      {
+        path: 'choose',
+        name: 'SignupChoose',
+        component: () => import(/* webpackChunkName: "SignupBand" */ '../views/auth/SignupOptions.vue')
+      }, 
+      {
+        path: 'band',
+        name: 'SignupBand',
+        component: () => import(/* webpackChunkName: "SignupBand" */ '../views/auth/SignupBand.vue')
+      }, 
+      {
+        path: 'venue',
+        name: 'SignupVenue',
+        component: () => import(/* webpackChunkName: "SignupVenue" */ '../views/auth/SignupVenue.vue')
+      }
+    ]
   },
   {
-    path: '/signupband',
-    name: 'SignupBand',
-    component: () => import(/* webpackChunkName: "about" */ '../views/auth/SignupBand.vue')
+    path: '/band',
+    name: 'Band',
+    meta: {
+      requiresAuth: true,
+      userType: 'band'
+    },
+    component: () => import(/* webpackChunkName: "Band" */ '../views/band/Band.vue'),
+    redirect: '/band/events',
+    children: [
+      {
+        path: 'events', 
+        name: 'BandEvents',
+        meta: {
+          requiresAuth: true,
+          userType: 'band'
+        },
+        component: () => import(/* webpackChunkName: "BandEvents" */ '../views/band/BandEvents.vue'),
+      }
+    ]
   },
   {
-    path: '/signupvenue',
-    name: 'SignupVenue',
-    component: () => import(/* webpackChunkName: "about" */ '../views/auth/SignupVenue.vue')
-  }
+    path: '/venue',
+    name: 'Venue',
+    meta: {
+      requiresAuth: true,
+      userType: 'venue'
+    },
+    component: () => import(/* webpackChunkName: "Venue" */ '../views/venue/Venue.vue'),
+    redirect: '/venue/events',
+    children: [
+      {
+        path: 'events', 
+        name: 'VenueEvents',
+        meta: {
+          requiresAuth: true,
+          userType: 'venue'
+        },
+        component: () => import(/* webpackChunkName: "VenueEvents" */ '../views/venue/VenueEvents.vue'),
+      }
+    ]
+  },
 ]
 
 const router = new VueRouter({
@@ -41,12 +93,21 @@ const router = new VueRouter({
   routes
 });
 
-router.beforeEach((to, _, next) => {
-  const requiresAuth = to.matched.some(x => x.meta.requiresAuth)
+router.beforeEach((to, from, next) => {
+  console.log(from)
+  console.log('navigating...')
+  console.log(to)
+  const requiresAuth = to.matched.some(x => x.meta.requiresAuth);
+  const userType = to.meta.userType;
   if (requiresAuth && !auth.currentUser) {
+    console.log('redirect to login')
     next('/login')
+  } else if (requiresAuth && auth.currentUser && userType && userType !== auth.currentUser.displayName) {
+    console.log('redirect due to unauthorized user')
+    next(`/${auth.currentUser.displayName}`)
   } else {
-    next()
+    console.log('passed route guards')
+    next();
   }
 })
 

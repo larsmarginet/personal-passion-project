@@ -27,8 +27,8 @@ export default {
           // clear existing errors
           ctx.commit('clearError');
           try {
-            const { user } = await firebase.auth.signInWithEmailAndPassword(payload.email, payload.password);
-            ctx.dispatch('fetchUserProfile', user);
+            await firebase.auth.signInWithEmailAndPassword(payload.email, payload.password);
+            // no need for ctx.dispatch('fetchUserProfile', user); here, because onauthchanges in main.js triggers this
           } catch (error) {
             ctx.commit('setError', error);
           }
@@ -46,33 +46,42 @@ export default {
           // create new user account with email and password
           try {
             const { user } = await firebase.auth.createUserWithEmailAndPassword(payload.email, payload.password);
-            // store other user info in firestore with user id 
-            if ( payload.facebook || payload.instagram || payload.itunes || payload.spotify || payload.youtube ) {
+            if (user) {
               try {
-                await firebase.usersCollection.doc(user.uid).set({
-                  name: payload.name,
-                  logoUrl: downloadURL,
-                  facebook: payload.facebook,
-                  instagram: payload.instagram,
-                  itunes: payload.itunes,
-                  spotify: payload.spotify,
-                  youtube: payload.youtube,
-                  type: payload.type
-                });
-                ctx.dispatch('fetchUserProfile', user);
+                await user.updateProfile({ displayName: payload.type });
               } catch (error) {
                 ctx.commit('setError', error);
               }
-            } else {
-              try {
-                await firebase.usersCollection.doc(user.uid).set({
-                  name: payload.name,
-                  logoUrl: downloadURL,
-                  type: payload.type
-                });
-                ctx.dispatch('fetchUserProfile', user);
-              } catch (error) {
-                ctx.commit('setError', error);
+              // store other user info in firestore with user id 
+              if ( payload.facebook || payload.instagram || payload.itunes || payload.spotify || payload.youtube ) {
+                try {
+                  await firebase.usersCollection.doc(user.uid).set({
+                    name: payload.name,
+                    logoUrl: downloadURL,
+                    facebook: payload.facebook,
+                    instagram: payload.instagram,
+                    itunes: payload.itunes,
+                    spotify: payload.spotify,
+                    youtube: payload.youtube,
+                    type: payload.type
+                  });
+                  // no need for ctx.dispatch('fetchUserProfile', user); here, because onauthchanges in main.js triggers this
+                  console.log('fetching user (band)...')
+                } catch (error) {
+                  ctx.commit('setError', error);
+                }
+              } else {
+                try {
+                  await firebase.usersCollection.doc(user.uid).set({
+                    name: payload.name,
+                    logoUrl: downloadURL,
+                    type: payload.type
+                  });
+                  // no need for ctx.dispatch('fetchUserProfile', user); here, because onauthchanges in main.js triggers this
+                  console.log('fetching user (venue)...')
+                } catch (error) {
+                  ctx.commit('setError', error);
+                }
               }
             }
           } catch (error) {
@@ -84,8 +93,14 @@ export default {
         async fetchUserProfile(ctx, payload) {
           const userProfile = await firebase.usersCollection.doc(payload.uid).get();
           ctx.commit('setUserProfile', userProfile.data());
-          if (router.currentRoute.path === '/login' || router.currentRoute.path === '/signupband' || router.currentRoute.path === '/signupvenue') {
-            router.push('/');
+          if (router.currentRoute.path === '/login' || router.currentRoute.path === '/signup/band' || router.currentRoute.path === '/signup/venue') {
+            if (userProfile.data().type === 'venue') {
+              console.log('routing venue')
+              router.push('/venue/events');
+            } else if (userProfile.data().type === 'band') {
+              console.log('routing band')
+              router.push('/band/events');
+            }
           }
         },
 
