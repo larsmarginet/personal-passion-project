@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import store from '../store/index'
 import { auth } from '../firebase'
-// import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
@@ -13,7 +11,6 @@ const routes = [
     meta: {
       requiresAuth: true
     },
-    // redirect based on user!
     redirect: '/band'
   },
   {
@@ -93,20 +90,14 @@ const router = new VueRouter({
   routes
 });
 
-router.beforeEach((to, from, next) => {
-  console.log(from)
-  console.log('navigating...')
-  console.log(to)
+router.beforeEach((to, _, next) => {
   const requiresAuth = to.matched.some(x => x.meta.requiresAuth);
   const userType = to.meta.userType;
   if (requiresAuth && !auth.currentUser) {
-    console.log('redirect to login')
-    next('/login')
+    next('/login');
   } else if (requiresAuth && auth.currentUser && userType && userType !== auth.currentUser.displayName) {
-    console.log('redirect due to unauthorized user')
-    next(`/${auth.currentUser.displayName}`)
+    next(`/${auth.currentUser.displayName}`);
   } else {
-    console.log('passed route guards')
     next();
   }
 })
