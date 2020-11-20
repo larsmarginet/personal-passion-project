@@ -2,11 +2,7 @@
   <v-app style="background: #F2F2F2">
     <TheHeader />
     <v-main class="ma-4">
-      <transition name="fade" mode="out-in" 
-        v-on:before-enter="beforeEnter"
-        v-on:enter="enter"
-        v-on:after-enter="afterEnter"
-        v-on:enter-cancelled="enterCancelled">
+      <transition name="fade" mode="out-in">
         <router-view></router-view>
       </transition>
     </v-main>
@@ -19,20 +15,6 @@ export default {
   name: 'App',
   components: {
     TheHeader
-  }, 
-  methods: {
-    beforeEnter() {
-      console.log('beforeEnter')
-    },
-    enter() {
-      console.log('enter')
-    },
-    afterEnter() {
-      console.log('afterEnter')
-    },
-    enterCancelled() {
-      console.log('enterCancelled')
-    },
   }
 };
 </script>

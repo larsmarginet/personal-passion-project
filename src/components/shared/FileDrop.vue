@@ -49,7 +49,7 @@ export default {
             if (this.error === null) {
                 this.file = e.dataTransfer.files[0];
                 this.preview = URL.createObjectURL(this.file);
-                this.normalise(e)
+                this.normalise(e);
                 this.$emit('fileDropped', this.file);
             }
         },
@@ -59,7 +59,7 @@ export default {
         },
         // Set file when user choses file in modal
         handleChangePicker(e) {
-            this.vaildate(e.currentTarget.files[0])
+            this.vaildate(e.currentTarget.files[0]);
             if (this.error === null) {
                 this.file = e.currentTarget.files[0];
                 this.preview = URL.createObjectURL(this.file);
@@ -67,7 +67,7 @@ export default {
             }
         },
         vaildate(file, e = false) {
-            this.error = null
+            this.error = null;
             this.rules.forEach(rule => {
                 if (rule(file) !== true) {
                     this.error = rule(file);
@@ -75,7 +75,7 @@ export default {
                         // normalising is only needed on drop, not on click
                         this.normalise(e);
                     }
-                    return false
+                    return false;
                 }
             }) 
         },

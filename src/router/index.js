@@ -60,7 +60,25 @@ const routes = [
           userType: 'band'
         },
         component: () => import(/* webpackChunkName: "BandEvents" */ '../views/band/BandEvents.vue'),
-      }
+      },
+      {
+        path: 'merch', 
+        name: 'BandMerch',
+        meta: {
+          requiresAuth: true,
+          userType: 'band'
+        },
+        component: () => import(/* webpackChunkName: "BandMerch" */ '../views/band/BandMerchandise.vue'),
+      },
+      {
+        path: 'songs', 
+        name: 'BandSongs',
+        meta: {
+          requiresAuth: true,
+          userType: 'band'
+        },
+        component: () => import(/* webpackChunkName: "BandSongs" */ '../views/band/BandSongs.vue'),
+      },
     ]
   },
   {
@@ -81,7 +99,25 @@ const routes = [
           userType: 'venue'
         },
         component: () => import(/* webpackChunkName: "VenueEvents" */ '../views/venue/VenueEvents.vue'),
-      }
+      },
+      {
+        path: 'menu', 
+        name: 'VenueMenu',
+        meta: {
+          requiresAuth: true,
+          userType: 'venue'
+        },
+        component: () => import(/* webpackChunkName: "VenueMenu" */ '../views/venue/VenueMenu.vue'),
+      },
+      {
+        path: 'rooms', 
+        name: 'VenueRooms',
+        meta: {
+          requiresAuth: true,
+          userType: 'venue'
+        },
+        component: () => import(/* webpackChunkName: "VenueRooms" */ '../views/venue/VenueRooms.vue'),
+      },
     ]
   },
   {
@@ -110,9 +146,5 @@ router.beforeEach((to, _, next) => {
     next();
   }
 });
-
-// router.afterEach(() => {
-//   store.dispatch('setLoadingComponent', false);
-// })
 
 export default router
