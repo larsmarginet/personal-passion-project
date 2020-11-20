@@ -75,16 +75,16 @@ export default {
     },
     computed: {
         user() {
-            return this.$store.getters.user ? this.$store.getters.user : null;
+            return this.$store.getters['auth/user'] ? this.$store.getters['auth/user'] : null;
         },
         currentUser() {
             return this.user ? this.user.name : null;
         },
         loading () {
-            return this.$store.getters.loading;
+            return this.$store.getters['auth/loading'];
         },
         loadingComponent() {
-            return this.$store.getters.loadingComponent;
+            return this.$store.getters['loadingComponent'];
         },
         links() {
             return this.user ? this.user.type === 'venue' ? this.venueLinks : this.bandLinks : [];
@@ -98,7 +98,7 @@ export default {
     }, 
     methods: {
         handleLogout() {
-            this.$store.dispatch('logout')
+            this.$store.dispatch('auth/logout')
         }
     }
 }

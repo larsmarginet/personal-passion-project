@@ -106,10 +106,10 @@ export default {
     },
     computed: {
         loading () {
-            return this.$store.getters.loading;
+            return this.$store.getters['auth/loading'];
         },
         error() {
-            return this.$store.getters.error;
+            return this.$store.getters['auth/error'];
         }
     },
     methods: {
@@ -147,11 +147,11 @@ export default {
                     youtube: this.youtube,
                     type: 'band'
                 }
-                this.$store.dispatch('signup', user)
+                this.$store.dispatch('auth/signup', user)
             }
         }, 
         onDismissed() {
-            this.$store.dispatch('clearError');
+            this.$store.dispatch('auth/clearError');
         }
     },
     mounted() {

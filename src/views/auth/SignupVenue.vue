@@ -61,10 +61,10 @@ export default {
     },
     computed: {
         loading () {
-            return this.$store.getters.loading;
+            return this.$store.getters['auth/loading'];
         },
         error() {
-            return this.$store.getters.error;
+            return this.$store.getters['auth/errors'];
         }
     },
     methods: {
@@ -88,11 +88,11 @@ export default {
                     password: this.password,
                     type: 'venue'
                 }
-                this.$store.dispatch('signup', user);
+                this.$store.dispatch('auth/signup', user);
             }
         }, 
         onDismissed() {
-            this.$store.dispatch('clearError');
+            this.$store.dispatch('auth/clearError');
         }
     },
     mounted() {

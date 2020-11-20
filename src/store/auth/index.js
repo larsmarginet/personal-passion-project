@@ -3,6 +3,7 @@ import mutations from './mutations';
 import getters from './getters';
 
 export default {
+    namespaced: true,
     state: {
         userProfile: {},
         loading: null,

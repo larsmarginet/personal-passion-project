@@ -7,7 +7,7 @@
             </v-col>
             <v-col cols="6" md="2" order-md="3">
                 <v-row justify="end" justify-md="start" class="px-4">
-                    <v-btn :disabled="false" depressed color="primary" @click="submit">save</v-btn>
+                    <v-btn :disabled="save" depressed color="primary" @click="submit">save</v-btn>
                 </v-row>
             </v-col>
             <v-col cols="12" md="8" order-md="1">
@@ -42,25 +42,25 @@
                             </template>
                              <template v-slot:item="room">
                                 <v-list-item-content>
-                                    <v-list-item-title v-html="room.item.name">test</v-list-item-title>
+                                    <v-list-item-title v-html="room.item.name"></v-list-item-title>
                                 </v-list-item-content>
                             </template>
                         </v-autocomplete>
-                        <v-autocomplete v-model="selectedBand" :items="bands" filled chips solo label="Band" item-text="band" item-value="band">
+                        <v-autocomplete v-model="selectedBand" :items="bands" filled chips solo label="Band" item-text="data" item-value="data">
                             <template v-slot:selection="data">
                                 <v-chip v-bind="data.attrs" :input-value="data.selected" close @click="data.select" @click:close="remove('band')" >
                                     <v-avatar left>
-                                        <img :src="data.item.img" alt="test"/>
+                                        <img :src="data.item.logoUrl" :alt="data.item.name"/>
                                     </v-avatar>
                                     {{ data.item.name }}
                                 </v-chip>
                             </template>
-                            <template v-slot:item="band">
+                            <template v-slot:item="data">
                                 <v-list-item-avatar>
-                                    <img :src="band.item.img" alt="test">
+                                    <img :src="data.item.logoUrl" :alt="data.item.name">
                                 </v-list-item-avatar>
                                 <v-list-item-content>
-                                    <v-list-item-title v-html="band.item.name"></v-list-item-title>
+                                    <v-list-item-title v-html="data.item.name"></v-list-item-title>
                                 </v-list-item-content>
                             </template>
                         </v-autocomplete>
@@ -85,6 +85,7 @@ export default {
     },
     data() {
         return {
+            save: true,
             selectedRoom: {},
             selectedBand: {},
             selectedDate: '',
@@ -97,12 +98,14 @@ export default {
                 {id: 2, name: 'room 2'},
                 {id: 3, name: 'room 3'}
             ],
-            bands: [
-                { id: 1, name: 'Dirk.', img: 'https://firebasestorage.googleapis.com/v0/b/concery-292c2.appspot.com/o/logos%2Flogo.png?alt=media&token=df9d1f63-7bae-4be7-9397-61f9c32cb0af'},
-                { id: 2, name: 'Divided', img: 'https://firebasestorage.googleapis.com/v0/b/concery-292c2.appspot.com/o/logos%2Fdivided.jpg?alt=media&token=9ff6f63a-7eb2-4eae-b1bd-19b64b96f0ca'},
-            ],
         }
     }, 
+    computed: {
+        bands() {
+            console.log(this.$store.getters['bands/bands'])
+            return this.$store.getters['bands/bands'];
+        }
+    },
     methods: {
         remove(val) {
             switch (val) {
@@ -122,7 +125,8 @@ export default {
         }
     },
     mounted() {
-        this.$store.dispatch('setLoadingComponent', false)
+        this.$store.dispatch('setLoadingComponent', false);
+        this.$store.dispatch('bands/loadBands');
     }
 }
 </script>

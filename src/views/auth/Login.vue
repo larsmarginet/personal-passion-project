@@ -41,20 +41,20 @@ export default {
     }, 
     computed: {
         loading () {
-            return this.$store.getters.loading;
+            return this.$store.getters['auth/loading'];
         },
         error() {
-            return this.$store.getters.error;
+            return this.$store.getters['auth/error'];
         }
     },
     methods: {
         handleLogin() {
             if (this.$refs.form.validate()) {
-                this.$store.dispatch('login', {email: this.email, password: this.password})
+                this.$store.dispatch('auth/login', {email: this.email, password: this.password})
             }
         }, 
         onDismissed() {
-            this.$store.dispatch('clearError');
+            this.$store.dispatch('auth/clearError');
         }
     },
     mounted() {

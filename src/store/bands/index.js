@@ -1,16 +1,15 @@
-// import * as firebase from '../../firebase';
+import mutations from './mutations';
+import actions from './actions';
+import getters from './getters';
 
 export default {
+    namespaced: true,
     state: {
-        bands: []
+        bands: [],
+        loading: false,
+        error: null
     },
-    mutations: {
-
-    },
-    actions: {
-      
-    },
-    getters: {
-
-    }
+    mutations,
+    actions,
+    getters
 }
