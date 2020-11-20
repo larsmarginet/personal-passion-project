@@ -1,39 +1,44 @@
 <template>
-    <v-card max-width="600px" flat class="mx-auto my-10" rounded="xl">
-        <v-expand-transition>
-            <Alert @dismissed="onDismissed" :text="error" v-if="error"/>
-        </v-expand-transition>
-        <v-card-title class="justify-center">
-            <h2 class="primary--text mt-5 mb-2">Sign up</h2>
-        </v-card-title>
-        <v-form ref="form" class="px-8 pb-5">
-            <v-container>
-                <p :class="`${fileError ? 'error--text': 'grey--text text--darken-1'} mb-1`">Logo</p>
-                <FileDrop @fileDropped="handleUploadFile" @fileRemoved="handleRemoveFile" :rules="logoRules"/>
-                <p v-if="fileError" class="error--text caption">{{fileError}}</p>
-            </v-container>
-            <v-text-field validate-on-blur label="Venue name" v-model="name" prepend-icon="storefront" :rules="nameRules" clearable counter="25"></v-text-field>
-            <v-text-field validate-on-blur label="Email" v-model="email" prepend-icon="email" :rules="emailRules" clearable></v-text-field>
-            <v-text-field validate-on-blur :append-icon="show ? 'visibility' : 'visibility_off'" :type="show ? 'text' : 'password'" label="Password" v-model="password" prepend-icon="vpn_key" :rules="passwordRules" clearable @click:append="show = !show"></v-text-field>
-            <v-text-field validate-on-blur :append-icon="show ? 'visibility' : 'visibility_off'" :type="show ? 'text' : 'password'"  label="Password Confirm" v-model="passwordConfirm" prepend-icon="vpn_key" :rules="passwordConfirmRules" clearable @click:append="show = !show"></v-text-field>
-            <v-btn color="primary" class="mt-2 ml-8" @click="handleSignup" depressed :loading="loading">Continue</v-btn>
-        </v-form>
-        <v-divider></v-divider>
-        <v-card-text>
-            <p class="text-center">Already have an account? <router-link to="/login">Login</router-link></p>
-        </v-card-text>
-    </v-card>
+    <section class="mx-auto mt-5" style="maxWidth: 600px">
+        <BackButton link="/signup/choose"/>
+        <v-card flat class="mx-auto mt-2 mb-10" rounded="xl">
+            <v-expand-transition>
+                <Alert @dismissed="onDismissed" :text="error" v-if="error"/>
+            </v-expand-transition>
+            <v-card-title class="justify-center">
+                <h2 class="primary--text mt-5 mb-2">Sign up</h2>
+            </v-card-title>
+            <v-form ref="form" class="px-8 pb-5">
+                <v-container>
+                    <p :class="`${fileError ? 'error--text': 'grey--text text--darken-1'} mb-1`">Logo</p>
+                    <FileDrop @fileDropped="handleUploadFile" @fileRemoved="handleRemoveFile" :rules="logoRules"/>
+                    <p v-if="fileError" class="error--text caption">{{fileError}}</p>
+                </v-container>
+                <v-text-field validate-on-blur label="Venue name" v-model="name" prepend-icon="storefront" :rules="nameRules" clearable counter="25"></v-text-field>
+                <v-text-field validate-on-blur label="Email" v-model="email" prepend-icon="email" :rules="emailRules" clearable></v-text-field>
+                <v-text-field validate-on-blur :append-icon="show ? 'visibility' : 'visibility_off'" :type="show ? 'text' : 'password'" label="Password" v-model="password" prepend-icon="vpn_key" :rules="passwordRules" clearable @click:append="show = !show"></v-text-field>
+                <v-text-field validate-on-blur :append-icon="show ? 'visibility' : 'visibility_off'" :type="show ? 'text' : 'password'"  label="Password Confirm" v-model="passwordConfirm" prepend-icon="vpn_key" :rules="passwordConfirmRules" clearable @click:append="show = !show"></v-text-field>
+                <v-btn color="primary" class="mt-2 ml-8" @click="handleSignup" depressed :loading="loading">Continue</v-btn>
+            </v-form>
+            <v-divider></v-divider>
+            <v-card-text>
+                <p class="text-center">Already have an account? <router-link to="/login">Login</router-link></p>
+            </v-card-text>
+        </v-card>
+    </section>
 </template>
 
 <script>
 import { nameRules, logoRules, emailRules, passwordRules } from '../../helpers/signupRules'
 import Alert from '../../components/shared/Alert';
 import FileDrop from '../../components/shared/FileDrop';
+import BackButton from '../../components/shared/BackButton';
 export default {
     name: 'SignupVenue',
     components: {
         Alert,
-        FileDrop
+        FileDrop,
+        BackButton
     },
     data() {
         return {

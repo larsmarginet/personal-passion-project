@@ -3,7 +3,7 @@
         <v-app-bar app color="primary" flat>
             <v-progress-linear :active="loadingComponent" :indeterminate="loadingComponent" absolute bottom color="light-blue accent-4"></v-progress-linear>
             <v-app-bar-nav-icon  class="grey--text text--lighten-5 hidden-lg-and-up" @click="drawer = !drawer"></v-app-bar-nav-icon>
-            <router-link to="/" v-show="!drawer">
+            <router-link to="/" v-show="!currentUser || !drawer">
                 <v-toolbar-title class="headline grey--text text--lighten-5 font-weight-bold ml-3">
                     Concery
                 </v-toolbar-title>
@@ -11,7 +11,7 @@
             <v-spacer></v-spacer>
             <div v-if="!currentUser">
                 <v-btn href="/login" class="primary--text mr-2" depressed>login</v-btn>
-                <v-btn href="/signup" class="grey--text text--lighten-5" outlined depressed>signup</v-btn>  
+                <v-btn href="/signup/choose" class="grey--text text--lighten-5" outlined depressed>signup</v-btn>  
             </div>
             <v-layout justify-end align-center v-else>
                 <v-btn href="/login" class="primary--text mr-5" depressed>orders</v-btn>
@@ -78,7 +78,7 @@ export default {
             return this.$store.getters.user ? this.$store.getters.user : null;
         },
         currentUser() {
-            return this.user ? this.user.name : null
+            return this.user ? this.user.name : null;
         },
         loading () {
             return this.$store.getters.loading;
@@ -90,7 +90,7 @@ export default {
             return this.user ? this.user.type === 'venue' ? this.venueLinks : this.bandLinks : [];
         },
         avatar() {
-            return this.user ? this.user.logoUrl : null 
+            return this.user ? this.user.logoUrl : null;
         },
         profile() {
             return this.user ? this.user.type === 'venue' ? '/venue/profile' : '/venue/profile' : '/';
