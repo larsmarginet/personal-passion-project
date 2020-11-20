@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import auth from './auth/index.js'
+import events from './events/index.js'
+import bands from './bands/index.js'
 
 Vue.use(Vuex)
 
@@ -25,5 +27,7 @@ export default new Vuex.Store({
   },
   modules: {
     auth,
+    events,
+    bands
   }
 })

@@ -101,6 +101,25 @@ const routes = [
         component: () => import(/* webpackChunkName: "VenueEvents" */ '../views/venue/VenueEvents.vue'),
       },
       {
+        path: 'events/create', 
+        name: 'VenueEventsCreate',
+        meta: {
+          requiresAuth: true,
+          userType: 'venue'
+        },
+        component: () => import(/* webpackChunkName: "VenueEvents" */ '../views/venue/VenueEventDetail.vue'),
+      },
+      {
+        path: 'events/:id', 
+        name: 'VenueEventsDetail',
+        props: true,
+        meta: {
+          requiresAuth: true,
+          userType: 'venue'
+        },
+        component: () => import(/* webpackChunkName: "VenueEvents" */ '../views/venue/VenueEventDetail.vue'),
+      },
+      {
         path: 'menu', 
         name: 'VenueMenu',
         meta: {

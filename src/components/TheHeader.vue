@@ -4,8 +4,8 @@
             <v-progress-linear :active="loadingComponent" :indeterminate="loadingComponent" absolute bottom color="light-blue accent-4"></v-progress-linear>
             <v-app-bar-nav-icon  class="grey--text text--lighten-5 hidden-lg-and-up" @click="drawer = !drawer"></v-app-bar-nav-icon>
             <router-link to="/" v-show="!currentUser || !drawer">
-                <v-toolbar-title class="headline grey--text text--lighten-5 font-weight-bold ml-3">
-                    Concery
+                <v-toolbar-title >
+                    <h1 class="headline grey--text text--lighten-5 font-weight-bold ml-3">Concery</h1>
                 </v-toolbar-title>
             </router-link>
             <v-spacer></v-spacer>
