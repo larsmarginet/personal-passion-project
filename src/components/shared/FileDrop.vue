@@ -77,7 +77,7 @@ export default {
                     }
                     return false;
                 }
-            }) 
+            }); 
         },
         // return sheet to normal colors after dropping, leaving or erroring
         normalise(e) {

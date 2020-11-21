@@ -68,7 +68,7 @@
 
 <script>
 import { nameRules, logoRules, emailRules, passwordRules, linkRules } from '../../helpers/signupRules'
-import Alert from '../../components/shared/Alert'
+import Alert from '../../components/shared/Alert';
 import FileDrop from '../../components/shared/FileDrop';
 import BackButton from '../../components/shared/BackButton';
 export default {

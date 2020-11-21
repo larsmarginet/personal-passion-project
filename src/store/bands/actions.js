@@ -19,4 +19,7 @@ export default {
         }
         ctx.commit('setLoading', false);
     },
+    clearError(ctx) {
+        ctx.commit('setLoading', true);
+    }
 }

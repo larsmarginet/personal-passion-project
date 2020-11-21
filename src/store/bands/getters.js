@@ -2,10 +2,10 @@ export default {
     bands(state) {
         return state.bands;
     },
-    loadingBands(state) {
+    loading(state) {
         return state.loading;
     },
-    bandError(state) {
+    error(state) {
         return state.error;
     },
 }

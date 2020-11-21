@@ -1,1 +1,5 @@
-export default {};
+export default {
+    error (state) {
+        return state.error;
+    }
+};

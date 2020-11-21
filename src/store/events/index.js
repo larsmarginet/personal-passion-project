@@ -3,7 +3,10 @@ import mutations from './mutations';
 import getters from './getters';
 
 export default {
-    state: {},
+    namespaced: true,
+    state: {
+        error: null
+    },
     mutations,
     actions,
     getters
