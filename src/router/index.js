@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { auth } from '../firebase'
 import store from '../store/index'
+import * as meta from '../helpers/metaData'
 
 Vue.use(VueRouter)
 
@@ -10,18 +11,28 @@ const routes = [
     path: '/',
     name: 'Home',
     meta: {
-      requiresAuth: true
+      title: meta.home.title,
+      metaTags: meta.home.metaTags,
+      requiresAuth: true,
     },
     redirect: '/band'
   },
   {
     path: '/login',
     name: 'Login',
+    meta: {
+      title: meta.login.title,
+      metaTags: meta.login.metaTags,
+    },
     component: () => import(/* webpackChunkName: "Login" */ '../views/auth/Login.vue')
   },
   {
     path: '/signup',
     name: 'Signup',
+    meta: {
+      title: meta.signup.title,
+      metaTags: meta.signup.metaTags,
+    },
     component: () => import(/* webpackChunkName: "Signup" */ '../views/Signup.vue'),
     redirect: '/signup/choose',
     children : [
@@ -56,6 +67,8 @@ const routes = [
         path: 'events', 
         name: 'BandEvents',
         meta: {
+          title: meta.bandEvents.title,
+          metaTags: meta.bandEvents.metaTags,
           requiresAuth: true,
           userType: 'band'
         },
@@ -65,6 +78,8 @@ const routes = [
         path: 'merch', 
         name: 'BandMerch',
         meta: {
+          title: meta.bandMerch.title,
+          metaTags: meta.bandMerch.metaTags,
           requiresAuth: true,
           userType: 'band'
         },
@@ -74,6 +89,8 @@ const routes = [
         path: 'songs', 
         name: 'BandSongs',
         meta: {
+          title: meta.bandSongs.title,
+          metaTags: meta.bandSongs.metaTags,
           requiresAuth: true,
           userType: 'band'
         },
@@ -95,6 +112,8 @@ const routes = [
         path: 'events', 
         name: 'VenueEvents',
         meta: {
+          title: meta.venueEvents.title,
+          metaTags: meta.venueEvents.metaTags,
           requiresAuth: true,
           userType: 'venue'
         },
@@ -104,6 +123,8 @@ const routes = [
         path: 'events/create', 
         name: 'VenueEventsCreate',
         meta: {
+          title: meta.VenueEventsCreate.title,
+          metaTags: meta.VenueEventsCreate.metaTags,
           requiresAuth: true,
           userType: 'venue'
         },
@@ -114,6 +135,8 @@ const routes = [
         name: 'VenueEventsDetail',
         props: true,
         meta: {
+          title: meta.VenueEventsDetail.title,
+          metaTags: meta.VenueEventsDetail.metaTags,
           requiresAuth: true,
           userType: 'venue'
         },
@@ -123,6 +146,8 @@ const routes = [
         path: 'menu', 
         name: 'VenueMenu',
         meta: {
+          title: meta.VenueMenu.title,
+          metaTags: meta.VenueMenu.metaTags,
           requiresAuth: true,
           userType: 'venue'
         },
@@ -132,6 +157,8 @@ const routes = [
         path: 'rooms', 
         name: 'VenueRooms',
         meta: {
+          title: meta.VenueRooms.title,
+          metaTags: meta.VenueRooms.metaTags,
           requiresAuth: true,
           userType: 'venue'
         },
@@ -155,6 +182,9 @@ const router = new VueRouter({
 
 router.beforeEach((to, _, next) => {
   store.dispatch('setLoadingComponent', true);
+  const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
+  const nearestWithMeta = to.matched.slice().reverse().find(r => r.meta && r.meta.metaTags);
+  setMetaData(nearestWithTitle, nearestWithMeta);
   const requiresAuth = to.matched.some(x => x.meta.requiresAuth);
   const userType = to.meta.userType;
   if (requiresAuth && !auth.currentUser) {
@@ -166,4 +196,20 @@ router.beforeEach((to, _, next) => {
   }
 });
 
-export default router
+const setMetaData = (title, meta) =>  {
+  if(title) document.title = `concery - ${title.meta.title}`;
+  // remove existing meta tags
+  Array.from(document.querySelectorAll('[data-vue-router-controlled]')).map(el => el.parentNode.removeChild(el));
+  if(meta) {
+    meta.meta.metaTags.map(tagDef => {
+      const tag = document.createElement('meta');
+      Object.keys(tagDef).forEach(key => {
+        tag.setAttribute(key, tagDef[key]);
+      });
+      tag.setAttribute('data-vue-router-controlled', '');
+      return tag;
+    }).forEach(tag => document.head.appendChild(tag));
+  }
+}
+
+export default router;
