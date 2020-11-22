@@ -11,6 +11,9 @@ export default {
     setLoadingEvents(state, payload) {
         state.loadingEvents = payload
     },
+    setLoadingEvent(state, payload) {
+        state.loadingEvent = payload;
+    },
     setLoadingAddEvent(state, payload) {
         state.loadingAddEvent = payload
     },

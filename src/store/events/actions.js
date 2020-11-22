@@ -59,8 +59,7 @@ export default {
 
     async getEventById(ctx, payload) {
         ctx.commit('setError', null);
-        // while loading show sketeletn with calender and two texts
-        // ctx.commit('setLoadingEvent', true);
+        ctx.commit('setLoadingEvent', true);
         try {
             const result = await firebase.eventsCollection.doc(payload).get();  
             let event = result.data();
@@ -69,20 +68,32 @@ export default {
         } catch (error) {
             ctx.commit('setError', error);
         }
+        ctx.commit('setLoadingEvent', false);
     },
 
-    async updateVenueEvent(_, payload) {
-        await firebase.eventsCollection.doc(payload.id).update({
-            roomId: payload.roomId,
-            bandId: payload.bandId,
-            start: payload.start,
-            end: payload.end,
-        });
-        router.push('/venue/events');
+    async updateVenueEvent(ctx, payload) {
+        ctx.commit('setError', null);
+        ctx.commit('setLoadingAddEvent', true);
+        try {
+            await firebase.eventsCollection.doc(payload.id).update({
+                roomId: payload.roomId,
+                bandId: payload.bandId,
+                start: payload.start,
+                end: payload.end,
+            });
+            router.push('/venue/events');
+        } catch(error) {
+            ctx.commit('setError', error);
+        }
+        ctx.commit('setLoadingAddEvent', false);
     },
     
     async deleteEvent(_, payload) {
         await firebase.eventsCollection.doc(payload).delete();
+    },
+    
+    clearError(ctx) {
+        ctx.commit('setError', null);
     }
 
 };

@@ -11,7 +11,12 @@
                 </v-row>
             </v-col>
             <v-col cols="12" md="8" order-md="1">
-                <v-card flat class="mx-auto mb-10" rounded="xl">
+                <v-card flat class="mx-auto mb-10" rounded="xl" v-if="loadingEvent">
+                    <v-skeleton-loader max-width="290" type="table-heading, date-picker-days" class="mb-4"></v-skeleton-loader>
+                    <v-skeleton-loader type="list-item-avatar" class="mb-4"></v-skeleton-loader>
+                    <v-skeleton-loader type="list-item-avatar" class="mb-4 pb-5"></v-skeleton-loader>
+                </v-card>
+                <v-card flat class="mx-auto mb-10" rounded="xl" v-else>
                     <v-expand-transition>
                         <Alert @dismissed="onDismissed" :text="error" v-if="error"/>
                     </v-expand-transition>
@@ -134,6 +139,9 @@ export default {
         }
     }, 
     computed: {
+        loadingEvent() {
+            return this.$store.getters['events/loadingEvent'];
+        },
         currentEvent() {
             return this.$store.getters['events/currentEvent'];
         },

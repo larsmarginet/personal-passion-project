@@ -5,6 +5,9 @@ export default {
     loadingEvents (state) {
         return state.loadingEvents;
     },
+    loadingEvent (state) {
+        return state.loadingEvent;
+    },
     loadingAddEvent (state) {
         return state.loadingAddEvent;
     },

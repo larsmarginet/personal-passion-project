@@ -8,6 +8,7 @@ export default {
         error: null,
         events: [],
         currentEvent: null,
+        loadingEvent: false,
         loadingEvents: false,
         loadingAddEvent: false
     },
