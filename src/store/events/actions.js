@@ -55,5 +55,10 @@ export default {
             ctx.commit('setError', error);
         }
         ctx.commit('setLoadingAddEvent', false);
+    },
+
+    async deleteEvent(_, payload) {
+        await firebase.eventsCollection.doc(payload).delete();
     }
+
 };

@@ -1,5 +1,6 @@
 <template>
     <v-card class="mb-4" rounded="lg" flat>
+        <DeleteModal :dialog="dialog" @continue="handleDeleteEvent" @cancel="cancelDeleteEvent"/>
         <v-card-title class="pa-6">
             <v-avatar size="48" :color="`${event.bandLogoUrl ? 'primary' : 'error'}`">
                 <img class="rounded-avatar" :src="event.bandLogoUrl" :alt="event.bandName" v-if="event.bandLogoUrl"/>
@@ -18,7 +19,7 @@
                         <v-icon class="mr-2">create</v-icon>
                         <v-list-item-title>update</v-list-item-title>
                     </v-list-item>
-                    <v-list-item link @click="handleRemoveEvent">
+                    <v-list-item link @click="openModal">
                         <v-icon class="mr-2">delete</v-icon>
                         <v-list-item-title>delete</v-list-item-title>
                     </v-list-item>
@@ -32,7 +33,7 @@
                         <p><v-icon :class="`${event.roomBubbles ? 'primary--text' : 'error--text'}`">location_on</v-icon> {{event.roomName}} <span v-if="event.roomBubbles">({{event.roomBubbles}} bubbles)</span></p>
                     </v-row>
                     <v-row justify="start">
-                        <p><v-icon :class="`${event.start ? 'primary--text' : 'error--text'}`">event</v-icon> {{convertStart(event.start)}}<span class="mx-1">-</span></p>
+                        <p><v-icon :class="`${event.start ? 'primary--text' : 'error--text'}`">event</v-icon> {{convertStart(event.start, event.end)}}<span class="mx-1">-</span></p>
                         <p>{{convertEnd(event.start, event.end)}}</p>
                     </v-row>
                 </v-col>
@@ -47,12 +48,21 @@
 </template>
 
 <script>
-import format from 'date-fns/format'
+import format from 'date-fns/format';
+import DeleteModal from '../shared/DeleteModal';
 export default {
     props: {
         event: {
             required: true,
             type: Object
+        }
+    },
+    components: {
+        DeleteModal
+    },
+    data() {
+        return {
+            dialog: false,
         }
     },
     computed: {
@@ -64,28 +74,38 @@ export default {
         }
     },
     methods: {
-        convertStart(time) {
+        convertStart(start, end) {
             const currentDate = new Date();
             const currentTimeStamp = currentDate.getTime();
-            if (currentTimeStamp + 86400000 > time && currentTimeStamp < time) {
-                // if event was one day before now
-                return `Tomorrow ${format(time, 'kk:mm')}`;
-            } else if (currentTimeStamp - 86400000 < time && currentTimeStamp > time) {
-                // if event was one day after now
-                return `Yesterday ${format(time, 'kk:mm')}`;
+            if (format(currentTimeStamp, 'dd/LL') === format(start, 'dd/LL')) {
+                // if event is today
+                return `Today ${format(start, 'kk:mm')}`;
+            } else if (format(currentTimeStamp, 'LL') === format(start, 'LL') && parseFloat(format(currentTimeStamp, 'dd')) + 1 == format(start, 'd')) {
+                // if event is one day from now
+                return `Tomorrow ${format(start, 'kk:mm')}`;
+            } else if (format(currentTimeStamp, 'LL') === format(start, 'LL') && parseFloat(format(currentTimeStamp, 'dd')) - 1 == format(end, 'd')) {
+                // if event was one day before now --> calculated on the last day
+                return `Yesterday ${format(start, 'kk:mm')}`;
             } else {
-                return format(time, 'iii dd/LL kk:mm');
+                return format(start, 'iii dd/LL kk:mm');
             }
         },
         convertEnd(start, end) {
             if (format(start, 'dd/LL') === format(end, 'dd/LL')) {
                 return format(end, 'kk:mm');
             } else {
-                return format(end, 'iii dd/LL kk:mm')
+                return format(end, 'iii dd/LL kk:mm');
             }
         }, 
-        handleRemoveEvent() {
-
+        openModal() {
+            this.dialog = true;
+        },
+        cancelDeleteEvent() {
+            this.dialog = false;
+        },
+        handleDeleteEvent() {
+            this.dialog = false;
+            this.$store.dispatch('events/deleteEvent', this.event.id);
         }
     },
 }
