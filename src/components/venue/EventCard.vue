@@ -1,6 +1,6 @@
 <template>
-    <v-card class="pa-4 mb-4" rounded="lg" flat>
-        <v-card-title>
+    <v-card class="mb-4" rounded="lg" flat>
+        <v-card-title class="pa-6">
             <v-avatar size="48" :color="`${event.bandLogoUrl ? 'primary' : 'error'}`">
                 <img class="rounded-avatar" :src="event.bandLogoUrl" :alt="event.bandName" v-if="event.bandLogoUrl"/>
                 <v-icon v-else large dark>error</v-icon>
@@ -25,10 +25,22 @@
                 </v-list>
             </v-menu>
         </v-card-title>
-        <v-card-text>
-            <v-row justify="start">
-                <p>{{convertStart(event.start)}}<span class="mx-1">-</span></p>
-                <p>{{convertEnd(event.start, event.end)}}</p>
+        <v-card-text class="pa-0">
+            <v-row no-gutters>
+                <v-col style="minWidth: 200px" class="mx-6 my-4 pl-4">
+                    <v-row>
+                        <p><v-icon :class="`${event.roomBubbles ? 'primary--text' : 'error--text'}`">location_on</v-icon> {{event.roomName}} <span v-if="event.roomBubbles">({{event.roomBubbles}} bubbles)</span></p>
+                    </v-row>
+                    <v-row justify="start">
+                        <p><v-icon :class="`${event.start ? 'primary--text' : 'error--text'}`">event</v-icon> {{convertStart(event.start)}}<span class="mx-1">-</span></p>
+                        <p>{{convertEnd(event.start, event.end)}}</p>
+                    </v-row>
+                </v-col>
+                <v-col style="minWidth: 200px" class="primary rounded-lg px-6 pt-4 white--text text-right">
+                    <p :class="{'font-weight-bold': setList}"><v-icon small class="white--text" v-if="setList">done</v-icon> Setlist</p>
+                    <p :class="{'font-weight-bold': setList}"><v-icon class="white--text" small v-if="merch">done</v-icon> Merch</p>
+                    <p>Playground</p>
+                </v-col>
             </v-row>
         </v-card-text>
     </v-card>
@@ -41,6 +53,14 @@ export default {
         event: {
             required: true,
             type: Object
+        }
+    },
+    computed: {
+        setList() {
+            return this.event.setList.length >= 0;
+        },
+        merch() {
+            return this.event.merch.length >= 0;
         }
     },
     methods: {

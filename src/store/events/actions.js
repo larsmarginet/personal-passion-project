@@ -19,6 +19,13 @@ export default {
                     } catch(error) {
                         event.bandName = 'Band not found';
                     }
+                    try {
+                        const result = await firebase.roomsCollection.doc(event.roomId).get();
+                        event.roomName = result.data().name;
+                        event.roomBubbles = result.data().bubbles;
+                    } catch(error) {
+                        event.roomName = 'Room not found'
+                    }
                     events.push(event);
                 });
                 ctx.commit('setEvents', events);
