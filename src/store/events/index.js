@@ -5,7 +5,10 @@ import getters from './getters';
 export default {
     namespaced: true,
     state: {
-        error: null
+        error: null,
+        events: [],
+        loadingEvents: false,
+        loadingAddEvent: false
     },
     mutations,
     actions,

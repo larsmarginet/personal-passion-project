@@ -7,7 +7,7 @@
             </v-col>
             <v-col cols="6" md="2" order-md="3">
                 <v-row justify="end" justify-md="start" class="px-4">
-                    <v-btn :disabled="save" depressed color="primary" @click="handleSetEvent">save</v-btn>
+                    <v-btn :disabled="save" depressed color="primary" @click="handleAddEvent" :loading="loadingAddEvent">save</v-btn>
                 </v-row>
             </v-col>
             <v-col cols="12" md="8" order-md="1">
@@ -162,6 +162,9 @@ export default {
             }
             return date.getTime();
         },
+        loadingAddEvent() {
+            return this.$store.getters['events/loadingAddEvent'];
+        },
         error() {
             return this.$store.getters['events/error'];
         }
@@ -196,14 +199,14 @@ export default {
             } 
             return true;
         },
-        handleSetEvent() {
+        handleAddEvent() {
             // execute validate func, because when this.$refs.form.validate() 
             // is false second condition won't be executed
             const datesAreValid = this.validateDatePicker(this.selectedDates);
             if (this.$refs.form.validate() && datesAreValid) {
-                this.$store.dispatch('events/setEvent', {
-                    roomId: this.selectedRoom.id,
-                    bandId: this.selectedBand.id,
+                this.$store.dispatch('events/addEvent', {
+                    roomId: this.selectedRoom,
+                    bandId: this.selectedBand,
                     start: this.start,
                     end: this.end,
                 });

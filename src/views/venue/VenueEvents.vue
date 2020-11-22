@@ -7,41 +7,37 @@
                 </v-row>
             </v-col>
             <v-col cols="12" md="9" order-md="1">
-                <v-card class="pa-4" rounded="lg" hover>
-                    <v-card-title>
-                        <v-avatar size="48" >
-                            <img class="rounded-avatar" src="https://firebasestorage.googleapis.com/v0/b/concery-292c2.appspot.com/o/logos%2Fdivided.jpg?alt=media&token=9ff6f63a-7eb2-4eae-b1bd-19b64b96f0ca" alt="divided"/>
-                        </v-avatar>
-                        <span class="ml-5 headline font-weight-bold">Divided</span>   
-                        <v-spacer></v-spacer>
-                        <v-menu offset-y left>
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-btn icon v-bind="attrs" v-on="on" >
-                                    <v-icon color="grey--text">more_vert</v-icon>
-                                </v-btn>
-                            </template>
-                            <v-list>
-                                <v-list-item link>
-                                    <v-icon class="mr-2">create</v-icon>
-                                    <v-list-item-title>update</v-list-item-title>
-                                </v-list-item>
-                                <v-list-item link>
-                                    <v-icon class="mr-2">delete</v-icon>
-                                    <v-list-item-title>delete</v-list-item-title>
-                                </v-list-item>
-                            </v-list>
-                        </v-menu>
-                    </v-card-title>
-                </v-card>
+                <v-container v-if="loading">
+                    <v-skeleton-loader type="list-item-avatar-three-line" class="mb-4" v-for="n in 3" :key="n"></v-skeleton-loader>
+                </v-container>
+                <v-container class="pa-0" v-else>
+                    <EventCard v-for="event in events" :event="event" :key="event.id"/>
+                </v-container>
             </v-col>
         </v-row>
     </v-container>
 </template>
 
 <script>
+import EventCard from '../../components/venue/EventCard';
 export default {
+    components: {
+        EventCard
+    },
+    computed: {
+        loading() {
+            return this.$store.getters['events/loadingEvents'];
+        },
+        error() {
+            return this.$store.getters['events/error'];
+        },
+        events() {
+            return this.$store.getters['events/events'] ? [...this.$store.getters['events/events']].sort((a,b) => a.start - b.start) : null;
+        },
+    },
     mounted() {
-        this.$store.dispatch('setLoadingComponent', false)
+        this.$store.dispatch('setLoadingComponent', false);
+        this.$store.dispatch('events/loadEventsForVenue');
     }
 }
 </script>
