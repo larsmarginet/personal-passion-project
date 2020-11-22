@@ -2,7 +2,7 @@
     <div>
         <v-app-bar app color="primary" flat>
             <v-progress-linear :active="loadingComponent" :indeterminate="loadingComponent" absolute bottom color="light-blue accent-4"></v-progress-linear>
-            <v-app-bar-nav-icon  class="grey--text text--lighten-5 hidden-lg-and-up" @click="drawer = !drawer"></v-app-bar-nav-icon>
+            <v-app-bar-nav-icon class="grey--text text--lighten-5 hidden-lg-and-up" @click="drawer = !drawer"></v-app-bar-nav-icon>
             <router-link to="/" v-show="!currentUser || !drawer">
                 <v-toolbar-title >
                     <h1 class="headline grey--text text--lighten-5 font-weight-bold ml-3">Concery</h1>
@@ -34,9 +34,8 @@
                     </v-list>
                 </v-menu>
             </v-layout>
-            
         </v-app-bar>
-        <v-navigation-drawer v-model="drawer" app class="primary" v-if="currentUser">
+        <v-navigation-drawer v-model="drawer" app class="primary" v-if="currentUser" :permanent="$vuetify.breakpoint.lgAndUp">
             <v-layout column class="pt-4">
                 <router-link to="/">
                     <span class="headline grey--text text--lighten-5 font-weight-bold px-5 mt-5">Concery</span>
@@ -60,7 +59,7 @@
 export default {
     data() {
         return {
-            drawer: true,
+            drawer: false,
             venueLinks: [
                 { icon: 'event', text: 'Events', route: '/venue/events' },
                 { icon: 'fastfood', text: 'Food & drinks', route: '/venue/menu' },
