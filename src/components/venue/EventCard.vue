@@ -15,7 +15,7 @@
                     </v-btn>
                 </template>
                 <v-list>
-                    <v-list-item :to="`venue/events/${event.id}`">
+                    <v-list-item :to="`/venue/events/${event.id}`">
                         <v-icon class="mr-2">create</v-icon>
                         <v-list-item-title>update</v-list-item-title>
                     </v-list-item>
@@ -62,6 +62,7 @@ export default {
     },
     data() {
         return {
+            timezone: 'Europe/Brussels',
             dialog: false,
         }
     },

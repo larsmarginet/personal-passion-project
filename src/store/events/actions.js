@@ -57,6 +57,30 @@ export default {
         ctx.commit('setLoadingAddEvent', false);
     },
 
+    async getEventById(ctx, payload) {
+        ctx.commit('setError', null);
+        // while loading show sketeletn with calender and two texts
+        // ctx.commit('setLoadingEvent', true);
+        try {
+            const result = await firebase.eventsCollection.doc(payload).get();  
+            let event = result.data();
+            event.id = result.id;
+            ctx.commit('setCurrentEvent', event);
+        } catch (error) {
+            ctx.commit('setError', error);
+        }
+    },
+
+    async updateVenueEvent(_, payload) {
+        await firebase.eventsCollection.doc(payload.id).update({
+            roomId: payload.roomId,
+            bandId: payload.bandId,
+            start: payload.start,
+            end: payload.end,
+        });
+        router.push('/venue/events');
+    },
+    
     async deleteEvent(_, payload) {
         await firebase.eventsCollection.doc(payload).delete();
     }

@@ -10,5 +10,8 @@ export default {
     },
     events (state) {
         return state.events;
+    },
+    currentEvent (state) {
+        return state.currentEvent;
     }
 };

@@ -24,25 +24,25 @@
                                         <span class="error--text caption" v-if="datesError">{{datesError}}</span>
                                     </v-scroll-y-transition> 
                                 </p>
-                                <v-date-picker v-model="selectedDates" @input="validateDatePicker(selectedDates)" range color="primary"></v-date-picker>
+                                <v-date-picker v-model="selectedDates" @input="validateDatePicker(selectedDates); checkIfUpdated();" range color="primary"></v-date-picker>
                             </v-col>
                             <v-col style="maxWidth: 200px; minWidth:200px" class="ml-4">
                                 <p class="subtitle-2 mb-0 grey--text text--darken-2">Time</p>
                                 <v-menu ref="menuStartTime" v-model="menuStartTime" :close-on-content-click="false" :nudge-right="40" :return-value.sync="selectedStartTime" transition="scale-transition" offset-y max-width="290px" min-width="290px">
                                     <template v-slot:activator="{ on, attrs }">
-                                        <v-text-field v-model="selectedStartTime" label="Starting hour" prepend-icon="schedule" readonly v-bind="attrs" v-on="on" :rules="startTimeRules"></v-text-field>
+                                        <v-text-field v-model="selectedStartTime" @change="checkIfUpdated" label="Starting hour" prepend-icon="schedule" readonly v-bind="attrs" v-on="on" :rules="startTimeRules"></v-text-field>
                                     </template>
                                     <v-time-picker v-if="menuStartTime" v-model="selectedStartTime" format="24hr" full-width @click:minute="$refs.menuStartTime.save(selectedStartTime)"></v-time-picker>
                                 </v-menu>
                                 <v-menu ref="menuEndTime" v-model="menuEndTime" :close-on-content-click="false" :nudge-right="40" :return-value.sync="selectedEndTime" transition="scale-transition" offset-y max-width="290px" min-width="290px">
                                     <template v-slot:activator="{ on, attrs }">
-                                        <v-text-field v-model="selectedEndTime" label="Finishing hour" prepend-icon="schedule" readonly v-bind="attrs" v-on="on" :rules="endTimeRules"></v-text-field>
+                                        <v-text-field v-model="selectedEndTime" @change="checkIfUpdated" label="Finishing hour" prepend-icon="schedule" readonly v-bind="attrs" v-on="on" :rules="endTimeRules"></v-text-field>
                                     </template>
                                     <v-time-picker v-if="menuEndTime" v-model="selectedEndTime" format="24hr" full-width @click:minute="$refs.menuEndTime.save(selectedEndTime)"></v-time-picker>
                                 </v-menu>
                             </v-col>
                         </v-row>
-                        <v-autocomplete v-model="selectedRoom" :items="rooms" filled chips solo label="Room" item-text="name" item-value="id" :rules="roomRules" :loading="loadingRooms">
+                        <v-autocomplete v-model="selectedRoom" :items="rooms" filled chips solo label="Room" item-text="name" item-value="id" :rules="roomRules" :loading="loadingRooms" @change="checkIfUpdated">
                              <template v-slot:selection="data">
                                 <v-chip v-bind="data.attrs" :input-value="data.selected" close @click="data.select" @click:close="remove('room')" >
                                     {{ data.item.name }}
@@ -54,7 +54,7 @@
                                 </v-list-item-content>
                             </template>
                         </v-autocomplete>
-                        <v-autocomplete v-model="selectedBand" :items="bands" filled chips solo label="Band" item-text="name" item-value="id" :rules="bandRules" :loading="loadingBands">
+                        <v-autocomplete v-model="selectedBand" :items="bands" filled chips solo label="Band" item-text="name" item-value="id" :rules="bandRules" :loading="loadingBands" @change="checkIfUpdated">
                             <template v-slot:selection="data">
                                 <v-chip v-bind="data.attrs" :input-value="data.selected" close @click="data.select" @click:close="remove('band')" >
                                     <v-avatar left>
@@ -101,8 +101,8 @@ export default {
             selectedDates: [],
             selectedStartTime: '',
             selectedEndTime: '',
-            selectedRoom: {},
-            selectedBand: {},
+            selectedRoom: '',
+            selectedBand: '',
             menuStartTime: false,
             menuEndTime: false,
             datesError: null,
@@ -126,14 +126,17 @@ export default {
                 } 
             ],
             roomRules: [
-                v => typeof v === 'string' || 'Please pick a room',
+                v => !!v && typeof v === 'string' || 'Please pick a room',
             ],
             bandRules: [
-                v => typeof v == 'string' || 'Please pick a band',
+                v => !!v && typeof v === 'string' || 'Please pick a band',
             ],
         }
     }, 
     computed: {
+        currentEvent() {
+            return this.$store.getters['events/currentEvent'];
+        },
         loadingBands() {
             return this.$store.getters['bands/loading'];
         },
@@ -152,16 +155,16 @@ export default {
         },
         start() {
             const date = new Date(`${this.selectedDates[0]}T${this.selectedStartTime}:00+0000`);
-            return date.getTime();
+            return date.getTime() - 3600000;
         },
         end() {
             let date;
             if (this.selectedDates.length === 1) {
                 date = new Date(`${this.selectedDates[0]}T${this.selectedEndTime}:00+0000`);
             } else if (this.selectedDates.length === 2) {
-                date = new Date(`${this.selectedDates[1]}T${this.selectedEndTime}:00+0000`)
+                date = new Date(`${this.selectedDates[1]}T${this.selectedEndTime}:00+0000`);
             }
-            return date.getTime();
+            return date.getTime() - 3600000;
         },
         loadingAddEvent() {
             return this.$store.getters['events/loadingAddEvent'];
@@ -171,6 +174,16 @@ export default {
         }
     },
     methods: {
+        checkIfUpdated() {
+            if (this.id && this.currentEvent && (
+                this.selectedDates !== [format(this.currentEvent.start, 'RRRR-LL-dd'), format(this.currentEvent.end, 'RRRR-LL-dd')] ||
+                this.selectedStartTime !== format(this.currentEvent.start, 'HH:mm') ||
+                this.selectedEndTime !== format(this.currentEvent.end, 'HH:mm') ||
+                this.selectedRoom !== this.currentEvent.roomId ||
+                this.selectedBand !== this.currentEvent.bandId )) {
+                this.save = false;
+            }
+        },
         remove(val) {
             switch (val) {
                 case 'room':
@@ -205,22 +218,42 @@ export default {
             // is false second condition won't be executed
             const datesAreValid = this.validateDatePicker(this.selectedDates);
             if (this.$refs.form.validate() && datesAreValid) {
-                this.$store.dispatch('events/addEvent', {
-                    roomId: this.selectedRoom,
-                    bandId: this.selectedBand,
-                    start: this.start,
-                    end: this.end,
-                });
+                if (this.id) {
+                    this.$store.dispatch('events/updateVenueEvent', {
+                        id: this.id,
+                        roomId: this.selectedRoom,
+                        bandId: this.selectedBand,
+                        start: this.start,
+                        end: this.end,
+                    })
+                } else {
+                    this.$store.dispatch('events/addEvent', {
+                        roomId: this.selectedRoom,
+                        bandId: this.selectedBand,
+                        start: this.start,
+                        end: this.end,
+                    });
+                }
             }
         },
         onDismissed() {
             this.$store.dispatch('events/clearError');
         }
     },
-    mounted() {
+    async mounted() {
         this.$store.dispatch('setLoadingComponent', false);
         this.$store.dispatch('rooms/loadRooms');
         this.$store.dispatch('bands/loadBands');
+        if (this.id) {
+            this.save = true;
+            await this.$store.dispatch('events/getEventById', this.id);
+            const currentEvent = this.$store.getters['events/currentEvent'];
+            this.selectedDates = [format(currentEvent.start, 'RRRR-LL-dd'), format(currentEvent.end, 'RRRR-LL-dd')];
+            this.selectedStartTime = format(currentEvent.start, 'HH:mm');
+            this.selectedEndTime = format(currentEvent.end, 'HH:mm');
+            this.selectedRoom = currentEvent.roomId;
+            this.selectedBand = currentEvent.bandId;
+        } 
     }
 }
 </script>

@@ -2,6 +2,9 @@ export default {
     setEvents(state, payload) {
         state.events = payload;
     },
+    setCurrentEvent(state, payload) {
+        state.currentEvent = payload;
+    },
     setError(state, payload) {
         state.error = payload;
     },

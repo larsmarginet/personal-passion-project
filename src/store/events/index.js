@@ -7,6 +7,7 @@ export default {
     state: {
         error: null,
         events: [],
+        currentEvent: null,
         loadingEvents: false,
         loadingAddEvent: false
     },
