@@ -42,7 +42,7 @@
                                 </v-menu>
                             </v-col>
                         </v-row>
-                        <v-autocomplete v-model="selectedRoom" :items="rooms" filled chips solo label="Room" item-text="room" item-value="room" :rules="roomRules">
+                        <v-autocomplete v-model="selectedRoom" :items="rooms" filled chips solo label="Room" item-text="name" item-value="id" :rules="roomRules">
                              <template v-slot:selection="data">
                                 <v-chip v-bind="data.attrs" :input-value="data.selected" close @click="data.select" @click:close="remove('room')" >
                                     {{ data.item.name }}
@@ -54,7 +54,7 @@
                                 </v-list-item-content>
                             </template>
                         </v-autocomplete>
-                        <v-autocomplete v-model="selectedBand" :items="bands" filled chips solo label="Band" item-text="band" item-value="band" :rules="bandRules" :loading="loading">
+                        <v-autocomplete v-model="selectedBand" :items="bands" filled chips solo label="Band" item-text="name" item-value="id" :rules="bandRules" :loading="loading">
                             <template v-slot:selection="data">
                                 <v-chip v-bind="data.attrs" :input-value="data.selected" close @click="data.select" @click:close="remove('band')" >
                                     <v-avatar left>
@@ -126,15 +126,15 @@ export default {
                 } 
             ],
             roomRules: [
-                v => !!v.id || 'Please pick a room',
+                v => typeof v === 'string' || 'Please pick a room',
             ],
             bandRules: [
-                v => !!v.id || 'Please pick a band',
+                v => typeof v == 'string' || 'Please pick a band',
             ],
             rooms: [
-                {id: 1, name: 'room 1'},
-                {id: 2, name: 'room 2'},
-                {id: 3, name: 'room 3'}
+                {id: '1', name: 'room 1'},
+                {id: '2', name: 'room 2'},
+                {id: '3', name: 'room 3'}
             ],
         }
     }, 
