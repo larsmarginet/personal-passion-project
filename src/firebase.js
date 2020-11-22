@@ -23,6 +23,7 @@ const storage = firebase.storage();
 // collection references
 const usersCollection = db.collection('users');
 const eventsCollection = db.collection('events');
+const roomsCollection = db.collection('rooms');
 
 // export utils/refs
 export {
@@ -30,5 +31,6 @@ export {
   auth,
   storage,
   usersCollection,
-  eventsCollection
+  eventsCollection,
+  roomsCollection
 }

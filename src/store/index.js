@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import auth from './auth/index.js'
 import events from './events/index.js'
 import bands from './bands/index.js'
+import rooms from './rooms/index.js'
 
 Vue.use(Vuex)
 
@@ -28,6 +29,7 @@ export default new Vuex.Store({
   modules: {
     auth,
     events,
-    bands
+    bands,
+    rooms
   }
 })

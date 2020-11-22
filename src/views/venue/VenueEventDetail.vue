@@ -42,7 +42,7 @@
                                 </v-menu>
                             </v-col>
                         </v-row>
-                        <v-autocomplete v-model="selectedRoom" :items="rooms" filled chips solo label="Room" item-text="name" item-value="id" :rules="roomRules">
+                        <v-autocomplete v-model="selectedRoom" :items="rooms" filled chips solo label="Room" item-text="name" item-value="id" :rules="roomRules" :loading="loadingRooms">
                              <template v-slot:selection="data">
                                 <v-chip v-bind="data.attrs" :input-value="data.selected" close @click="data.select" @click:close="remove('room')" >
                                     {{ data.item.name }}
@@ -54,7 +54,7 @@
                                 </v-list-item-content>
                             </template>
                         </v-autocomplete>
-                        <v-autocomplete v-model="selectedBand" :items="bands" filled chips solo label="Band" item-text="name" item-value="id" :rules="bandRules" :loading="loading">
+                        <v-autocomplete v-model="selectedBand" :items="bands" filled chips solo label="Band" item-text="name" item-value="id" :rules="bandRules" :loading="loadingBands">
                             <template v-slot:selection="data">
                                 <v-chip v-bind="data.attrs" :input-value="data.selected" close @click="data.select" @click:close="remove('band')" >
                                     <v-avatar left>
@@ -131,19 +131,20 @@ export default {
             bandRules: [
                 v => typeof v == 'string' || 'Please pick a band',
             ],
-            rooms: [
-                {id: '1', name: 'room 1'},
-                {id: '2', name: 'room 2'},
-                {id: '3', name: 'room 3'}
-            ],
         }
     }, 
     computed: {
-        loading() {
+        loadingBands() {
             return this.$store.getters['bands/loading'];
         },
         bands() {
             return this.$store.getters['bands/bands'];
+        },
+        loadingRooms() {
+            return this.$store.getters['rooms/loading'];
+        },
+        rooms() {
+            return this.$store.getters['rooms/rooms'];
         },
         dates() {
             // make copy of original selectedDates
@@ -218,6 +219,7 @@ export default {
     },
     mounted() {
         this.$store.dispatch('setLoadingComponent', false);
+        this.$store.dispatch('rooms/loadRooms');
         this.$store.dispatch('bands/loadBands');
     }
 }
