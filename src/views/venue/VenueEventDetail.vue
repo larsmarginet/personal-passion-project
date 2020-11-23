@@ -226,21 +226,25 @@ export default {
             // is false second condition won't be executed
             const datesAreValid = this.validateDatePicker(this.selectedDates);
             if (this.$refs.form.validate() && datesAreValid) {
+                const band = this.bands.find(band => band.id === this.selectedBand);
+                const room = this.rooms.find(room => room.id === this.selectedRoom);
+                const eventObj = {
+                    roomId: room.id,
+                    roomName: room.name,
+                    roomBubbles: room.bubbles,
+                    bandId: band.id,
+                    bandLogo: band.logoUrl,
+                    bandName: band.name,
+                    start: this.start,
+                    end: this.end,
+                }
                 if (this.id) {
                     this.$store.dispatch('events/updateVenueEvent', {
                         id: this.id,
-                        roomId: this.selectedRoom,
-                        bandId: this.selectedBand,
-                        start: this.start,
-                        end: this.end,
+                        ...eventObj
                     })
                 } else {
-                    this.$store.dispatch('events/addEvent', {
-                        roomId: this.selectedRoom,
-                        bandId: this.selectedBand,
-                        start: this.start,
-                        end: this.end,
-                    });
+                    this.$store.dispatch('events/addEvent', eventObj);
                 }
             }
         },

@@ -12,20 +12,6 @@ export default {
                 snapshot.forEach(async doc => {
                     let event = doc.data();
                     event.id = doc.id;
-                    try {
-                        const result = await firebase.usersCollection.doc(event.bandId).get();
-                        event.bandLogoUrl = result.data().logoUrl;
-                        event.bandName = result.data().name;
-                    } catch(error) {
-                        event.bandName = 'Band not found';
-                    }
-                    try {
-                        const result = await firebase.roomsCollection.doc(event.roomId).get();
-                        event.roomName = result.data().name;
-                        event.roomBubbles = result.data().bubbles;
-                    } catch(error) {
-                        event.roomName = 'Room not found'
-                    }
                     events.push(event);
                 });
                 ctx.commit('setEvents', events);
@@ -42,8 +28,12 @@ export default {
         try {
             await firebase.eventsCollection.add({
                 venueId: firebase.auth.currentUser.uid,
-                bandId: payload.bandId,
                 roomId: payload.roomId,
+                roomName: payload.roomName,
+                roomBubbles: payload.roomBubbles,
+                bandId: payload.bandId,
+                bandLogo: payload.bandLogo,
+                bandName: payload.bandName,
                 start: payload.start,
                 end: payload.end,
                 merch: [],
@@ -77,7 +67,11 @@ export default {
         try {
             await firebase.eventsCollection.doc(payload.id).update({
                 roomId: payload.roomId,
+                roomName: payload.roomName,
+                roomBubbles: payload.roomBubbles,
                 bandId: payload.bandId,
+                bandLogo: payload.bandLogo,
+                bandName: payload.bandName,
                 start: payload.start,
                 end: payload.end,
             });
@@ -94,6 +88,19 @@ export default {
     
     clearError(ctx) {
         ctx.commit('setError', null);
+    },
+
+    async updateEventsWithRoomId() {
+        try {
+            await firebase.db.runTransaction(async transaction => {
+                const docs =  await firebase.eventsCollection.where("roomId", "==", '3iFioUlpnQlCQhVL9Xat').get();
+                docs.forEach(async event => {
+                    await transaction.update(firebase.eventsCollection.doc(event.id), {roomId: 'WQPhDUh2sDWZYVsZ0CFu'}) 
+                });
+            });
+        } catch (error) {
+            console.error(error);
+        }
     }
 
 };

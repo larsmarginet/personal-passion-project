@@ -2,8 +2,8 @@
     <v-card class="mb-4" rounded="lg" flat>
         <DeleteModal :dialog="dialog" @continue="handleDeleteEvent" @cancel="cancelDeleteEvent"/>
         <v-card-title class="pa-6">
-            <v-avatar size="48" :color="`${event.bandLogoUrl ? 'primary' : 'error'}`">
-                <img class="rounded-avatar" :src="event.bandLogoUrl" :alt="event.bandName" v-if="event.bandLogoUrl"/>
+            <v-avatar size="48" :color="`${event.bandLogo ? 'primary' : 'error'}`">
+                <img class="rounded-avatar" :src="event.bandLogo" :alt="event.bandName" v-if="event.bandLogo"/>
                 <v-icon v-else large dark>error</v-icon>
             </v-avatar>
             <span class="ml-5 headline font-weight-bold">{{event.bandName}}</span>   
@@ -33,7 +33,7 @@
                         <p><v-icon :class="`${event.roomBubbles ? 'primary--text' : 'error--text'}`">location_on</v-icon> {{event.roomName}} <span v-if="event.roomBubbles">({{event.roomBubbles}} bubbles)</span></p>
                     </v-row>
                     <v-row justify="start">
-                        <p><v-icon :class="`${event.start ? 'primary--text' : 'error--text'}`">event</v-icon> {{convertStart(event.start, event.end)}}<span class="mx-1">-</span></p>
+                        <p class="mb-0"><v-icon :class="`${event.start ? 'primary--text' : 'error--text'}`">event</v-icon> {{convertStart(event.start, event.end)}}<span class="mx-1">-</span></p>
                         <p>{{convertEnd(event.start, event.end)}}</p>
                     </v-row>
                 </v-col>
@@ -68,10 +68,10 @@ export default {
     },
     computed: {
         setList() {
-            return this.event.setList.length >= 0;
+            return this.event.setList.length > 0;
         },
         merch() {
-            return this.event.merch.length >= 0;
+            return this.event.merch.length > 0;
         }
     },
     methods: {
