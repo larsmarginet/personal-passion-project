@@ -3,7 +3,7 @@
         <DeleteModal :dialog="dialog" @continue="handleDeleteItem" @cancel="cancelDeleteItem"/>
         <v-card-title :class="{'text--disabled': !active}">
             <v-form @submit.prevent>
-                <v-checkbox v-model="active" ></v-checkbox>
+                <v-checkbox v-model="active" @change="updateActiveStatus"></v-checkbox>
             </v-form>
             <v-avatar size="48" :color="`${item.name ? 'primary' : 'error'}`" :class="{'transparant': !active}">
                 <img class="rounded-avatar" :src="item.image" :alt="item.name" v-if="item.image"/>
@@ -56,7 +56,12 @@ export default {
     },
     methods: {
         updateActiveStatus() {
-            this.active = !this.active;
+            // this.active = !this.active;
+            // console.log('updating...')
+            this.$store.dispatch('menu/updateActiveStateItem', {
+                id: this.item.id,
+                active: this.active
+            });
             // write update logic for firestore
         },
         onDismissed() {

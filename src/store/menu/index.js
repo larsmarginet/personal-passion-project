@@ -6,6 +6,7 @@ export default {
     namespaced: true,
     state: {
         menu: [],
+        currentItem: [],
         loading: false,
         loadingItem: false,
         LoadingAddItem: false,

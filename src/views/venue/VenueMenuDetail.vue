@@ -21,14 +21,15 @@
                         <Alert @dismissed="onDismissed" :text="error" v-if="error"/>
                     </v-expand-transition>
                     <v-form @submit.prevent ref="form" class="px-4 pt-2 px-md-5 pt-md-3 pb-5">
-                        <v-text-field validate-on-blur class="mx-2" v-model="name" label="Name" :rules="nameRules"></v-text-field>
+                        <v-text-field validate-on-blur class="mx-2" v-model="name" label="Name" :rules="nameRules" @change="checkIfUpdated"></v-text-field>
                         <v-container>
                             <p :class="`${fileError ? 'error--text': 'grey--text text--darken-1'} mb-1`">Image</p>
-                            <FileDrop @fileDropped="handleUploadFile" @fileRemoved="handleRemoveFile" :rules="imageRules"/>
+                            <FileDrop @fileDropped="handleUploadFile" @fileRemoved="handleRemoveFile" :rules="imageRules" v-if="!imageUrl"/>
+                            <ImagePreview :src="imageUrl" :alt="name" @removeImage="handleRemoveFile" v-else/>
                             <p v-if="fileError" class="error--text caption">{{fileError}}</p>
                         </v-container>
-                        <v-text-field validate-on-blur class="mx-2" style="maxWidth: 150px" label="Price" type="number" min="0" v-model="price" prefix="€" :rules="priceRules"></v-text-field>
-                        <v-select validate-on-blur class="mx-2" style="maxWidth: 250px" :items="categories" v-model="category" label="Categories" :rules="categoryRules"></v-select>
+                        <v-text-field validate-on-blur class="mx-2" style="maxWidth: 150px" label="Price" type="number" min="0" v-model="price" prefix="€" :rules="priceRules" @change="checkIfUpdated"></v-text-field>
+                        <v-select validate-on-blur class="mx-2" style="maxWidth: 250px" :items="categories" v-model="category" label="Categories" :rules="categoryRules" @change="checkIfUpdated"></v-select>
                     </v-form>
                 </v-card>
             </v-col>
@@ -41,17 +42,27 @@ import { nameRules, imageRules, priceRules, categoryRules } from '../../helpers/
 import BackButton from '../../components/shared/BackButton';
 import Alert from '../../components/shared/Alert';
 import FileDrop from '../../components/shared/FileDrop';
+import ImagePreview from '../../components/shared/ImagePreview';
 export default {
-     components: {
+    components: {
         BackButton,
         FileDrop,
-        Alert
+        Alert,
+        ImagePreview
+    },
+    props: {
+        id: {
+            required: false,
+            type: String
+        }
     },
     data() {
         return {
             save: false,
+            active: true,
             name: '',
             image: null,
+            imageUrl: null,
             price: 0.00,
             category: '',
             categories: ['soda', 'beer', 'wine', 'liquor', 'hot', 'snacks'],
@@ -74,6 +85,18 @@ export default {
         }
     },
     methods: {
+        currentItem() {
+            return this.$store.getters['menu/currentItem'];
+        },
+        checkIfUpdated() {
+            if (this.id && this.currentItem && (
+                this.name !== this.currentItem.name ||
+                this.imageUrl == null ||
+                this.price !== this.currentItem.price ||
+                this.category !== this.currentItem.category)) {
+                this.save = false;
+            }
+        },
         onDismissed() {
             this.$store.dispatch('menu/clearError');
         },
@@ -82,26 +105,47 @@ export default {
             this.image = file;
         },
         handleRemoveFile() {
+            this.imageUrl = null;
             this.image = null;
+            this.checkIfUpdated();
         },
         handleAddItem() {
-            if (!this.image) {
-                this.fileError = 'You are required to upload a logo';
+            if (!this.image && !this.imageUrl) {
+                this.fileError = 'You are required to upload an image';
                 this.$refs.form.validate();
                 return;
             }
             if (this.$refs.form.validate()) {
-                this.$store.dispatch('menu/addItem', {
+                const itemObj = {
                     name: this.name,
-                    image: this.image,
+                    active: this.active,
+                    image: this.imageUrl ? this.imageUrl : this.image,
                     price: this.price, 
                     category: this.category
-                });
+                }
+                if (this.id) {
+                    this.$store.dispatch('menu/updateItem', {
+                        id: this.id,
+                        ...itemObj
+                    })
+                } else {
+                    this.$store.dispatch('menu/addItem', itemObj);
+                }
             }
         }
     },
-    mounted() {
+    async mounted() {
         this.$store.dispatch('setLoadingComponent', false);
+        if (this.id) {
+            this.save = true;
+            await this.$store.dispatch('menu/getItemById', this.id);
+            const currentItem = this.$store.getters['menu/currentItem'];
+            this.active = currentItem.active;
+            this.name = currentItem.name;
+            this.imageUrl = currentItem.image;
+            this.price = currentItem.price;
+            this.category = currentItem.category;
+        } 
     }
 }
 </script>

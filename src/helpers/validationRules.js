@@ -4,8 +4,8 @@ const nameRules = [
 ];
 
 const imageRules =  [
-    v => v != null || 'Please upload a logo' ,
-    v => !v || v.size < 2000000 || 'Logo size should be less than 2 MB',
+    v => v != null || 'Please upload an image' ,
+    v => !v || v.size < 2000000 || 'Image size should be less than 2 MB',
     v => !v || v.type === 'image/png' || v.type === 'image/jpeg' || 'Image has to be png or jpeg'
 ];
 
