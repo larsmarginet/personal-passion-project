@@ -19,7 +19,9 @@
                     <v-skeleton-loader type="list-item-avatar-three-line" class="mb-4" v-for="n in 3" :key="n"></v-skeleton-loader>
                 </v-container>
                 <v-container class="pa-0" v-else>
-                    <EventCard v-for="event in filteredEvents" :event="event" :key="event.id"/>
+                    <transition-group name="list">
+                        <EventCard v-for="event in filteredEvents" :event="event" :key="event.id"/>
+                    </transition-group>
                 </v-container>
             </v-col>
         </v-row>
@@ -80,5 +82,37 @@ export default {
 <style scoped>
 .rounded-avatar {
     border-radius: 50%;
+}
+</style>
+
+<style scoped>
+
+.list-enter {
+    opacity: 0;
+    transform: translateY(-30px);
+}
+
+.list-enter-active {
+    transition: all 500ms ease-out;
+}
+
+.list-enter-to {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.list-leave{
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.list-leave-active {
+    transition: all 500ms ease-in;
+    position: absolute;
+}
+
+.list-leave-to {
+    opacity: 0;
+    transform: translateY(30px);
 }
 </style>
