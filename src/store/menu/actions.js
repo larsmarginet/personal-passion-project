@@ -6,15 +6,15 @@ export default {
         ctx.commit('setLoading', true);
         ctx.commit('setError', null);
         try {
-            await firebase.menuCollection.where("venueId", "==", firebase.auth.currentUser.uid).onSnapshot(snapshot => {
-                let menu = [];
-                snapshot.forEach(doc => {
-                    let item = doc.data();
-                    item.id = doc.id;
-                    menu.push(item);
-                })
-                ctx.commit('setMenu', menu);
-            })            
+            // not snapshot, because everytime venue would update active status this would refetch.
+            const result = await firebase.menuCollection.where("venueId", "==", firebase.auth.currentUser.uid).get();
+            let menu = [];
+            result.forEach(doc => {
+                let item = doc.data();
+                item.id = doc.id;
+                menu.push(item);
+            })
+            ctx.commit('setMenu', menu);            
         } catch (error) {
             ctx.commit('setError', error);
         }
@@ -34,6 +34,7 @@ export default {
                     image: downloadURL,
                     price: payload.price,
                     category: payload.category,
+                    active: true,
                 });
                 router.push('/venue/menu');
             } catch (error) {

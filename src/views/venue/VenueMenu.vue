@@ -15,8 +15,7 @@
                 </v-container>
                 <v-container class="pa-0" v-else>
                     <transition-group name="list">
-
-                        <v-skeleton-loader type="list-item-avatar" class="mb-4" v-for="n in 5" :key="n"></v-skeleton-loader>
+                        <MenuCard v-for="item in menu" :key="item.id" :item="item"/>
                     </transition-group>
                 </v-container>
             </v-col>
@@ -26,9 +25,11 @@
 
 <script>
 import Alert from '../../components/shared/Alert';
+import MenuCard from '../../components/venue/MenuCard';
 export default {
     components: {
-        Alert
+        Alert,
+        MenuCard
     },
     computed: {
         loading() {
@@ -37,13 +38,8 @@ export default {
         error() {
             return this.$store.getters['menu/error'];
         },
-        events() {
+        menu() {
             return this.$store.getters['menu/menu'];
-        },
-    },
-    methods: {
-        onDismissed() {
-            this.$store.dispatch('menu/clearError');
         },
     },
     mounted() {
