@@ -75,7 +75,7 @@ export default {
 
 .list-leave-active {
     transition: all 500ms ease-in;
-    position: absolute;
+    /* position: relative; */
 }
 
 .list-leave-to {

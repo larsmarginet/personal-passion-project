@@ -8,8 +8,8 @@ export default {
     loadingItem(state) {
         return state.loadingItem;
     },
-    loadingAddItem(state) {
-        return state.loadingAddItem;
+    LoadingAddItem(state) {
+        return state.LoadingAddItem;
     },
     error(state) {
         return state.error;

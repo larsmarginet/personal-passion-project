@@ -8,7 +8,7 @@ export default {
         menu: [],
         loading: false,
         loadingItem: false,
-        loadingAddItem: false,
+        LoadingAddItem: false,
         error: null
     },
     mutations,

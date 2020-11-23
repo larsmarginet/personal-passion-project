@@ -1,5 +1,6 @@
 <template>
-    <v-card class="mb-4" rounded="lg" flat>
+    <v-card class="mb-4" rounded="lg" flat max-width="100%">
+        <DeleteModal :dialog="dialog" @continue="handleDeleteItem" @cancel="cancelDeleteItem"/>
         <v-card-title :class="{'text--disabled': !active}">
             <v-form @submit.prevent>
                 <v-checkbox v-model="active" ></v-checkbox>
@@ -25,7 +26,7 @@
                         <v-icon class="mr-2">create</v-icon>
                         <v-list-item-title>update</v-list-item-title>
                     </v-list-item>
-                    <v-list-item link>
+                    <v-list-item link @click="openModal">
                         <v-icon class="mr-2">delete</v-icon>
                         <v-list-item-title>delete</v-list-item-title>
                     </v-list-item>
@@ -36,6 +37,7 @@
 </template>
 
 <script>
+import DeleteModal from '../shared/DeleteModal';
 export default {
     props: {
         item: {
@@ -43,8 +45,12 @@ export default {
             type: Object
         }
     },
+    components: {
+        DeleteModal
+    },
     data() {
         return {
+            dialog: false,
             active: this.item.active
         }
     },
@@ -56,6 +62,16 @@ export default {
         onDismissed() {
             this.$store.dispatch('menu/clearError');
         },
+        openModal() {
+            this.dialog = true;
+        },
+        cancelDeleteItem() {
+            this.dialog = false;
+        },
+        handleDeleteItem() {
+            this.dialog = false;
+            this.$store.dispatch('menu/deleteItem', this.item.id);
+        }
     },
 }
 </script>

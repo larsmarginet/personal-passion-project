@@ -16,19 +16,19 @@
                     <v-skeleton-loader type="list-item-avatar" class="mb-4"></v-skeleton-loader>
                     <v-skeleton-loader type="list-item-avatar" class="mb-4 pb-5"></v-skeleton-loader>
                 </v-card>
-                <v-card flat class="mx-auto mb-10" rounded="xl" v-else>
+                <v-card flat class="mx-auto mb-10" rounded="xl" width="100%" v-else>
                     <v-expand-transition>
                         <Alert @dismissed="onDismissed" :text="error" v-if="error"/>
                     </v-expand-transition>
                     <v-form @submit.prevent ref="form" class="px-4 pt-2 px-md-5 pt-md-3 pb-5">
-                        <v-text-field class="mx-2" v-model="name" label="Name" :rules="nameRules"></v-text-field>
+                        <v-text-field validate-on-blur class="mx-2" v-model="name" label="Name" :rules="nameRules"></v-text-field>
                         <v-container>
                             <p :class="`${fileError ? 'error--text': 'grey--text text--darken-1'} mb-1`">Image</p>
                             <FileDrop @fileDropped="handleUploadFile" @fileRemoved="handleRemoveFile" :rules="imageRules"/>
                             <p v-if="fileError" class="error--text caption">{{fileError}}</p>
                         </v-container>
-                        <v-text-field class="mx-2" style="maxWidth: 150px" label="Price" type="number" min="0" v-model="price" prefix="€" :rules="priceRules"></v-text-field>
-                        <v-select class="mx-2" style="maxWidth: 250px" :items="categories" v-model="category" label="Categories" :rules="categoryRules"></v-select>
+                        <v-text-field validate-on-blur class="mx-2" style="maxWidth: 150px" label="Price" type="number" min="0" v-model="price" prefix="€" :rules="priceRules"></v-text-field>
+                        <v-select validate-on-blur class="mx-2" style="maxWidth: 250px" :items="categories" v-model="category" label="Categories" :rules="categoryRules"></v-select>
                     </v-form>
                 </v-card>
             </v-col>
@@ -67,7 +67,7 @@ export default {
             return this.$store.getters['menu/loadingItem'];
         },
         loadingAddItem() {
-            return this.$store.getters['menu/loadingAddItem'];
+            return this.$store.getters['menu/LoadingAddItem'];
         },
         error() {
             return this.$store.getters['menu/error'];

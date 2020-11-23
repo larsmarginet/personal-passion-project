@@ -13,5 +13,13 @@ export default {
     },
     setMenu(state, payload) {
         state.menu = payload;
+    },
+    deleteMenuItem(state, payload) {
+        if (state.menu.length > 1) {
+            const index = state.menu.map(item => item.id).indexOf(payload);
+            if (index) state.menu.splice(index, 1);
+        } else {
+            state.menu = [];
+        }
     }
 }

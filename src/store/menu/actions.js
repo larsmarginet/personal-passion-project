@@ -46,6 +46,11 @@ export default {
         ctx.commit('setLoadingAddItem', false);
     },
 
+    async deleteItem(ctx, payload) {
+        await firebase.menuCollection.doc(payload).delete();
+        ctx.commit('deleteMenuItem', payload);
+    },
+
     clearError(ctx) {
         ctx.commit('setLoading', true);
     }
