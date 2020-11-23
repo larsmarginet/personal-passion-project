@@ -6,7 +6,7 @@
                 <input id="log" type="file" accept="image/png, image/jpeg" ref="picker" @change="handleChangePicker"/>
             </label>
             <v-icon x-large color="grey lighten-2" class="mx-auto">add_a_photo</v-icon>
-            <p class="caption grey--text text--lighten-1 text-center mt-2">Drag your logo here or click to upload</p>
+            <p class="caption grey--text text--lighten-1 text-center mt-2">Drag your image here or click to upload</p>
             <p class="caption error--text text-center" v-if="error">{{error}}</p>
         </v-sheet>
         <ImagePreview :src="preview" :alt="file.name" @removeImage="handleRemoveImage" v-else />

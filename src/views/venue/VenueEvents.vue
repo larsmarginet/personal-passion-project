@@ -83,9 +83,6 @@ export default {
 .rounded-avatar {
     border-radius: 50%;
 }
-</style>
-
-<style scoped>
 
 .list-enter {
     opacity: 0;

@@ -3,7 +3,6 @@ import 'firebase/auth'
 import 'firebase/firestore'
 import 'firebase/storage'
 
-// firebase init - add your own config here
 const firebaseConfig = {
     apiKey: process.env.VUE_APP_apiKey,
     authDomain: process.env.VUE_APP_authDomain,
@@ -12,8 +11,8 @@ const firebaseConfig = {
     storageBucket: process.env.VUE_APP_storageBucket,
     messagingSenderId: process.env.VUE_APP_messagingSenderId,
     appId: process.env.VUE_APP_appId
-}
-firebase.initializeApp(firebaseConfig)
+};
+firebase.initializeApp(firebaseConfig);
 
 // utils
 const db = firebase.firestore();
@@ -24,6 +23,7 @@ const storage = firebase.storage();
 const usersCollection = db.collection('users');
 const eventsCollection = db.collection('events');
 const roomsCollection = db.collection('rooms');
+const menuCollection = db.collection('menu');
 
 // export utils/refs
 export {
@@ -32,5 +32,6 @@ export {
   storage,
   usersCollection,
   eventsCollection,
-  roomsCollection
+  roomsCollection,
+  menuCollection
 }

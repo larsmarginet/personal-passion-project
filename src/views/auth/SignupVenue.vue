@@ -11,7 +11,7 @@
             <v-form ref="form" class="px-8 pb-5">
                 <v-container>
                     <p :class="`${fileError ? 'error--text': 'grey--text text--darken-1'} mb-1`">Logo</p>
-                    <FileDrop @fileDropped="handleUploadFile" @fileRemoved="handleRemoveFile" :rules="logoRules"/>
+                    <FileDrop @fileDropped="handleUploadFile" @fileRemoved="handleRemoveFile" :rules="imageRules"/>
                     <p v-if="fileError" class="error--text caption">{{fileError}}</p>
                 </v-container>
                 <v-text-field validate-on-blur label="Venue name" v-model="name" prepend-icon="storefront" :rules="nameRules" clearable counter="25"></v-text-field>
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { nameRules, logoRules, emailRules, passwordRules } from '../../helpers/signupRules'
+import { nameRules, imageRules, emailRules, passwordRules } from '../../helpers/validationRules';
 import Alert from '../../components/shared/Alert';
 import FileDrop from '../../components/shared/FileDrop';
 import BackButton from '../../components/shared/BackButton';
@@ -50,7 +50,7 @@ export default {
             show: false,
             fileError: null,
             nameRules,
-            logoRules,
+            imageRules,
             emailRules,
             passwordRules,
             passwordConfirmRules: [

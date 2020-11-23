@@ -4,6 +4,7 @@ import auth from './auth/index.js'
 import events from './events/index.js'
 import bands from './bands/index.js'
 import rooms from './rooms/index.js'
+import menu from './menu/index.js'
 
 Vue.use(Vuex)
 
@@ -30,6 +31,7 @@ export default new Vuex.Store({
     auth,
     events,
     bands,
-    rooms
+    rooms,
+    menu
   }
 })

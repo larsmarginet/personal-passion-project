@@ -3,7 +3,7 @@ const nameRules = [
     v => v.length < 25 || 'Your name can not be more than 25 characters' 
 ];
 
-const logoRules =  [
+const imageRules =  [
     v => v != null || 'Please upload a logo' ,
     v => !v || v.size < 2000000 || 'Logo size should be less than 2 MB',
     v => !v || v.type === 'image/png' || v.type === 'image/jpeg' || 'Image has to be png or jpeg'
@@ -24,12 +24,23 @@ const passwordRules =  [
 
 const linkRules = [
     v => v ? /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/.test(v) || 'Input must be a valid link' : true
-]
+];
+
+const priceRules = [
+    v => !!v ||'A price is required',
+    v => v >= 0 || 'The price can not be less than 0',
+];
+
+const categoryRules = [
+    v => !!v ||'A category is required',
+];
 
 export {
     nameRules,
-    logoRules,
+    imageRules,
     emailRules,
     passwordRules,
-    linkRules
+    linkRules,
+    priceRules,
+    categoryRules
 }

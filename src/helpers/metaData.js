@@ -129,11 +129,11 @@ const VenueEventsDetail = {
     metaTags: [
         {
             name: 'description',
-            content: 'Venues can create new amazing events here!'
+            content: 'Venues can edit events here!'
         },
         {
             name: 'og:description',
-            content: 'Venues can create new amazing events here!'
+            content: 'Venues can edit events here!'
         }
     ]
 };
@@ -148,6 +148,34 @@ const VenueMenu = {
         {
             name: 'og:description',
             content: 'Venues can view their food and drinks here.'
+        }
+    ]
+};
+
+const VenueMenuCreate = {
+    title: 'create food & drinks',
+    metaTags: [
+        {
+            name: 'description',
+            content: 'Venues can create their food and drinks here.'
+        },
+        {
+            name: 'og:description',
+            content: 'Venues can create their food and drinks here.'
+        }
+    ]
+};
+
+const VenueMenuDetail = {
+    title: 'edit food & drinks',
+    metaTags: [
+        {
+            name: 'description',
+            content: 'Venues can edit food & drinks here!'
+        },
+        {
+            name: 'og:description',
+            content: 'Venues can edit food & drinks here!'
         }
     ]
 };
@@ -179,5 +207,7 @@ export {
     VenueEventsCreate,
     VenueEventsDetail,
     VenueMenu,
+    VenueMenuCreate,
+    VenueMenuDetail,
     VenueRooms
 }

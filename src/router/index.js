@@ -128,7 +128,7 @@ const routes = [
           requiresAuth: true,
           userType: 'venue'
         },
-        component: () => import(/* webpackChunkName: "VenueEvents" */ '../views/venue/VenueEventDetail.vue'),
+        component: () => import(/* webpackChunkName: "VenueEventDetail" */ '../views/venue/VenueEventDetail.vue'),
       },
       {
         path: 'events/:id', 
@@ -140,7 +140,7 @@ const routes = [
           requiresAuth: true,
           userType: 'venue'
         },
-        component: () => import(/* webpackChunkName: "VenueEvents" */ '../views/venue/VenueEventDetail.vue'),
+        component: () => import(/* webpackChunkName: "VenueEventDetail" */ '../views/venue/VenueEventDetail.vue'),
       },
       {
         path: 'menu', 
@@ -152,6 +152,29 @@ const routes = [
           userType: 'venue'
         },
         component: () => import(/* webpackChunkName: "VenueMenu" */ '../views/venue/VenueMenu.vue'),
+      },
+      {
+        path: 'menu/create', 
+        name: 'VenueMenuCreate',
+        meta: {
+          title: meta.VenueMenuCreate.title,
+          metaTags: meta.VenueMenuCreate.metaTags,
+          requiresAuth: true,
+          userType: 'venue'
+        },
+        component: () => import(/* webpackChunkName: "VenueMenuDetail" */ '../views/venue/VenueMenuDetail.vue'),
+      },
+      {
+        path: 'menu/:id', 
+        name: 'VenueMenuDetail',
+        props: true,
+        meta: {
+          title: meta.VenueMenuDetail.title,
+          metaTags: meta.VenueMenuDetail.metaTags,
+          requiresAuth: true,
+          userType: 'venue'
+        },
+        component: () => import(/* webpackChunkName: "VenueMenuDetail" */ '../views/venue/VenueMenuDetail.vue'),
       },
       {
         path: 'rooms', 
