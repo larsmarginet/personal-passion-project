@@ -10,11 +10,16 @@
                 <v-expand-transition>
                     <Alert @dismissed="onDismissed" :text="error" v-if="error"/>
                 </v-expand-transition>
+                <v-row class="px-4 pb-4">
+                    <v-btn text :class="{'primary--text': filter === 'live'}" @click="setFilter('live')">Live</v-btn>
+                    <v-btn text :class="{'primary--text': filter === 'upcoming'}" @click="setFilter('upcoming')">Upcoming</v-btn>
+                    <v-btn text :class="{'primary--text': filter === 'previous'}" @click="setFilter('previous')">Previous</v-btn>
+                </v-row>
                 <v-container v-if="loading">
                     <v-skeleton-loader type="list-item-avatar-three-line" class="mb-4" v-for="n in 3" :key="n"></v-skeleton-loader>
                 </v-container>
                 <v-container class="pa-0" v-else>
-                    <EventCard v-for="event in events" :event="event" :key="event.id"/>
+                    <EventCard v-for="event in filteredEvents" :event="event" :key="event.id"/>
                 </v-container>
             </v-col>
         </v-row>
@@ -29,6 +34,12 @@ export default {
         EventCard,
         Alert
     },
+    data() {
+        return {
+            filter: 'upcoming',
+            currentTime: (new Date()).getTime()
+        }
+    },
     computed: {
         loading() {
             return this.$store.getters['events/loadingEvents'];
@@ -39,10 +50,24 @@ export default {
         events() {
             return this.$store.getters['events/events'] ? [...this.$store.getters['events/events']].sort((a,b) => a.start - b.start) : null;
         },
+        filteredEvents() {
+            if (this.filter === 'live') {
+                return this.events.filter(event => this.currentTime >= event.start && this.currentTime <= event.end);
+            } else if (this.filter === 'upcoming') {
+                return this.events.filter(event => this.currentTime < event.start);
+            } else if (this.filter === 'previous') {
+                return this.events.filter(event => this.currentTime > event.start);
+            } else {
+                return this.events;
+            }
+        }
     },
     methods: {
         onDismissed() {
             this.$store.dispatch('events/clearError');
+        },
+        setFilter(val) {
+            this.filter !== val ? this.filter = val : this.filter = ''
         }
     },
     mounted() {
