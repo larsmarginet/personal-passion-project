@@ -37,6 +37,10 @@ export default {
         ctx.commit('setLoadingAddRoom', false);
     }, 
 
+    async deleteRoom(_, payload) {
+        await firebase.roomsCollection.doc(payload).delete();
+    },
+
     clearError(ctx) {
         ctx.commit('setError', null);
     }
