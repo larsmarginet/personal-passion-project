@@ -194,6 +194,34 @@ const VenueRooms = {
     ]
 };
 
+const VenueRoomsCreate = {
+    title: 'create room',
+    metaTags: [
+        {
+            name: 'description',
+            content: 'Venues can create new rooms here.'
+        },
+        {
+            name: 'og:description',
+            content: 'Venues can create new rooms here.'
+        }
+    ]
+};
+
+const VenueRoomsDetail = {
+    title: 'edit room',
+    metaTags: [
+        {
+            name: 'description',
+            content: 'Venues edit a room here.'
+        },
+        {
+            name: 'og:description',
+            content: 'Venues edit a room here.'
+        }
+    ]
+};
+
 
 export {
     home,
@@ -209,5 +237,7 @@ export {
     VenueMenu,
     VenueMenuCreate,
     VenueMenuDetail,
-    VenueRooms
+    VenueRooms,
+    VenueRoomsCreate,
+    VenueRoomsDetail
 }

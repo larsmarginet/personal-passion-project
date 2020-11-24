@@ -7,6 +7,8 @@ export default {
     state: {
         rooms: [],
         loading: false,
+        loadingRoom: false,
+        loadingAddRoom: false,
         error: null
     },
     mutations,

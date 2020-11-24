@@ -31,6 +31,11 @@ const priceRules = [
     v => v >= 0 || 'The price can not be less than 0',
 ];
 
+const bubbleRules = [
+    v => !!v ||'Please set the amount of bubbles',
+    v => v >= 0 || 'The amount of bubbles can not be less than 0',
+];
+
 const categoryRules = [
     v => !!v ||'A category is required',
 ];
@@ -42,5 +47,6 @@ export {
     passwordRules,
     linkRules,
     priceRules,
+    bubbleRules,
     categoryRules
 }

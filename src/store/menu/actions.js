@@ -104,6 +104,6 @@ export default {
     },
 
     clearError(ctx) {
-        ctx.commit('setLoading', true);
+        ctx.commit('setError', null);
     }
 }

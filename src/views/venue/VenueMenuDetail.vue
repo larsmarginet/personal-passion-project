@@ -11,10 +11,11 @@
                 </v-row>
             </v-col>
             <v-col cols="12" sm="10" md="8" lg="6" order-md="1">
-                <v-card flat class="mx-auto mb-10" rounded="xl" v-if="loadingEvent">
-                    <v-skeleton-loader max-width="290" type="table-heading, date-picker-days" class="mb-4"></v-skeleton-loader>
-                    <v-skeleton-loader type="list-item-avatar" class="mb-4"></v-skeleton-loader>
-                    <v-skeleton-loader type="list-item-avatar" class="mb-4 pb-5"></v-skeleton-loader>
+                <v-card flat class="mx-auto mb-10" rounded="xl" v-if="loadingItem">
+                    <v-skeleton-loader type="list-item" class="mb-4 pt-5"></v-skeleton-loader>
+                    <v-skeleton-loader type="image" class="mb-4 mx-4"></v-skeleton-loader>
+                    <v-skeleton-loader type="list-item" style="maxWidth: 150px" class="mb-4"></v-skeleton-loader>
+                    <v-skeleton-loader type="list-item" style="maxWidth: 250px" class="mb-4 pb-5"></v-skeleton-loader>
                 </v-card>
                 <v-card flat class="mx-auto mb-10" rounded="xl" width="100%" v-else>
                     <v-expand-transition>
@@ -74,7 +75,7 @@ export default {
         }
     },
     computed: {
-        loadingEvent() {
+        loadingItem() {
             return this.$store.getters['menu/loadingItem'];
         },
         loadingAddItem() {

@@ -187,6 +187,29 @@ const routes = [
         },
         component: () => import(/* webpackChunkName: "VenueRooms" */ '../views/venue/VenueRooms.vue'),
       },
+      {
+        path: 'rooms/create', 
+        name: 'VenueRoomsCreate',
+        meta: {
+          title: meta.VenueRooms.title,
+          metaTags: meta.VenueRooms.metaTags,
+          requiresAuth: true,
+          userType: 'venue'
+        },
+        component: () => import(/* webpackChunkName: "VenueRoomsDetail" */ '../views/venue/VenueRoomsDetail.vue'),
+      },
+      {
+        path: 'rooms/:id', 
+        name: 'VenueRoomsDetail',
+        props: true,
+        meta: {
+          title: meta.VenueRooms.title,
+          metaTags: meta.VenueRooms.metaTags,
+          requiresAuth: true,
+          userType: 'venue'
+        },
+        component: () => import(/* webpackChunkName: "VenueRoomsDetail" */ '../views/venue/VenueRoomsDetail.vue'),
+      },
     ]
   },
   {
