@@ -29,14 +29,14 @@
                     </v-form>
                     <v-row justify="end" no-gutters class="mx-6">
                         <v-btn @click="generateQrCodes" depressed color="primary">generate</v-btn>
-                        <v-btn @click="dowloadAllQrCodes" text depressed color="primary" v-if="qrcodes.length > 0"><v-icon>get_app</v-icon> donwload all</v-btn>
+                        <v-btn @click="dowloadAllQrCodes" text depressed color="primary" v-if="qrcodes.length > 0"><v-icon>get_app</v-icon> download all</v-btn>
                     </v-row>
                     <v-card v-for="(code,i) in qrcodes" :key="i" flat>
                         <v-card-title class="ma-2">
                             <img :src="code.toDataURL()" alt="QRCode" style="maxWidth: 60px" class="img-border" />
                             <span class="primary--text ml-2">Table {{i+1}}</span>
                             <v-spacer></v-spacer>
-                            <v-btn :href="code.toDataURL()" text download color="primary" fab><v-icon>get_app</v-icon></v-btn>
+                            <v-btn :href="code.toDataURL()" text :download="`qrcode-${i+1}`" color="primary" fab><v-icon>get_app</v-icon></v-btn>
                         </v-card-title>
                         <v-divider></v-divider>
                     </v-card>
@@ -116,7 +116,7 @@ export default {
             const zip = new JSZip();
             this.qrcodes.forEach((code, i) => {
                 const img = code.toDataURL();
-                zip.file(`qrcode-${i+1}.png`, img.split('base64,')[1], {base64: true});
+                zip.file(`qrcode-${i+1}.png`, img.split('base64,')[1], { base64: true });
             });
             zip.generateAsync({ type: 'blob' }).then((content) => {
                 saveAs(content, 'Qrcodes.zip');

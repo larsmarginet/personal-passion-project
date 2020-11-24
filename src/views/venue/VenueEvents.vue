@@ -20,7 +20,7 @@
                 </v-container>
                 <v-container class="pa-0" v-else-if="!loading && events">
                     <transition-group name="list">
-                        <EventCard v-for="event in filteredEvents" :event="event" :key="event.id"/>
+                        <EventCard v-for="event in filteredEvents" :event="event" :key="event.id" :image="event.bandLogo" :name="event.bandName" type="venue"/>
                     </transition-group>
                 </v-container>
             </v-col>
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import EventCard from '../../components/venue/EventCard';
+import EventCard from '../../components/shared/EventCard';
 import Alert from '../../components/shared/Alert';
 export default {
     components: {
@@ -69,7 +69,7 @@ export default {
             this.$store.dispatch('events/clearError');
         },
         setFilter(val) {
-            this.filter !== val ? this.filter = val : this.filter = ''
+            this.filter !== val ? this.filter = val : this.filter = '';
         }
     },
     mounted() {
@@ -79,7 +79,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .rounded-avatar {
     border-radius: 50%;
 }
@@ -105,7 +105,6 @@ export default {
 
 .list-leave-active {
     transition: all 500ms ease-in;
-    position: absolute;
 }
 
 .list-leave-to {

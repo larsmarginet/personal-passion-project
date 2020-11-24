@@ -2,11 +2,11 @@
     <v-card class="mb-4" rounded="lg" flat>
         <DeleteModal :dialog="dialog" @continue="handleDeleteEvent" @cancel="cancelDeleteEvent"/>
         <v-card-title class="pa-6">
-            <v-avatar size="48" :color="`${event.bandLogo ? 'primary' : 'error'}`">
-                <img class="rounded-avatar" :src="event.bandLogo" :alt="event.bandName" v-if="event.bandLogo"/>
+            <v-avatar size="48" :color="`${image ? 'primary' : 'error'}`">
+                <img class="rounded-avatar" :src="image" :alt="name" v-if="image"/>
                 <v-icon v-else large dark>error</v-icon>
             </v-avatar>
-            <span class="ml-5 headline font-weight-bold">{{event.bandName}}</span>   
+            <span class="ml-5 headline font-weight-bold">{{ name }}</span>   
             <v-spacer></v-spacer>
             <v-menu offset-y left>
                 <template v-slot:activator="{ on, attrs }">
@@ -15,7 +15,7 @@
                     </v-btn>
                 </template>
                 <v-list>
-                    <v-list-item :to="`/venue/events/${event.id}`">
+                    <v-list-item :to="`/${type}/events/${event.id}`">
                         <v-icon class="mr-2">create</v-icon>
                         <v-list-item-title>update</v-list-item-title>
                     </v-list-item>
@@ -55,6 +55,18 @@ export default {
         event: {
             required: true,
             type: Object
+        },
+        name: {
+            required: true,
+            type: String
+        },
+        image: {
+            required: true,
+            type: String
+        },
+        type: {
+            required: true,
+            type: String
         }
     },
     components: {
@@ -62,7 +74,6 @@ export default {
     },
     data() {
         return {
-            timezone: 'Europe/Brussels',
             dialog: false,
         }
     },

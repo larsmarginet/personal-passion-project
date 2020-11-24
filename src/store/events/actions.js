@@ -22,12 +22,33 @@ export default {
         ctx.commit('setLoadingEvents', false);
     },
 
+    async loadEventsForBand(ctx) {
+        ctx.commit('setError', null);
+        ctx.commit('setLoadingEvents', true);
+        try {
+            await firebase.eventsCollection.where("bandId", "==", firebase.auth.currentUser.uid).orderBy('start', 'asc').onSnapshot(snapshot => {
+                let events = [];
+                snapshot.forEach(async doc => {
+                    let event = doc.data();
+                    event.id = doc.id;
+                    events.push(event);
+                });
+                ctx.commit('setEvents', events);
+            });       
+        } catch (error) {
+            ctx.commit('setError', error);
+        }
+        ctx.commit('setLoadingEvents', false);
+    },
+
     async addEvent(ctx, payload) {
         ctx.commit('setError', null);
         ctx.commit('setLoadingAddEvent', true);
         try {
             await firebase.eventsCollection.add({
                 venueId: firebase.auth.currentUser.uid,
+                venueName: ctx.rootGetters['auth/user'].name,
+                venueLogo: ctx.rootGetters['auth/user'].logoUrl,
                 roomId: payload.roomId,
                 roomName: payload.roomName,
                 roomBubbles: payload.roomBubbles,
