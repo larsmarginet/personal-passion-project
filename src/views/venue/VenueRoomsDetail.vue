@@ -15,18 +15,31 @@
                     <v-skeleton-loader type="list-item" style="maxWidth: 250px" ></v-skeleton-loader>
                     <v-skeleton-loader type="list-item" style="maxWidth: 150px" class="mb-4  pb-5"></v-skeleton-loader>
                 </v-card>
-                <v-card flat class="mx-auto mb-10" rounded="xl" width="100%" v-else>
+                <v-card flat class="mx-auto pb-8 mb-10" rounded="xl" width="100%" v-else>
                     <v-expand-transition>
                         <Alert @dismissed="onDismissed" :text="error" v-if="error"/>
                     </v-expand-transition>
                     <v-form @submit.prevent ref="form" class="px-4 pt-2 px-md-5 pt-md-3 pb-5">
-                        <v-text-field validate-on-blur class="mx-2" @change="checkIfUpdated" v-model="name" label="Name" :rules="nameRules" clearable></v-text-field>
+                        <v-text-field validate-on-blur class="mx-2" @change="checkIfUpdated" style="maxWidth: 250px" v-model="name" label="Name" :rules="nameRules" clearable></v-text-field>
                         <v-row align="center" class="mx-2">
                             <v-btn color="primary" depressed @click="decrementBubbles(); checkIfUpdated();" fab small><v-icon small>remove</v-icon></v-btn>
                             <v-text-field class="px-2 text-center" @change="checkIfUpdated" style="maxWidth: 60px" label="Bubbles" type="number" min="0" v-model="bubbles" :rules="bubbleRules"></v-text-field>
                             <v-btn color="primary" depressed @click="incrementBubbles(); checkIfUpdated();" fab small><v-icon small>add</v-icon></v-btn>
                         </v-row>
                     </v-form>
+                    <v-row justify="end" no-gutters class="mx-6">
+                        <v-btn @click="generateQrCodes" depressed color="primary">generate</v-btn>
+                        <v-btn @click="dowloadAllQrCodes" text depressed color="primary" v-if="qrcodes.length > 0"><v-icon>get_app</v-icon> donwload all</v-btn>
+                    </v-row>
+                    <v-card v-for="(code,i) in qrcodes" :key="i" flat>
+                        <v-card-title class="ma-2">
+                            <img :src="code.toDataURL()" alt="QRCode" style="maxWidth: 60px" class="img-border" />
+                            <span class="primary--text ml-2">Table {{i+1}}</span>
+                            <v-spacer></v-spacer>
+                            <v-btn :href="code.toDataURL()" text download color="primary" fab><v-icon>get_app</v-icon></v-btn>
+                        </v-card-title>
+                        <v-divider></v-divider>
+                    </v-card>
                 </v-card>
             </v-col>
         </v-row>
@@ -34,6 +47,9 @@
 </template>
 
 <script>
+import QRious from 'qrious';
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
 import { nameRules, bubbleRules } from '../../helpers/validationRules';
 import BackButton from '../../components/shared/BackButton';
 import Alert from '../../components/shared/Alert';
@@ -55,6 +71,7 @@ export default {
             bubbles: 0,
             nameRules,
             bubbleRules,
+            qrcodes: [],
         }
     },
     computed: {
@@ -86,6 +103,24 @@ export default {
         },
         incrementBubbles() {
             this.bubbles++;
+        },
+        generateQrCodes() {
+            if (this.bubbles > 0) {
+                for (let i = 1; i <= this.bubbles; i++) {
+                    const qrCode = new QRious({ size: 300, value: `http://localhost:8080/?roomId=${this.id}&bubble=${i}` });
+                    this.qrcodes.push(qrCode);
+                }
+            }
+        },
+        dowloadAllQrCodes() {
+            const zip = new JSZip();
+            this.qrcodes.forEach((code, i) => {
+                const img = code.toDataURL();
+                zip.file(`qrcode-${i+1}.png`, img.split('base64,')[1], {base64: true});
+            });
+            zip.generateAsync({ type: 'blob' }).then((content) => {
+                saveAs(content, 'Qrcodes.zip');
+            });
         },
         onDismissed() {
             this.$store.dispatch('rooms/clearError');
@@ -119,3 +154,9 @@ export default {
     }
 }
 </script>
+<style scoped>
+.img-border {
+    border: 3px solid #6fcf97;
+    border-radius: 5px;
+}
+</style>
