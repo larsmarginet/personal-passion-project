@@ -75,6 +75,9 @@ export default {
         }
     },
     computed: {
+        currentItem() {
+            return this.$store.getters['menu/currentItem'];
+        },
         loadingItem() {
             return this.$store.getters['menu/loadingItem'];
         },
@@ -86,9 +89,6 @@ export default {
         }
     },
     methods: {
-        currentItem() {
-            return this.$store.getters['menu/currentItem'];
-        },
         checkIfUpdated() {
             if (this.id && this.currentItem && (
                 this.name !== this.currentItem.name ||

@@ -89,18 +89,4 @@ export default {
     clearError(ctx) {
         ctx.commit('setError', null);
     },
-
-    async updateEventsWithRoomId() {
-        try {
-            await firebase.db.runTransaction(async transaction => {
-                const docs =  await firebase.eventsCollection.where("roomId", "==", '3iFioUlpnQlCQhVL9Xat').get();
-                docs.forEach(async event => {
-                    await transaction.update(firebase.eventsCollection.doc(event.id), {roomId: 'WQPhDUh2sDWZYVsZ0CFu'}) 
-                });
-            });
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
 };

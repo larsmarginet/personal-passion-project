@@ -6,6 +6,7 @@ export default {
     namespaced: true,
     state: {
         rooms: [],
+        currentRoom: null,
         loading: false,
         loadingRoom: false,
         loadingAddRoom: false,

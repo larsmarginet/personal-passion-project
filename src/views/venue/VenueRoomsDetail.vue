@@ -20,11 +20,11 @@
                         <Alert @dismissed="onDismissed" :text="error" v-if="error"/>
                     </v-expand-transition>
                     <v-form @submit.prevent ref="form" class="px-4 pt-2 px-md-5 pt-md-3 pb-5">
-                        <v-text-field validate-on-blur class="mx-2" v-model="name" label="Name" :rules="nameRules" clearable></v-text-field>
+                        <v-text-field validate-on-blur class="mx-2" @change="checkIfUpdated" v-model="name" label="Name" :rules="nameRules" clearable></v-text-field>
                         <v-row align="center" class="mx-2">
-                            <v-btn color="primary" depressed @click="decrementBubbles" fab small><v-icon small>remove</v-icon></v-btn>
-                            <v-text-field class="px-2 text-center" style="maxWidth: 60px" label="Bubbles" type="number" min="0" v-model="bubbles" :rules="bubbleRules"></v-text-field>
-                            <v-btn color="primary" depressed @click="incrementBubbles" fab small><v-icon small>add</v-icon></v-btn>
+                            <v-btn color="primary" depressed @click="decrementBubbles(); checkIfUpdated();" fab small><v-icon small>remove</v-icon></v-btn>
+                            <v-text-field class="px-2 text-center" @change="checkIfUpdated" style="maxWidth: 60px" label="Bubbles" type="number" min="0" v-model="bubbles" :rules="bubbleRules"></v-text-field>
+                            <v-btn color="primary" depressed @click="incrementBubbles(); checkIfUpdated();" fab small><v-icon small>add</v-icon></v-btn>
                         </v-row>
                     </v-form>
                 </v-card>
@@ -58,6 +58,9 @@ export default {
         }
     },
     computed: {
+        currentRoom() {
+            return this.$store.getters['rooms/currentRoom'];
+        },
         loadingRoom() {
             return this.$store.getters['rooms/LoadingRoom'];
         },
@@ -69,6 +72,11 @@ export default {
         }
     },
     methods: {
+        checkIfUpdated() {
+            if (this.id && this.currentRoom && ( this.name !== this.currentRoom.name || this.bubbles !== this.currentRoom.bubbles )) {
+                this.save = false;
+            }
+        },
         decrementBubbles() {
             if (this.bubbles <= 0) {
                 this.bubbles = 0;
@@ -84,15 +92,30 @@ export default {
         },
         handleAddRoom() {
             if (this.$refs.form.validate()) {
-                this.$store.dispatch('rooms/addRoom', {
+                const roomObj = {
                     name: this.name,
                     bubbles: this.bubbles
-                })
+                };
+                if (this.id) {
+                    this.$store.dispatch('rooms/updateRoom', {
+                        id: this.id,
+                        ...roomObj
+                    });
+                } else {
+                    this.$store.dispatch('rooms/addRoom', roomObj);
+                }
             }
         },
     },
     async mounted() {
         this.$store.dispatch('setLoadingComponent', false);
+        if (this.id) {
+            this.save = true;
+            await this.$store.dispatch('rooms/getRoomById', this.id);
+            const currentRoom = this.$store.getters['rooms/currentRoom'];
+            this.name = currentRoom.name;
+            this.bubbles = currentRoom.bubbles;
+        }
     }
 }
 </script>

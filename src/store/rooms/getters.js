@@ -2,6 +2,9 @@ export default {
     rooms(state) {
         return state.rooms;
     },
+    currentRoom(state) {
+        return state.currentRoom;
+    },
     loading(state) {
         return state.loading;
     },
