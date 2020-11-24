@@ -13,7 +13,7 @@
                 <v-container v-if="loading">
                     <v-skeleton-loader type="list-item-avatar" class="mb-4" v-for="n in 5" :key="n"></v-skeleton-loader>
                 </v-container>
-                <v-container class="pa-0" v-else>
+                <v-container class="pa-0" v-else-if="!loading && menu">
                     <transition-group name="list">
                         <MenuCard v-for="item in menu" :key="item.id" :item="item"/>
                     </transition-group>

@@ -18,7 +18,7 @@
                 <v-container v-if="loading">
                     <v-skeleton-loader type="list-item-avatar-three-line" class="mb-4" v-for="n in 3" :key="n"></v-skeleton-loader>
                 </v-container>
-                <v-container class="pa-0" v-else>
+                <v-container class="pa-0" v-else-if="!loading && events">
                     <transition-group name="list">
                         <EventCard v-for="event in filteredEvents" :event="event" :key="event.id"/>
                     </transition-group>
