@@ -23,7 +23,7 @@
                         <v-text-field validate-on-blur class="mx-2" @change="checkIfUpdated" style="maxWidth: 250px" v-model="name" label="Name" :rules="nameRules" clearable></v-text-field>
                         <v-row align="center" class="mx-2">
                             <v-btn color="primary" depressed @click="decrementBubbles(); checkIfUpdated();" fab small><v-icon small>remove</v-icon></v-btn>
-                            <v-text-field class="px-2 text-center" @change="checkIfUpdated" style="maxWidth: 60px" label="Bubbles" type="number" min="0" v-model="bubbles" :rules="bubbleRules"></v-text-field>
+                            <v-text-field class="px-2 text-center" @change="checkIfUpdated" style="maxWidth: 60px" label="Bubbles" type="number" min="0" v-model="bubbles" :rules="quantityRules"></v-text-field>
                             <v-btn color="primary" depressed @click="incrementBubbles(); checkIfUpdated();" fab small><v-icon small>add</v-icon></v-btn>
                         </v-row>
                     </v-form>
@@ -50,7 +50,7 @@
 import QRious from 'qrious';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
-import { nameRules, bubbleRules } from '../../helpers/validationRules';
+import { nameRules, quantityRules } from '../../helpers/validationRules';
 import BackButton from '../../components/shared/BackButton';
 import Alert from '../../components/shared/Alert';
 export default {
@@ -70,7 +70,7 @@ export default {
             name: '',
             bubbles: 0,
             nameRules,
-            bubbleRules,
+            quantityRules,
             qrcodes: [],
         }
     },

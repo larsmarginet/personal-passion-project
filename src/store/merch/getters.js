@@ -11,8 +11,8 @@ export default {
     loadingMerch(state) {
         return state.loadingMerch;
     },
-    LoadingAddMerch(state) {
-        return state.LoadingAddMerch;
+    loadingAddMerch(state) {
+        return state.loadingAddMerch;
     },
     error(state) {
         return state.error;

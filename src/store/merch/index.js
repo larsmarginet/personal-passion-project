@@ -9,7 +9,7 @@ export default {
         currentMerch: [],
         loading: false,
         loadingMerch: false,
-        LoadingAddMerch: false,
+        loadingAddMerch: false,
         error: null
     },
     mutations,

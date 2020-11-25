@@ -3,6 +3,10 @@ const nameRules = [
     v => v.length < 25 || 'Your name can not be more than 25 characters' 
 ];
 
+const titleRules = [
+    v => v.length > 0 || 'Please enter a title',
+]
+
 const imageRules =  [
     v => v != null || 'Please upload an image' ,
     v => !v || v.size < 2000000 || 'Image size should be less than 2 MB',
@@ -31,9 +35,9 @@ const priceRules = [
     v => v >= 0 || 'The price can not be less than 0',
 ];
 
-const bubbleRules = [
-    v => !!v || 'Please set the amount of bubbles',
-    v => v >= 0 || 'The amount of bubbles can not be less than 0',
+const quantityRules = [
+    v => !!v || 'Please set the quantity',
+    v => v >= 0 || 'The quantity can not be less than 0',
 ];
 
 const categoryRules = [
@@ -47,12 +51,13 @@ const descriptionRules = [
 
 export {
     nameRules,
+    titleRules,
     imageRules,
     emailRules,
     passwordRules,
     linkRules,
     priceRules,
-    bubbleRules,
+    quantityRules,
     categoryRules,
     descriptionRules
 }

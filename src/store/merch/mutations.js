@@ -6,7 +6,7 @@ export default {
         state.loadingMerch = payload
     },
     setLoadingAddMerch(state, payload) {
-        state.LoadingAddMerch = payload;
+        state.loadingAddMerch = payload;
     },
     setError(state, payload) {
         state.error = payload;
