@@ -34,8 +34,7 @@ export default {
             }))
             ctx.commit('setMerch', merchWithImage);            
         } catch (error) {
-            console.error(error)
-            //ctx.commit('setError', error);
+            ctx.commit('setError', error);
         }
         ctx.commit('setLoading', false);
     },
@@ -80,11 +79,79 @@ export default {
         ctx.commit('setLoadingAddMerch', false);
     },
 
+    async getMerchById(ctx, payload) {
+        ctx.commit('setError', null);
+        ctx.commit('setLoadingMerch', true);
+        try {
+            const result = await firebase.merchCollection.doc(payload).get();  
+            let item = result.data();
+            item.id = result.id;
+            item.images = [];
+            const images = await firebase.merchCollection.doc(payload).collection('images').orderBy('pos', 'asc').get();
+            images.forEach(image => {
+                item.images.push(image.data());
+            })
+            ctx.commit('setCurrentMerch', item);
+        } catch (error) {
+            ctx.commit('setError', error);
+        }
+        ctx.commit('setLoadingMerch', false);
+    },
+
+    async updateMerch(ctx, payload) {
+        ctx.commit('setError', null);
+        ctx.commit('setLoadingAddMerch', true);
+        try {
+            const imageUrls = [];
+            // step 1: upload necessary images
+            try {
+                await Promise.all(payload.images.map(async (image, i) => {
+                    // check if image is a new file an needs to be uploaded to storage
+                    if (image instanceof File) {
+                        await firebase.storage.ref('merch/' + image.name).put(image);
+                        const downloadURL = await firebase.storage.ref('merch/').child(image.name).getDownloadURL();
+                        imageUrls.push({pos: i, image: downloadURL});
+                    } else {
+                        imageUrls.push({pos: i, image: image.image});
+                    }
+                }));
+            } catch (error) {
+                ctx.commit('setError', error);
+            }
+            // step 2: update merch with data and images
+            try {
+                await firebase.merchCollection.doc(payload.id).update({
+                    name: payload.name,
+                    description: payload.description,
+                    price: payload.price,
+                    category: payload.category,
+                    options: payload.options,
+                    signable: payload.signable,
+                    stock: payload.stock
+                });
+                const currentImages = [];
+                // get all existing images
+                const result = await firebase.merchCollection.doc(payload.id).collection("images").get();
+                result.forEach(image => currentImages.push(image.id));
+                // delete al existing images
+                await Promise.all(currentImages.map(async imageId =>  await firebase.merchCollection.doc(payload.id).collection("images").doc(imageId).delete()));
+                // add new images with new position
+                await Promise.all(imageUrls.map(async (image) => await firebase.merchCollection.doc(payload.id).collection("images").add(image)));
+            } catch (error) {
+                ctx.commit('setError', error);
+            }
+        
+        } catch(error) {
+            ctx.commit('setError', error);
+        }
+        ctx.commit('setLoadingAddMerch', false);
+    },
+
     async deleteItem(ctx, payload) {
         // delete all docs in image collection
         await firebase.db.runTransaction(async transaction => {
-            const docs =  await firebase.merchCollection.doc(payload).collection('images').get();
-            docs.forEach(async image => {
+            const images =  await firebase.merchCollection.doc(payload).collection('images').get();
+            images.forEach(async image => {
                 await transaction.delete(firebase.merchCollection.doc(payload).collection('images').doc(image.id)); 
             });
         });

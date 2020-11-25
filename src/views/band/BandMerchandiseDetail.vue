@@ -20,13 +20,13 @@
                         <Alert @dismissed="onDismissed" :text="error" v-if="error"/>
                     </v-expand-transition>
                     <v-form @submit.prevent ref="form" class="px-4 pt-2 px-md-5 pt-md-3 pb-5">
-                        <v-text-field validate-on-blur class="mx-2" style="maxWidth: 300px" v-model="name" label="Name" :rules="titleRules" clearable></v-text-field>
+                        <v-text-field validate-on-blur class="mx-2" style="maxWidth: 300px" v-model="name" label="Name" :rules="titleRules" clearable @input="checkIfUpdated"></v-text-field>
                         <p :class="`${imagesError ? 'error--text': 'grey--text text--darken-1'} mx-2 mb-1`">Images</p>
                         <!-- draggable=".item" only children with class item will be draggable (not uploadbox) -->
-                        <draggable :list="images" class="draggable-grid" draggable=".item">
+                        <draggable :list="images" class="draggable-grid" draggable=".item" @change="checkIfUpdated">
                             <v-col v-for="(image, i) in imagePreviews" :key="i" style="maxWidth: 120px; minWidth: 120px; maxHeight: 120px; minHeight: 120px" class="item">
                                 <img :src="createPreview(image)" alt="image" width="100" height="100" class="rounded-lg" style="objectFit: cover"/>
-                                <v-btn fab x-small style="marginTop: -210px; marginLeft: 80px" @click="handleRemoveImage(i)"><v-icon>clear</v-icon></v-btn>
+                                <v-btn fab x-small style="marginTop: -235px; marginLeft: 80px" @click="handleRemoveImage(i)"><v-icon>clear</v-icon></v-btn>
                             </v-col>
                             <v-col max-width="80" v-if="images.length < 8">
                                 <FileDropMini :rules="imageRules" @fileDropped="handleUploadFile"/>
@@ -35,14 +35,14 @@
                         <v-scroll-y-transition>
                             <p v-if="imagesError" class="error--text caption">{{imagesError}}</p>
                         </v-scroll-y-transition>
-                        <v-textarea counter="280" class="mx-2" label="Description" :rules="descriptionRules" v-model="description" style="maxWidth: 300px"></v-textarea>
-                        <v-text-field validate-on-blur class="mx-2" style="maxWidth: 150px" label="Price" type="number" min="0" v-model="price" prefix="€" :rules="priceRules"></v-text-field>
-                        <v-select validate-on-blur class="mx-2" style="maxWidth: 300px" :items="categories" v-model="category" label="Category" :rules="categoryRules"></v-select>
-                        <v-combobox v-model="options" class="mx-2" style="maxWidth: 300px" label="Options" multiple chips hint="x, m, l, xl, ..." deletable-chips></v-combobox>
-                        <v-switch v-model="signable" class="mx-2" label="Signable" color="primary" hint="Can this product be signed?" persistent-hint inset></v-switch>
+                        <v-textarea counter="280" class="mx-2" label="Description" :rules="descriptionRules" v-model="description" style="maxWidth: 300px" @input="checkIfUpdated"></v-textarea>
+                        <v-text-field validate-on-blur class="mx-2" style="maxWidth: 150px" label="Price" type="number" min="0" v-model="price" prefix="€" :rules="priceRules" @input="checkIfUpdated"></v-text-field>
+                        <v-select validate-on-blur class="mx-2" style="maxWidth: 300px" :items="categories" v-model="category" label="Category" :rules="categoryRules" @input="checkIfUpdated"></v-select>
+                        <v-combobox v-model="options" class="mx-2" style="maxWidth: 300px" label="Options" multiple chips hint="x, m, l, xl, ..." deletable-chips @input="checkIfUpdated"></v-combobox>
+                        <v-switch v-model="signable" class="mx-2" label="Signable" color="primary" hint="Can this product be signed?" persistent-hint inset @change="checkIfUpdated"></v-switch>
                         <v-row align="center" class="ml-1 mt-6">
                             <v-btn color="primary" depressed @click="decrementStock" fab small><v-icon small>remove</v-icon></v-btn>
-                            <v-text-field class="px-2 text-center" style="maxWidth: 60px" label="Stock" type="number" min="0" v-model="stock" :rules="quantityRules"></v-text-field>
+                            <v-text-field class="px-2 text-center" style="maxWidth: 60px" label="Stock" type="number" min="0" v-model="stock" :rules="quantityRules" @input="checkIfUpdated"></v-text-field>
                             <v-btn color="primary" depressed @click="incrementStock" fab small><v-icon small>add</v-icon></v-btn>
                         </v-row>
                     </v-form>
@@ -59,6 +59,12 @@ import BackButton from '../../components/shared/BackButton';
 import Alert from '../../components/shared/Alert';
 import FileDropMini from '../../components/shared/FileDropMini';
 export default {
+    props: {
+        id: {
+            required: false,
+            type: String
+        }
+    },
     components: {
         BackButton,
         Alert,
@@ -90,7 +96,7 @@ export default {
         imagePreviews() {
             return this.images;
         },
-        currentRoom() {
+        currentMerch() {
             return this.$store.getters['merch/currentMerch'];
         },
         loadingMerch() {
@@ -107,12 +113,15 @@ export default {
         handleUploadFile(file) {
             this.imagesError = null;
             this.images.push(file);
+            this.checkIfUpdated();
         },
         createPreview(image) {
-            return URL.createObjectURL(image)
+            // check if newly uploaded file or existing url for update
+            return image instanceof File ? URL.createObjectURL(image) : image.image;
         },
         handleRemoveImage(index) {
             this.images.splice(index, 1);
+            this.checkIfUpdated();
         }, 
         decrementStock() {
             if (this.stock <= 0) {
@@ -120,9 +129,24 @@ export default {
             } else {
                 this.stock--;
             }
+             this.checkIfUpdated();
         },
         incrementStock() {
             this.stock++;
+            this.checkIfUpdated();
+        },
+        checkIfUpdated() {
+            if (this.id && this.currentMerch && (
+                this.name !== this.currentMerch.name ||
+                this.images !== this.currentMerch.images ||
+                this.price !== this.currentMerch.price ||
+                this.options !== this.currentMerch.options ||
+                this.signable !== this.currentMerch.signable ||
+                this.description !== this.currentMerch.description ||
+                this.stock !== this.currentMerch.stock ||
+                this.category !== this.currentMerch.category)) {
+                this.save = false;
+            }
         },
         handleAddMerch() {
             this.imagesError = null;
@@ -142,15 +166,36 @@ export default {
                     signable: this.signable,
                     stock: this.stock
                 }
-                this.$store.dispatch('merch/addMerch', merchObj)
+                if (this.id) {
+                    this.$store.dispatch('merch/updateMerch', {
+                        id: this.id,
+                        ...merchObj
+                    })
+                } else {
+                    this.$store.dispatch('merch/addMerch', merchObj)
+                }
             }
         },
         onDismissed() {
             this.$store.dispatch('merch/clearError');
         }
     },
-    mounted() {
+    async mounted() {
         this.$store.dispatch('setLoadingComponent', false);
+        if (this.id) {
+            this.save = true;
+            await this.$store.dispatch('merch/getMerchById', this.id);
+            const currentMerch = this.$store.getters['merch/currentMerch'];
+            this.name = currentMerch.name;
+            // create new array to make sure changes are picked up
+            this.images = [...currentMerch.images];
+            this.description = currentMerch.description;
+            this.price = currentMerch.price;
+            this.category = currentMerch.category;
+            this.options = currentMerch.options;
+            this.signable = currentMerch.signable;
+            this.stock = currentMerch.stock;
+        }
     }
 }
 </script>
