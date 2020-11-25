@@ -6,7 +6,7 @@
                     <v-btn href="/band/merch/create" depressed color="primary">Add merch</v-btn>
                 </v-row>
             </v-col>
-            <v-col cols="12" md="9" lg="6" order-md="1">
+            <v-col cols="12" md="9" order-md="1">
                 <v-expand-transition>
                     <Alert @dismissed="onDismissed" :text="error" v-if="error"/>
                 </v-expand-transition>
@@ -15,6 +15,7 @@
                 </v-container>
                 <v-container class="pa-0" v-else-if="!loading && merch">
                     <transition-group name="list">
+                        <MerchCard v-for="item in merch" :key="item.id" :item="item"/>
                     </transition-group>
                 </v-container>
             </v-col>
@@ -23,10 +24,12 @@
 </template>
 
 <script>
+import MerchCard from '../../components/band/MerchCard';
 import Alert from '../../components/shared/Alert';
 export default {
     components: {
         Alert,
+        MerchCard,
     },
     computed: {
         loading() {
@@ -45,3 +48,33 @@ export default {
     }
 }
 </script>
+
+<style>
+.list-enter {
+    opacity: 0;
+    transform: translateY(-30px);
+}
+
+.list-enter-active {
+    transition: all 500ms ease-out;
+}
+
+.list-enter-to {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.list-leave{
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.list-leave-active {
+    transition: all 500ms ease-in;
+}
+
+.list-leave-to {
+    opacity: 0;
+    transform: translateY(30px);
+}
+</style>

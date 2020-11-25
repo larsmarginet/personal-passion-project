@@ -56,13 +56,10 @@ export default {
     },
     methods: {
         updateActiveStatus() {
-            // this.active = !this.active;
-            // console.log('updating...')
             this.$store.dispatch('menu/updateActiveStateItem', {
                 id: this.item.id,
                 active: this.active
             });
-            // write update logic for firestore
         },
         onDismissed() {
             this.$store.dispatch('menu/clearError');

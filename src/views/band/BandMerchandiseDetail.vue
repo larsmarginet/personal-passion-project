@@ -25,7 +25,7 @@
                         <!-- draggable=".item" only children with class item will be draggable (not uploadbox) -->
                         <draggable :list="images" class="draggable-grid" draggable=".item">
                             <v-col v-for="(image, i) in imagePreviews" :key="i" style="maxWidth: 120px; minWidth: 120px; maxHeight: 120px; minHeight: 120px" class="item">
-                                <img :src="createPreview(image)" alt="image" width="100" height="100" cover class="rounded-lg" style="objectFit: cover"/>
+                                <img :src="createPreview(image)" alt="image" width="100" height="100" class="rounded-lg" style="objectFit: cover"/>
                                 <v-btn fab x-small style="marginTop: -210px; marginLeft: 80px" @click="handleRemoveImage(i)"><v-icon>clear</v-icon></v-btn>
                             </v-col>
                             <v-col max-width="80" v-if="images.length < 8">
@@ -125,13 +125,13 @@ export default {
             this.stock++;
         },
         handleAddMerch() {
-            // this.imagesError = null;
-            // if (this.images.length <= 0) {
-            //     this.imagesError = 'At least one image is required';
-            //     this.$refs.form.validate();
-            //     return;
-            // }
-            // if (this.$refs.form.validate()) {
+            this.imagesError = null;
+            if (this.images.length <= 0) {
+                this.imagesError = 'At least one image is required';
+                this.$refs.form.validate();
+                return;
+            }
+            if (this.$refs.form.validate()) {
                 const merchObj = {
                     name: this.name,
                     images: this.images,
@@ -143,7 +143,7 @@ export default {
                     stock: this.stock
                 }
                 this.$store.dispatch('merch/addMerch', merchObj)
-            // }
+            }
         }
     },
     mounted() {
