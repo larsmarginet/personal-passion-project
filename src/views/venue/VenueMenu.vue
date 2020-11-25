@@ -1,5 +1,6 @@
 <template>
     <v-container>
+        <h2 hidden>Food &amp; drinks</h2>
         <v-row>
             <v-col cols="12" md="3" order-md="2" offset-md="12">
                 <v-row justify="end" justify-md="start" class="px-4">

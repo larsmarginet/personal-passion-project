@@ -27,17 +27,22 @@ const linkRules = [
 ];
 
 const priceRules = [
-    v => !!v ||'A price is required',
+    v => !!v || 'A price is required',
     v => v >= 0 || 'The price can not be less than 0',
 ];
 
 const bubbleRules = [
-    v => !!v ||'Please set the amount of bubbles',
+    v => !!v || 'Please set the amount of bubbles',
     v => v >= 0 || 'The amount of bubbles can not be less than 0',
 ];
 
 const categoryRules = [
-    v => !!v ||'A category is required',
+    v => !!v || 'A category is required',
+];
+
+const descriptionRules = [
+    v => !!v || 'A description is required',
+    v => v.length <= 280 || 'Max 280 characters'
 ];
 
 export {
@@ -48,5 +53,6 @@ export {
     linkRules,
     priceRules,
     bubbleRules,
-    categoryRules
+    categoryRules,
+    descriptionRules
 }

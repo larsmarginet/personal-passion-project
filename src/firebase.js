@@ -24,6 +24,7 @@ const usersCollection = db.collection('users');
 const eventsCollection = db.collection('events');
 const roomsCollection = db.collection('rooms');
 const menuCollection = db.collection('menu');
+const merchCollection = db.collection('merch');
 
 // export utils/refs
 export {
@@ -33,5 +34,6 @@ export {
   usersCollection,
   eventsCollection,
   roomsCollection,
-  menuCollection
+  menuCollection,
+  merchCollection
 }

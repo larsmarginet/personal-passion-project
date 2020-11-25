@@ -86,11 +86,34 @@ const routes = [
         component: () => import(/* webpackChunkName: "BandMerch" */ '../views/band/BandMerchandise.vue'),
       },
       {
+        path: 'merch/create', 
+        name: 'BandMerchCreate',
+        meta: {
+          title: meta.bandMerch.title,
+          metaTags: meta.bandMerch.metaTags,
+          requiresAuth: true,
+          userType: 'band'
+        },
+        component: () => import(/* webpackChunkName: "BandMerchandiseDetail" */ '../views/band/BandMerchandiseDetail.vue'),
+      },
+      {
+        path: 'merch/:id', 
+        name: 'BandMerchDetail',
+        props: true,
+        meta: {
+          title: meta.bandMerchCreate.title,
+          metaTags: meta.bandMerchCreate.metaTags,
+          requiresAuth: true,
+          userType: 'band'
+        },
+        component: () => import(/* webpackChunkName: "BandMerchandiseDetail" */ '../views/band/BandMerchandiseDetail.vue'),
+      },
+      {
         path: 'songs', 
         name: 'BandSongs',
         meta: {
-          title: meta.bandSongs.title,
-          metaTags: meta.bandSongs.metaTags,
+          title: meta.bandMerchDetail.title,
+          metaTags: meta.bandMerchDetail.metaTags,
           requiresAuth: true,
           userType: 'band'
         },

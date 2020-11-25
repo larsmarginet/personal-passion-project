@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <h2 hidden>Event detail</h2>
+        <h2 hidden>Food &amp; drinks detail</h2>
         <v-row>
             <v-col cols="6" md="1" order-md="1">
                 <BackButton link="/venue/menu"/>
@@ -27,7 +27,9 @@
                             <p :class="`${fileError ? 'error--text': 'grey--text text--darken-1'} mb-1`">Image</p>
                             <FileDrop @fileDropped="handleUploadFile" @fileRemoved="handleRemoveFile" :rules="imageRules" v-if="!imageUrl"/>
                             <ImagePreview :src="imageUrl" :alt="name" @removeImage="handleRemoveFile" v-else/>
-                            <p v-if="fileError" class="error--text caption">{{fileError}}</p>
+                            <v-scroll-y-transition>
+                                <p v-if="fileError" class="error--text caption">{{fileError}}</p>
+                            </v-scroll-y-transition>
                         </v-container>
                         <v-text-field validate-on-blur class="mx-2" style="maxWidth: 150px" label="Price" type="number" min="0" v-model="price" prefix="€" :rules="priceRules" @change="checkIfUpdated"></v-text-field>
                         <v-select validate-on-blur class="mx-2" style="maxWidth: 250px" :items="categories" v-model="category" label="Categories" :rules="categoryRules" @change="checkIfUpdated"></v-select>
