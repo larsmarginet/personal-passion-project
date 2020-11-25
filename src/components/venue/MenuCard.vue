@@ -61,9 +61,6 @@ export default {
                 active: this.active
             });
         },
-        onDismissed() {
-            this.$store.dispatch('menu/clearError');
-        },
         openModal() {
             this.dialog = true;
         },

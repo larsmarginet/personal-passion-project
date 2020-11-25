@@ -1,5 +1,6 @@
 <template>
     <v-card class="px-3 mb-4" rounded="lg" flat>
+        <DeleteModal :dialog="dialog" @continue="handleDeleteItem" @cancel="cancelDeleteItem"/>
         <v-row justify="start" align="center" style="lineHeight: 0">
             <v-col cols="4" style="maxWidth: 120px" sm="2" order="1" order-sm="1">
                 <v-responsive :aspect-ratio="1/1">
@@ -28,7 +29,7 @@
                             <v-icon class="mr-2">create</v-icon>
                             <v-list-item-title>update</v-list-item-title>
                         </v-list-item>
-                        <v-list-item link>
+                        <v-list-item link @click="openModal">
                             <v-icon class="mr-2">delete</v-icon>
                             <v-list-item-title>delete</v-list-item-title>
                         </v-list-item>
@@ -40,11 +41,32 @@
 </template>
 
 <script>
+import DeleteModal from '../shared/DeleteModal';
 export default {
     props: {
         item: {
             required: true,
             type: Object
+        }
+    },
+    components: {
+        DeleteModal
+    },
+    data() {
+        return {
+            dialog: false
+        }
+    },
+    methods: {
+        openModal() {
+            this.dialog = true;
+        },
+        cancelDeleteItem() {
+            this.dialog = false;
+        },
+        handleDeleteItem() {
+            this.dialog = false;
+            this.$store.dispatch('merch/deleteItem', this.item.id);
         }
     }
 }

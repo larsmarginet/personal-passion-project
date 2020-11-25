@@ -21,7 +21,7 @@ export default {
         // manually update local state because there is no onSnapshot
         if (state.menu.length > 1) {
             const index = state.menu.map(item => item.id).indexOf(payload);
-            if (index) state.menu.splice(index, 1);
+            if (typeof index == 'number') state.menu.splice(index, 1);
         } else {
             state.menu = [];
         }

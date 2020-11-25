@@ -45,9 +45,6 @@ export default {
         }
     },
     methods: {
-        onDismissed() {
-            this.$store.rooms('menu/clearError');
-        },
         openModal() {
             this.dialog = true;
         },

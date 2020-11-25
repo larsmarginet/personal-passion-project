@@ -43,6 +43,11 @@ export default {
             return this.$store.getters['menu/menu'];
         },
     },
+    methods: {
+        onDismissed() {
+            this.$store.dispatch('menu/clearError');
+        }
+    },
     mounted() {
         this.$store.dispatch('setLoadingComponent', false);
         this.$store.dispatch('menu/loadMenu');

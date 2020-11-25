@@ -21,7 +21,7 @@ export default {
         // manually update local state because there is no onSnapshot
         if (state.merch.length > 1) {
             const index = state.merch.map(merch => merch.id).indexOf(payload);
-            if (index) state.merch.splice(index, 1);
+            if (typeof index == 'number') state.merch.splice(index, 1);
         } else {
             state.merch = [];
         }

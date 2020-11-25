@@ -43,6 +43,11 @@ export default {
             return this.$store.getters['rooms/rooms'];
         },
     },
+    methods: {
+        onDismissed() {
+            this.$store.dispatch('rooms/clearError');
+        }
+    },
     mounted() {
         this.$store.dispatch('setLoadingComponent', false);
         this.$store.dispatch('rooms/loadRooms');

@@ -62,6 +62,9 @@ export default {
     methods: {
         setFilter(val) {
             this.filter !== val ? this.filter = val : this.filter = '';
+        },
+        onDismissed() {
+            this.$store.dispatch('events/clearError');
         }
     },
     mounted() {

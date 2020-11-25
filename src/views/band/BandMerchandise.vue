@@ -42,6 +42,11 @@ export default {
             return this.$store.getters['merch/merch'];
         },
     },
+    methods: {
+        onDismissed() {
+            this.$store.dispatch('merch/clearError');
+        }
+    },
     mounted() {
         this.$store.dispatch('setLoadingComponent', false);
         this.$store.dispatch('merch/loadMerch');

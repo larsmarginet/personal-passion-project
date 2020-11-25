@@ -144,6 +144,9 @@ export default {
                 }
                 this.$store.dispatch('merch/addMerch', merchObj)
             }
+        },
+        onDismissed() {
+            this.$store.dispatch('merch/clearError');
         }
     },
     mounted() {
