@@ -2,6 +2,24 @@ import * as firebase from '../../firebase';
 import router from '../../router/index';
 
 export default {
+    async loadSongs(ctx) {
+        ctx.commit('setLoading', true);
+        ctx.commit('setError', null);
+        try {
+            const result = await firebase.songCollection.where("bandId", "==", firebase.auth.currentUser.uid).get();
+            let songs = [];
+            result.forEach(doc => {
+                let song = doc.data();
+                song.id = doc.id;
+                songs.push(song);
+            })
+            ctx.commit('setSongs', songs);            
+        } catch (error) {
+            ctx.commit('setError', error);
+        }
+        ctx.commit('setLoading', false);
+    },
+
     async addSong(ctx, payload) {
         ctx.commit('setError', null);
         ctx.commit('setLoadingAddSong', true);

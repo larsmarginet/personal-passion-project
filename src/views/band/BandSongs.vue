@@ -16,7 +16,7 @@
                 </v-container>
                 <v-container class="pa-0" v-else-if="!loading && songs">
                     <transition-group name="list">
-                      
+                        <SongCard v-for="song in songs" :key="song.id" :song="song"/>
                     </transition-group>
                 </v-container>
             </v-col>
@@ -26,9 +26,11 @@
 
 <script>
 import Alert from '../../components/shared/Alert';
+import SongCard from '../../components/band/SongCard'
 export default {
     components: {
         Alert,
+        SongCard
     },
     computed: {
         loading() {
