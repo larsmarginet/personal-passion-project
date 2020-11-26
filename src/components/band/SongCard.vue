@@ -22,7 +22,7 @@
                         </v-btn>
                     </template>
                     <v-list>
-                        <v-list-item :to="`/band/song/${song.id}`">
+                        <v-list-item :to="`/band/songs/${song.id}`">
                             <v-icon class="mr-2">create</v-icon>
                             <v-list-item-title>update</v-list-item-title>
                         </v-list-item>

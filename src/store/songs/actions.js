@@ -44,6 +44,40 @@ export default {
         ctx.commit('setLoadingAddSong', false);
     },
 
+    async getSongById(ctx, payload) {
+        ctx.commit('setError', null);
+        ctx.commit('setLoadingSong', true);
+        try {
+            const result = await firebase.songCollection.doc(payload).get();  
+            let song = result.data();
+            song.id = result.id;
+            ctx.commit('setCurrentSong', song);
+        } catch (error) {
+            ctx.commit('setError', error);
+        }
+        ctx.commit('setLoadingSong', false);
+    },
+
+    async updateSong(ctx, payload) {
+        ctx.commit('setError', null);
+        ctx.commit('setLoadingAddSong', true);
+        try {
+            await firebase.songCollection.doc(payload.id).update({
+                title: payload.title,
+                itunes: payload.itunes,
+                spotify: payload.spotify,
+                youtube: payload.youtube,
+                soundcloud: payload.soundcloud,
+                shop: payload.shop,
+            });
+            router.push('/band/songs');
+        } catch (error) {
+            ctx.commit('setError', error);
+        }
+        ctx.commit('setLoadingAddSong', false);
+    },
+
+
     async deleteSong(ctx, payload) {
         await firebase.songCollection.doc(payload).delete();
         ctx.commit('deleteSong', payload);

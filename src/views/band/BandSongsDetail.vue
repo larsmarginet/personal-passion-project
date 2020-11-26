@@ -24,26 +24,26 @@
                         <Alert @dismissed="onDismissed" :text="error" v-if="error"/>
                     </v-expand-transition>
                     <v-form @submit.prevent ref="form" class="px-4 pt-2 px-md-5 pt-md-3 pb-5">
-                        <v-text-field validate-on-blur class="mx-2" style="maxWidth: 350px" v-model="title" label="Title" :rules="titleRules" clearable></v-text-field>
+                        <v-text-field validate-on-blur class="mx-2" style="maxWidth: 350px" v-model="title" label="Title" :rules="titleRules" clearable @input="checkIfUpdated"></v-text-field>
                         <v-row align="center" class="mx-2">
                             <v-img class="mr-2" src="@/assets/itunes.svg" alt="itunes logo" max-width="35" height="35"></v-img>
-                            <v-text-field validate-on-blur type="url" label="Apple Music" v-model="itunes" :rules="linkRules" style="maxWidth: 300px"></v-text-field>
+                            <v-text-field validate-on-blur type="url" label="Apple Music" v-model="itunes" :rules="linkRules" style="maxWidth: 300px" @input="checkIfUpdated" clearable></v-text-field>
                         </v-row>
                         <v-row align="center" class="mx-2">
                             <v-img class="mr-2" src="@/assets/spotify.svg" alt="spotify logo" max-width="35" height="35"></v-img>
-                            <v-text-field validate-on-blur type="url" label="Spotify" v-model="spotify" :rules="linkRules" style="maxWidth: 300px"></v-text-field>
+                            <v-text-field validate-on-blur type="url" label="Spotify" v-model="spotify" :rules="linkRules" style="maxWidth: 300px" @input="checkIfUpdated" clearable></v-text-field>
                         </v-row>
                         <v-row align="center" class="mx-2">
                             <v-img class="mr-2" src="@/assets/youtube.svg" alt="youtube logo" max-width="35" height="35"></v-img>
-                            <v-text-field validate-on-blur type="url" label="YouTube" v-model="youtube" :rules="linkRules" style="maxWidth: 300px"></v-text-field>
+                            <v-text-field validate-on-blur type="url" label="YouTube" v-model="youtube" :rules="linkRules" style="maxWidth: 300px" @input="checkIfUpdated" clearable></v-text-field>
                         </v-row>
                         <v-row align="center" class="mx-2">
                             <v-img class="mr-2" src="@/assets/soundcloud.svg" alt="soundcloud logo" max-width="35" height="35"></v-img>
-                            <v-text-field validate-on-blur type="url" label="Soundcloud" v-model="soundcloud" :rules="linkRules" style="maxWidth: 300px"></v-text-field>
+                            <v-text-field validate-on-blur type="url" label="Soundcloud" v-model="soundcloud" :rules="linkRules" style="maxWidth: 300px" @input="checkIfUpdated" clearable></v-text-field>
                         </v-row>
                         <v-row align="center" class="mx-2">
                             <v-img class="mr-2" src="@/assets/shop.svg" alt="shop icon" max-width="35" height="35"></v-img>
-                            <v-text-field validate-on-blur type="url" label="Webshop" v-model="shop" :rules="linkRules" style="maxWidth: 300px"></v-text-field>
+                            <v-text-field validate-on-blur type="url" label="Webshop" v-model="shop" :rules="linkRules" style="maxWidth: 300px" @input="checkIfUpdated" clearable></v-text-field>
                         </v-row>
                     </v-form>
                 </v-card>
@@ -81,6 +81,9 @@ export default {
         }
     },
     computed: {
+        currentSong() {
+            return this.$store.getters['songs/currentSong'];
+        },
         loadingSong() {
             return this.$store.getters['songs/loadingSong'];
         },
@@ -95,6 +98,17 @@ export default {
         onDismissed() {
             this.$store.dispatch('songs/clearError');
         },
+        checkIfUpdated() {
+            if (this.id && this.currentSong && (
+                this.title !== this.currentSong.title ||
+                this.itunes !== this.currentSong.itunes ||
+                this.spotify !== this.currentSong.spotify ||
+                this.youtube !== this.currentSong.youtube ||
+                this.shop !== this.currentSong.shop ||
+                this.soundcloud !== this.currentSong.soundcloud)) {
+                this.save = false;
+            }
+        },
         handleAddSong() {
             if (this.$refs.form.validate()) {
                 const songObj = {
@@ -104,13 +118,31 @@ export default {
                     youtube: this.youtube,
                     soundcloud: this.soundcloud,
                     shop: this.shop,
-                };
-                this.$store.dispatch('songs/addSong', songObj)
+                }; 
+                if (this.id) {
+                    this.$store.dispatch('songs/updateSong', {
+                        id: this.id,
+                        ...songObj
+                    });
+                } else {
+                    this.$store.dispatch('songs/addSong', songObj);
+                }
             }
         }
     },
     async mounted() {
         this.$store.dispatch('setLoadingComponent', false);
+        if (this.id) {
+            this.save = true;
+            await this.$store.dispatch('songs/getSongById', this.id);
+            const currentSong = this.$store.getters['songs/currentSong'];
+            this.title = currentSong.title;
+            this.itunes = currentSong.itunes;
+            this.spotify = currentSong.spotify;
+            this.youtube = currentSong.youtube;
+            this.soundcloud = currentSong.soundcloud;
+            this.shop = currentSong.shop;
+        }
     }
 }
 </script>
