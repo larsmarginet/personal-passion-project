@@ -17,7 +17,7 @@
             <v-col cols="3" sm="2" order="5" order-sm="4">
                 <p class="subtitle-1 line-height"><span class="grey--text">Qty:</span> {{item.stock}}</p>
             </v-col>
-             <v-col cols="2" sm="1" order="3" order-sm="5">
+             <v-col cols="1" order="3" order-sm="5">
                 <v-menu offset-y left>
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn icon v-bind="attrs" v-on="on" >

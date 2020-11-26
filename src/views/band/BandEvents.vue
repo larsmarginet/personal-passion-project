@@ -10,11 +10,11 @@
                     <v-btn text :class="{'primary--text': filter === 'upcoming'}" @click="setFilter('upcoming')">Upcoming</v-btn>
                     <v-btn text :class="{'primary--text': filter === 'previous'}" @click="setFilter('previous')">Previous</v-btn>
                 </v-row>
-                <v-container v-if="oading">
+                <v-container v-if="loading">
                     <v-skeleton-loader type="list-item-avatar-three-line" class="mb-4" v-for="n in 3" :key="n"></v-skeleton-loader>
                 </v-container>
                 <v-container class="pa-0" v-else-if="!loading && events">
-                    <transition-group name="list">
+                    <transition-group name="list" mode="out-in">
                         <EventCard v-for="event in filteredEvents" :event="event" :key="event.id" :image="event.venueLogo" :name="event.venueName" type="band"/>
                     </transition-group>
                 </v-container>
@@ -75,10 +75,6 @@ export default {
 </script>
 
 <style>
-.rounded-avatar {
-    border-radius: 50%;
-}
-
 .list-enter {
     opacity: 0;
     transform: translateY(-30px);

@@ -2,7 +2,7 @@
     <v-card class="mb-4" rounded="lg" flat>
         <DeleteModal :dialog="dialog" @continue="handleDeleteEvent" @cancel="cancelDeleteEvent"/>
         <v-card-title class="pa-6">
-            <v-avatar size="48" :color="`${image ? 'primary' : 'error'}`">
+            <v-avatar size="48" :color="`${image ? 'white' : 'error'}`">
                 <img class="rounded-avatar" :src="image" :alt="name" v-if="image"/>
                 <v-icon v-else large dark>error</v-icon>
             </v-avatar>
