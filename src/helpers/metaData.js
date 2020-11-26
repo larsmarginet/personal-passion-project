@@ -111,7 +111,7 @@ const bandMerchDetail = {
 };
 
 const bandSongs = {
-    title: 'merch',
+    title: 'songs',
     metaTags: [
         {
             name: 'description',
@@ -120,6 +120,34 @@ const bandSongs = {
         {
             name: 'og:description',
             content: 'Bands can find all their songs here.'
+        }
+    ]
+};
+
+const bandSongsCreate = {
+    title: 'songs',
+    metaTags: [
+        {
+            name: 'description',
+            content: 'Bands can add their songs here.'
+        },
+        {
+            name: 'og:description',
+            content: 'Bands can add their songs here.'
+        }
+    ]
+};
+
+const bandSongsDetail = {
+    title: 'songs',
+    metaTags: [
+        {
+            name: 'description',
+            content: 'Bands can edit all their songs here.'
+        },
+        {
+            name: 'og:description',
+            content: 'Bands can edit all their songs here.'
         }
     ]
 };
@@ -261,6 +289,8 @@ export {
     bandMerchCreate,
     bandMerchDetail,
     bandSongs,
+    bandSongsCreate,
+    bandSongsDetail,
     venueEvents,
     VenueEventsCreate,
     VenueEventsDetail,

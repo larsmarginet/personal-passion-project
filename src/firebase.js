@@ -25,6 +25,7 @@ const eventsCollection = db.collection('events');
 const roomsCollection = db.collection('rooms');
 const menuCollection = db.collection('menu');
 const merchCollection = db.collection('merch');
+const songCollection = db.collection('songs');
 
 // export utils/refs
 export {
@@ -35,5 +36,6 @@ export {
   eventsCollection,
   roomsCollection,
   menuCollection,
-  merchCollection
+  merchCollection,
+  songCollection
 }

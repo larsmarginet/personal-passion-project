@@ -90,7 +90,7 @@ export default {
             const images = await firebase.merchCollection.doc(payload).collection('images').orderBy('pos', 'asc').get();
             images.forEach(image => {
                 item.images.push(image.data());
-            })
+            });
             ctx.commit('setCurrentMerch', item);
         } catch (error) {
             ctx.commit('setError', error);
@@ -136,11 +136,11 @@ export default {
                 // delete al existing images
                 await Promise.all(currentImages.map(async imageId =>  await firebase.merchCollection.doc(payload.id).collection("images").doc(imageId).delete()));
                 // add new images with new position
-                await Promise.all(imageUrls.map(async (image) => await firebase.merchCollection.doc(payload.id).collection("images").add(image)));
+                await Promise.all(imageUrls.map(async image => await firebase.merchCollection.doc(payload.id).collection("images").add(image)));
+                router.push('/band/merch')
             } catch (error) {
                 ctx.commit('setError', error);
             }
-        
         } catch(error) {
             ctx.commit('setError', error);
         }

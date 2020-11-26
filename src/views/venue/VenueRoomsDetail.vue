@@ -28,7 +28,7 @@
                         </v-row>
                     </v-form>
                     <v-row justify="end" no-gutters class="mx-6">
-                        <v-btn @click="generateQrCodes" depressed color="primary">generate</v-btn>
+                        <v-btn @click="generateQrCodes" depressed color="primary">generate codes</v-btn>
                         <v-btn @click="dowloadAllQrCodes" text depressed color="primary" v-if="qrcodes.length > 0"><v-icon>get_app</v-icon> download all</v-btn>
                     </v-row>
                     <v-card v-for="(code,i) in qrcodes" :key="i" flat>

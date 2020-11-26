@@ -12,8 +12,13 @@
             </v-col>
             <v-col cols="12" sm="10" md="8" lg="6" order-md="1">
                 <v-card flat class="mx-auto mb-10" rounded="xl" v-if="loadingMerch">
-                    <v-skeleton-loader type="list-item" style="maxWidth: 250px"></v-skeleton-loader>
-                    <v-skeleton-loader type="list-item" style="maxWidth: 150px" class="mb-4  pb-5"></v-skeleton-loader>
+                    <v-skeleton-loader type="list-item" class="pt-2" style="maxWidth: 350px"></v-skeleton-loader>
+                    <v-skeleton-loader type="image"  class="mx-4" style="maxWidth: 100px; maxHeight: 100px"></v-skeleton-loader>
+                    <v-skeleton-loader type="list-item-three-line" style="maxWidth: 250px"></v-skeleton-loader>
+                    <v-skeleton-loader type="list-item" style="maxWidth: 150px" class="mb-4"></v-skeleton-loader>
+                    <v-skeleton-loader type="list-item" style="maxWidth: 350px" class="mb-4"></v-skeleton-loader>
+                    <v-skeleton-loader type="list-item" style="maxWidth: 350px" class="mb-4"></v-skeleton-loader>
+                    <v-skeleton-loader type="chip" class="mx-4 mb-4 pb-5"></v-skeleton-loader>
                 </v-card>
                 <v-card flat class="mx-auto pb-8 mb-10" rounded="xl" width="100%" v-else>
                     <v-expand-transition>
@@ -129,7 +134,7 @@ export default {
             } else {
                 this.stock--;
             }
-             this.checkIfUpdated();
+            this.checkIfUpdated();
         },
         incrementStock() {
             this.stock++;
