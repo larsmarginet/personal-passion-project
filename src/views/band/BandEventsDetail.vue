@@ -44,10 +44,15 @@
                                 </draggable>
                             </div>
                         </div>
-
+                        <v-switch v-model="signing" label="Signing session" color="primary" hint="Will you be signing merch at this event?" persistent-hint inset></v-switch>
+                        <v-row align="center" class="ml-1 mt-2">
+                            <v-btn color="primary" depressed @click="decrementSigningAmount" fab small :disabled="!signing"><v-icon small>remove</v-icon></v-btn>
+                            <v-text-field class="px-2 text-center" :disabled="!signing" style="maxWidth: 100px" label="Signing amount" type="number" min="0" v-model="signingAmount" :rules="[v => v>=0 || 'amount can not be less than 0']"></v-text-field>
+                            <v-btn color="primary" depressed @click="incrementSigningAmount" fab small :disabled="!signing"><v-icon small>add</v-icon></v-btn>
+                        </v-row>
                         <div class="titles mx-1 mt-8">
-                                <p class="subtitle-2 mb-0">Setlist</p>
-                                <v-btn small text class="subtitle-2 mb-0 primary--text" @click="handleAddAllSongs">Add all</v-btn>
+                            <p class="subtitle-2 mb-0">Setlist</p>
+                            <v-btn small text class="subtitle-2 mb-0 primary--text" @click="handleAddAllSongs">Add all</v-btn>
                         </div>
                         <div class="sheets">
                             <div class="grey lighten-4 rounded-lg sheets-section py-0">
@@ -93,10 +98,13 @@ export default {
             save: false,
             name: '',
             logo: '',
+            signing: false,
+            signingAmount: 0,
             merchList: [],
             assignedMerchList: [],
             songList: [],
             setList: [],
+            signingRules: []
         }
     },
     computed: {
@@ -151,11 +159,21 @@ export default {
             const item = this.assignedMerchList.find(merch => merch.id === id);
             item.quantity--; 
         },
+        decrementSigningAmount() {
+            if (this.signingAmount > 0) {
+                this.signingAmount--;
+            }
+        },
+        incrementSigningAmount() {
+            this.signingAmount++
+        },
         handleUpdateEvent() {
             this.$store.dispatch('events/updateBandEvent', {
                 id: this.id, 
                 merch: this.assignedMerchList, 
-                setList: this.setList
+                setList: this.setList,
+                signing: this.signing,
+                signingAmount: this.signingAmount
             });
         },
     },
@@ -166,6 +184,8 @@ export default {
             const currentEvent = this.$store.getters['events/currentEvent'];
             this.name = currentEvent.venueName;
             this.logo = currentEvent.venueLogo;
+            this.signing = currentEvent.signing;
+            this.signingAmount = currentEvent.signingAmount;
 
             await this.$store.dispatch('merch/loadMerch');
             this.merchList = this.$store.getters['merch/merch'];

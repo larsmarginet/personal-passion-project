@@ -59,7 +59,8 @@ export default {
                 end: payload.end,
                 merch: [],
                 setList: [],
-                signing: false
+                signing: false,
+                signingAmount: 0
             });
             router.push('/venue/events');
         } catch (error) {
@@ -113,7 +114,9 @@ export default {
             payload.setList.map(song => setList.push(song.id));
             await firebase.eventsCollection.doc(payload.id).update({
                 merch: merchList,
-                setList
+                setList,
+                signing: payload.signing,
+                signingAmount: payload.signingAmount
             });
             router.push('/band/events');
         } catch (error) {
