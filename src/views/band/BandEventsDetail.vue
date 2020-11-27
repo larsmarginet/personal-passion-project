@@ -29,8 +29,8 @@
                     </v-card-title>
                     <v-form @submit.prevent ref="form" class="px-4 pt-2 px-md-5 pt-md-3 pb-5">
                         <div class="titles mx-1">
-                                <p class="subtitle-2 mb-0">Merch</p>
-                                <v-btn small text class="subtitle-2 mb-0 primary--text" @click="handleAddAllMerch">Add all</v-btn>
+                            <p class="subtitle-2 mb-0">Merch</p>
+                            <v-btn small text class="subtitle-2 mb-0 primary--text" @click="handleAddAllMerch">Add all</v-btn>
                         </div>
                         <div class="sheets">
                             <div class="grey lighten-4 rounded-lg sheets-section py-0">

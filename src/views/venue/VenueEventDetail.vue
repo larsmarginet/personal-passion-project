@@ -78,6 +78,12 @@
                             </template>
                         </v-autocomplete>
                     </v-form>
+                    <p class="subtitle-2 mb-0 grey--text text--darken-2 mx-4">Setlist</p>
+                    <v-row class="mx-4 pb-8">
+                        <v-col cols="12" sm="6" class="grey lighten-4 rounded-lg pa-1">
+                            <SongCardMini v-for="(song, i) in setList" :key="i" :song="song" :disabled="true"/>
+                        </v-col>
+                    </v-row>
                 </v-card>
             </v-col>
         </v-row>
@@ -86,12 +92,14 @@
 
 <script>
 import { format, parseISO } from 'date-fns';
+import SongCardMini from '../../components/band/SongCardMini'
 import BackButton from '../../components/shared/BackButton';
 import Alert from '../../components/shared/Alert';
 export default {
     components: {
         BackButton,
-        Alert
+        Alert,
+        SongCardMini
     },
     props: {
         id: {
@@ -108,6 +116,7 @@ export default {
             selectedEndTime: '',
             selectedRoom: '',
             selectedBand: '',
+            setList: [],
             menuStartTime: false,
             menuEndTime: false,
             datesError: null,
@@ -265,6 +274,7 @@ export default {
             this.selectedEndTime = format(currentEvent.end, 'HH:mm');
             this.selectedRoom = currentEvent.roomId;
             this.selectedBand = currentEvent.bandId;
+            this.setList = currentEvent.setList;
         } 
     }
 }
