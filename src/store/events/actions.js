@@ -102,6 +102,24 @@ export default {
         }
         ctx.commit('setLoadingAddEvent', false);
     },
+
+    async updateBandEvent(ctx, payload) {
+        ctx.commit('setError', null);
+        ctx.commit('setLoadingAddEvent', true);
+        try {
+            const merchList = []
+            payload.merch.map(merch => {
+                merchList.push({id: merch.id, quantity: merch.quantity})
+            });
+            await firebase.eventsCollection.doc(payload.id).update({
+                merch: merchList
+            });
+            router.push('/band/events');
+        } catch (error) {
+            ctx.commit('setError', error);
+        }
+        ctx.commit('setLoadingAddEvent', false);
+    },
     
     async deleteEvent(_, payload) {
         await firebase.eventsCollection.doc(payload).delete();

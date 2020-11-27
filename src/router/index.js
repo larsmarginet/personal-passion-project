@@ -75,6 +75,18 @@ const routes = [
         component: () => import(/* webpackChunkName: "BandEvents" */ '../views/band/BandEvents.vue'),
       },
       {
+        path: 'events/:id', 
+        name: 'BandEventsDetail',
+        props: true,
+        meta: {
+          title: meta.bandEventsDetail.title,
+          metaTags: meta.bandEventsDetail.metaTags,
+          requiresAuth: true,
+          userType: 'band'
+        },
+        component: () => import(/* webpackChunkName: "BandEventsDetail" */ '../views/band/BandEventsDetail.vue'),
+      },
+      {
         path: 'merch', 
         name: 'BandMerch',
         meta: {

@@ -68,6 +68,20 @@ const bandEvents = {
     ]
 };
 
+const bandEventsDetail = {
+    title: 'events',
+    metaTags: [
+        {
+            name: 'description',
+            content: 'Bands can add merch and a setlist to events here.'
+        },
+        {
+            name: 'og:description',
+            content: 'Bands can add merch and a setlist to events here.'
+        }
+    ]
+};
+
 const bandMerch = {
     title: 'merch',
     metaTags: [
@@ -285,6 +299,7 @@ export {
     login,
     signup,
     bandEvents,
+    bandEventsDetail,
     bandMerch,
     bandMerchCreate,
     bandMerchDetail,
