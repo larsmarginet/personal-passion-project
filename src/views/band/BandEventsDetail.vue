@@ -32,37 +32,35 @@
                                 <p class="subtitle-2 mb-0">Merch</p>
                                 <v-btn small text class="subtitle-2 mb-0 primary--text" @click="handleAddAllMerch">Add all</v-btn>
                         </div>
-                        <div class="merch">
-                            <div class="grey lighten-4 rounded-lg merch-section py-0">
+                        <div class="sheets">
+                            <div class="grey lighten-4 rounded-lg sheets-section py-0">
                                 <draggable class="list-group" :list="assignedMerchList" group="merch">
                                    <MerchCardMini v-for="(item, i) in listTwo" :key="i" :item="item" class="list-group-item" :disabled="false" @deleteMerch="handleDeleteMerch" @incrementQuantity="handleIncrementQuantity" @decrementQuantity="handleDecrementQuantity"/>
                                 </draggable>
                             </div>
-                            <div class="grey lighten-4 rounded-lg merch-section py-0">
+                            <div class="grey lighten-4 rounded-lg sheets-section py-0">
                                 <draggable class="list-group" :list="merchList" :group="{ name: 'merch', pull: 'clone', put: false }">
                                     <MerchCardMini v-for="item in listOne" :key="item.id" :item="item" class="list-group-item" :disabled="true"/>
                                 </draggable>
                             </div>
                         </div>
 
-
-
-                        <!-- <v-row justify="center">
-                            <v-col cols="12" sm="5" class="grey lighten-4 rounded-lg mx-1">
-                                <draggable :list="setList" group="songs">
-                                    <v-card v-for="item in setList" :key="item.id" class="list-group-item my-1 mx-1" link>
-                                        <v-card-title class="caption">{{item.title}}</v-card-title>
-                                    </v-card>
+                        <div class="titles mx-1 mt-8">
+                                <p class="subtitle-2 mb-0">Setlist</p>
+                                <v-btn small text class="subtitle-2 mb-0 primary--text" @click="handleAddAllSongs">Add all</v-btn>
+                        </div>
+                        <div class="sheets">
+                            <div class="grey lighten-4 rounded-lg sheets-section py-0">
+                                <draggable class="list-group" :list="setList" group="songs">
+                                   <SongCardMini v-for="(song, i) in listFour" :key="i" :song="song" class="list-group-item" :disabled="false" @deleteSong="handleDeleteSong"/>
                                 </draggable>
-                            </v-col>
-                            <v-col cols="12" sm="5" class="grey lighten-4 rounded-lg mx-1">
-                                <draggable :list="songList" :group="{ name: 'songs', pull: 'clone', put: false }">
-                                    <v-card v-for="item in songList" :key="item.id" class="list-group-item my-1 mx-1" link>
-                                        <v-card-title class="caption">{{item.title}}</v-card-title>
-                                    </v-card>
+                            </div>
+                            <div class="grey lighten-4 rounded-lg sheets-section py-0">
+                                <draggable class="list-group" :list="songList" :group="{ name: 'songs', pull: 'clone', put: false }">
+                                    <SongCardMini v-for="song in listThree" :key="song.id" :song="song" class="list-group-item" :disabled="true"/>
                                 </draggable>
-                            </v-col>
-                        </v-row> -->
+                            </div>
+                        </div>
                     </v-form>
                 </v-card>
             </v-col>
@@ -73,7 +71,8 @@
 <script>
 import draggable from "vuedraggable";
 import BackButton from '../../components/shared/BackButton';
-import MerchCardMini from '../../components/band/MerchCardMini'
+import MerchCardMini from '../../components/band/MerchCardMini';
+import SongCardMini from '../../components/band/SongCardMini';
 import Alert from '../../components/shared/Alert';
 export default {
     props: {
@@ -86,7 +85,8 @@ export default {
         draggable,
         BackButton,
         Alert,
-        MerchCardMini
+        MerchCardMini,
+        SongCardMini
     },
     data() {
         return {
@@ -105,6 +105,12 @@ export default {
         },
         listTwo() {
             return this.assignedMerchList;
+        },
+        listThree() {
+            return this.songList;
+        },
+        listFour() {
+            return this.setList;
         },
         loadingEvent() {
             return this.$store.getters['events/loadingEvent'];
@@ -126,9 +132,16 @@ export default {
         handleAddAllMerch() {
             this.assignedMerchList = [...this.merchList];
         },
+        handleAddAllSongs() {
+            this.setList = [...this.songList];
+        },
         handleDeleteMerch(id) {
             const index = this.assignedMerchList.map(merch => merch.id).indexOf(id);
             this.assignedMerchList.splice(index, 1);
+        },
+        handleDeleteSong(id) {
+            const index = this.setList.map(merch => merch.id).indexOf(id);
+            this.setList.splice(index, 1);
         },
         handleIncrementQuantity(id) {
             const item = this.assignedMerchList.find(merch => merch.id === id);
@@ -139,7 +152,11 @@ export default {
             item.quantity--; 
         },
         handleUpdateEvent() {
-            this.$store.dispatch('events/updateBandEvent', {id: this.id, merch: this.assignedMerchList})
+            this.$store.dispatch('events/updateBandEvent', {
+                id: this.id, 
+                merch: this.assignedMerchList, 
+                setList: this.setList
+            });
         },
     },
     async mounted() {
@@ -168,6 +185,13 @@ export default {
 
             await this.$store.dispatch('songs/loadSongs');
             this.songList = this.$store.getters['songs/songs'];
+            currentEvent.setList.forEach(songId => {
+                this.songList.forEach(song => {
+                    if (song.id === songId) {
+                        this.setList.push(song);
+                    }
+                })
+            });
         }
     }
 }
@@ -185,24 +209,24 @@ export default {
         justify-content: space-between;
     }
 
-    .merch {
+    .sheets {
         display: grid;
         grid-gap: 5px;
     }
 
     @media only screen and (max-width: 630px) {
-        .merch {
+        .sheets {
             grid-template-rows: 1fr 1fr;
         }
     }
 
     @media only screen and (min-width: 630px) {
-        .merch {
+        .sheets {
             grid-template-columns: 1fr 1fr;
         }
     }
 
-    .merch-section {
+    .sheets-section {
         padding: 5px;
     }
 </style>

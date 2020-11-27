@@ -107,12 +107,13 @@ export default {
         ctx.commit('setError', null);
         ctx.commit('setLoadingAddEvent', true);
         try {
-            const merchList = []
-            payload.merch.map(merch => {
-                merchList.push({id: merch.id, quantity: merch.quantity})
-            });
+            const merchList = [];
+            const setList = [];
+            payload.merch.map(merch => merchList.push({id: merch.id, quantity: merch.quantity}));
+            payload.setList.map(song => setList.push(song.id));
             await firebase.eventsCollection.doc(payload.id).update({
-                merch: merchList
+                merch: merchList,
+                setList
             });
             router.push('/band/events');
         } catch (error) {
