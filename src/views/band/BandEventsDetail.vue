@@ -34,7 +34,7 @@
                         </div>
                         <div class="sheets">
                             <div class="grey lighten-4 rounded-lg sheets-section py-0">
-                                <draggable class="list-group" :list="assignedMerchList" group="merch">
+                                <draggable class="list-group" :list="assignedMerchList" group="merch" @change="checkIfUpdated">
                                    <MerchCardMini v-for="(item, i) in listTwo" :key="i" :item="item" class="list-group-item" :disabled="false" @deleteMerch="handleDeleteMerch" @incrementQuantity="handleIncrementQuantity" @decrementQuantity="handleDecrementQuantity"/>
                                 </draggable>
                             </div>
@@ -44,10 +44,10 @@
                                 </draggable>
                             </div>
                         </div>
-                        <v-switch v-model="signing" label="Signing session" color="primary" hint="Will you be signing merch at this event?" persistent-hint inset></v-switch>
+                        <v-switch v-model="signing" class="ml-1" label="Signing session" color="primary" hint="Will you be signing merch at this event?" persistent-hint inset @change="checkIfUpdated"></v-switch>
                         <v-row align="center" class="ml-1 mt-2">
                             <v-btn color="primary" depressed @click="decrementSigningAmount" fab small :disabled="!signing"><v-icon small>remove</v-icon></v-btn>
-                            <v-text-field class="px-2 text-center" :disabled="!signing" style="maxWidth: 100px" label="Signing amount" type="number" min="0" v-model="signingAmount" :rules="[v => v>=0 || 'amount can not be less than 0']"></v-text-field>
+                            <v-text-field class="px-2 text-center" :disabled="!signing" style="maxWidth: 100px" label="Signing amount" type="number" min="0" v-model="signingAmount" :rules="[v => v>=0 || 'amount can not be less than 0']" @input="checkIfUpdated"></v-text-field>
                             <v-btn color="primary" depressed @click="incrementSigningAmount" fab small :disabled="!signing"><v-icon small>add</v-icon></v-btn>
                         </v-row>
                         <div class="titles mx-1 mt-8">
@@ -56,7 +56,7 @@
                         </div>
                         <div class="sheets">
                             <div class="grey lighten-4 rounded-lg sheets-section py-0">
-                                <draggable class="list-group" :list="setList" group="songs">
+                                <draggable class="list-group" :list="setList" group="songs" @change="checkIfUpdated">
                                    <SongCardMini v-for="(song, i) in listFour" :key="i" :song="song" class="list-group-item" :disabled="false" @deleteSong="handleDeleteSong"/>
                                 </draggable>
                             </div>
@@ -134,38 +134,56 @@ export default {
         }
     },
     methods: {
+        checkIfUpdated() {
+            if (this.currentEvent && (
+                this.signing !== this.currentEvent.signing ||
+                this.signingAmount !== this.currentEvent.signingAmount ||
+                this.setList !== this.currentEvent.setList ||
+                this.assignedMerchList !== this.currentEvent.merch)
+            ) {
+                this.save = false;
+            }
+        },
         onDismissed() {
             this.$store.dispatch('rooms/clearError');
         },
         handleAddAllMerch() {
             this.assignedMerchList = [...this.merchList];
+            this.checkIfUpdated();
         },
         handleAddAllSongs() {
             this.setList = [...this.songList];
+            this.checkIfUpdated();
         },
         handleDeleteMerch(id) {
             const index = this.assignedMerchList.map(merch => merch.id).indexOf(id);
             this.assignedMerchList.splice(index, 1);
+             this.checkIfUpdated()
         },
         handleDeleteSong(id) {
             const index = this.setList.map(merch => merch.id).indexOf(id);
             this.setList.splice(index, 1);
+             this.checkIfUpdated()
         },
         handleIncrementQuantity(id) {
             const item = this.assignedMerchList.find(merch => merch.id === id);
             item.quantity++;
+            this.checkIfUpdated();
         },
         handleDecrementQuantity(id) {
             const item = this.assignedMerchList.find(merch => merch.id === id);
             item.quantity--; 
+            this.checkIfUpdated();
         },
         decrementSigningAmount() {
             if (this.signingAmount > 0) {
                 this.signingAmount--;
+                this.checkIfUpdated();
             }
         },
         incrementSigningAmount() {
             this.signingAmount++
+            this.checkIfUpdated();
         },
         handleUpdateEvent() {
             this.$store.dispatch('events/updateBandEvent', {
@@ -180,6 +198,7 @@ export default {
     async mounted() {
         this.$store.dispatch('setLoadingComponent', false);
         if (this.id) {
+            this.save = true;
             await this.$store.dispatch('events/getEventById', this.id);
             const currentEvent = this.$store.getters['events/currentEvent'];
             this.name = currentEvent.venueName;
