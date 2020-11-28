@@ -16,3 +16,4 @@ On top of Vue, I will be using Vuetify as UI framework.
 
 Follow my progress on my [blog](https://larsmarginet1.wixsite.com/blog).
 
+You can find the webshop part of the platform [here](https://github.com/larsmarginet/personal-passion-project-webshop)
