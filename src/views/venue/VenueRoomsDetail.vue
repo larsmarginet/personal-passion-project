@@ -32,7 +32,7 @@
                         <v-btn @click="dowloadAllQrCodes" text depressed color="primary" v-if="qrcodes.length > 0"><v-icon>get_app</v-icon> download all</v-btn>
                     </v-row>
                     <transition-group name="list">
-                        <v-card v-for="(code, i) in qrcodes" :key="code" flat>
+                        <v-card v-for="(code, i) in qrcodes" :key="code.value" flat>
                             <v-card-title class="ma-2">
                                 <img :src="code.toDataURL()" alt="QRCode" style="maxWidth: 60px" class="img-border" />
                                 <span class="primary--text ml-2">Table {{i+1}}</span>
@@ -88,7 +88,7 @@ export default {
         },
         error() {
             return this.$store.getters['rooms/error'];
-        }
+        },
     },
     methods: {
         checkIfUpdated() {

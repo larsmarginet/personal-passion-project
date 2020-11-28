@@ -244,6 +244,11 @@ export default {
                     bandId: band.id,
                     bandLogo: band.logoUrl,
                     bandName: band.name,
+                    facebook: band.facebook,
+                    instagram: band.instagram,
+                    itunes: band.itunes,
+                    spotify: band.spotify,
+                    youtube: band.youtube,
                     start: this.start,
                     end: this.end,
                 }
