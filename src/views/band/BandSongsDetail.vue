@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <h2 hidden>Songs detail</h2>
+        <h2 style="display: none">Songs detail</h2>
         <v-row>
             <v-col cols="6" md="1" order-md="1">
                 <BackButton link="/venue/menu"/>

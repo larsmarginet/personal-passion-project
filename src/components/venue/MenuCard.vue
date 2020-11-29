@@ -5,8 +5,8 @@
             <v-form @submit.prevent>
                 <v-checkbox v-model="active" @change="updateActiveStatus"></v-checkbox>
             </v-form>
-            <v-avatar size="48" :color="`${item.name ? 'primary' : 'error'}`" :class="{'transparant': !active}">
-                <img class="rounded-avatar" :src="item.image" :alt="item.name" v-if="item.image"/>
+            <v-avatar size="48" :color="`${item.name ? 'white' : 'error'}`" :class="{'transparant': !active}">
+                <img class="rounded-avatar" :src="item.image" :alt="item.name" style="objectFit: cover" v-if="item.image"/>
                 <v-icon v-else large dark>error</v-icon>
             </v-avatar>
             <span class="ml-5 headline font-weight-bold">{{item.name}}</span>   

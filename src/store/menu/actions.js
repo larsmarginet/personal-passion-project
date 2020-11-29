@@ -84,6 +84,7 @@ export default {
         } catch(error) {
             ctx.commit('setError', error);
         }
+        ctx.commit('setLoadingAddItem', false);
     },
 
     async updateActiveStateItem(ctx, payload) {

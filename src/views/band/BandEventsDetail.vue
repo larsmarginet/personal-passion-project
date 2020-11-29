@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <h2 hidden>Event detail</h2>
+        <h2 style="display: none">Event detail</h2>
         <v-row>
             <v-col cols="6" lg="1" order-lg="1">
                 <BackButton link="/venue/events"/>
