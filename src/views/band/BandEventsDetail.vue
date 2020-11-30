@@ -3,7 +3,7 @@
         <h2 style="display: none">Event detail</h2>
         <v-row>
             <v-col cols="6" lg="1" order-lg="1">
-                <BackButton link="/venue/events"/>
+                <BackButton link="/band/events"/>
             </v-col>
             <v-col cols="6" lg="2" order-lg="3">
                 <v-row justify="end" justify-lg="start" class="px-4">
@@ -224,7 +224,9 @@ export default {
 
             await this.$store.dispatch('songs/loadSongs');
             this.songList = this.$store.getters['songs/songs'];
+            console.log(currentEvent.setList)
             currentEvent.setList.forEach(songId => {
+                console.log(songId)
                 this.songList.forEach(song => {
                     if (song.id === songId) {
                         this.setList.push(song);

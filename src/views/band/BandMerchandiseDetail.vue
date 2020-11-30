@@ -169,7 +169,7 @@ export default {
                     category: this.category,
                     options: this.options,
                     signable: this.signable,
-                    stock: this.stock
+                    stock: parseFloat(this.stock)
                 }
                 if (this.id) {
                     this.$store.dispatch('merch/updateMerch', {

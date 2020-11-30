@@ -3,7 +3,7 @@
         <h2 style="display: none">Songs detail</h2>
         <v-row>
             <v-col cols="6" md="1" order-md="1">
-                <BackButton link="/venue/menu"/>
+                <BackButton link="/band/songs"/>
             </v-col>
             <v-col cols="6" sm="2" order-md="3">
                 <v-row justify="end" justify-md="start" class="px-4">
