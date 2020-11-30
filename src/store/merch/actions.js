@@ -134,13 +134,39 @@ export default {
                 const result = await firebase.merchCollection.doc(payload.id).collection("images").get();
                 result.forEach(image => currentImages.push(image.id));
                 // delete al existing images
-                await Promise.all(currentImages.map(async imageId =>  await firebase.merchCollection.doc(payload.id).collection("images").doc(imageId).delete()));
+                await Promise.all(currentImages.map(async imageId => await firebase.merchCollection.doc(payload.id).collection("images").doc(imageId).delete()));
                 // add new images with new position
                 await Promise.all(imageUrls.map(async image => await firebase.merchCollection.doc(payload.id).collection("images").add(image)));
-                router.push('/band/merch')
             } catch (error) {
                 ctx.commit('setError', error);
-            }
+            } 
+            // step 3: update all merch in events that contain said merch
+            try {
+                await firebase.db.runTransaction(async transaction => {
+                    console.log(payload.id)
+                    const result = await firebase.eventsCollection.where('bandId', '==', firebase.auth.currentUser.uid).get();
+                    result.forEach(async event => {
+                        const merch = await firebase.eventsCollection.doc(event.id).collection('merch').where('id', '==', payload.id).get();
+                        merch.forEach(async item => {
+                            // imageUrls[0] will always be the image with pos 0, so set this one as the standard image
+                            // this ensures I don't also need to fetch from images collection when I just want to show one image
+                            await transaction.update(firebase.eventsCollection.doc(event.id).collection('merch').doc(item.id), imageUrls[0]);
+                            // get all images in the events - merch - image collection
+                            const currentImages = await firebase.eventsCollection.doc(event.id).collection('merch').doc(item.id).collection('images').get();
+                            // delete all existing images in the events - merch - image collection
+                            currentImages.forEach(async img => await firebase.eventsCollection.doc(event.id).collection('merch').doc(item.id).collection('images').doc(img.id).delete());
+                            // get all images from the collection within the merch item
+                            const result = await firebase.merchCollection.doc(item.id).collection('images').get();
+                            // set the images in the events - merch - image collection to the fetched images
+                            result.forEach(async img => await firebase.eventsCollection.doc(event.id).collection('merch').doc(item.id).collection('images').doc(img.id).set(img.data()));
+                        });
+                    })
+                });
+                //router.push('/band/merch');
+            } catch (error) {
+                console.error(error)
+                // ctx.commit('setError', error);
+            } 
         } catch(error) {
             ctx.commit('setError', error);
         }

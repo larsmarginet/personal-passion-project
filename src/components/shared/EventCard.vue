@@ -39,7 +39,7 @@
                 </v-col>
                 <v-col style="minWidth: 200px" class="primary rounded-lg px-6 pt-4 white--text text-right">
                     <p :class="{'font-weight-bold': setList}"><v-icon small class="white--text" v-if="setList">done</v-icon> Setlist</p>
-                    <p :class="{'font-weight-bold': setList}"><v-icon class="white--text" small v-if="merch">done</v-icon> Merch</p>
+                    <p :class="{'font-weight-bold': merch}"><v-icon class="white--text" small v-if="merch">done</v-icon> Merch</p>
                     <p>Playground</p>
                 </v-col>
             </v-row>
@@ -82,7 +82,7 @@ export default {
             return this.event.setList.length > 0;
         },
         merch() {
-            return this.event.merch.length > 0;
+            return this.event.merch;
         }
     },
     methods: {

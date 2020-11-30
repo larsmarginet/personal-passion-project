@@ -272,7 +272,7 @@ export default {
         this.$store.dispatch('bands/loadBands');
         if (this.id) {
             this.save = true;
-            await this.$store.dispatch('events/getEventById', this.id);
+            await this.$store.dispatch('events/getVenueEventById', this.id);
             const currentEvent = this.$store.getters['events/currentEvent'];
             this.selectedDates = [format(currentEvent.start, 'RRRR-LL-dd'), format(currentEvent.end, 'RRRR-LL-dd')];
             this.selectedStartTime = format(currentEvent.start, 'HH:mm');

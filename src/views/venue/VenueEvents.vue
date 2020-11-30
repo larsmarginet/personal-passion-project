@@ -59,7 +59,7 @@ export default {
             } else if (this.filter === 'upcoming') {
                 return this.events.filter(event => this.currentTime < event.start);
             } else if (this.filter === 'previous') {
-                return this.events.filter(event => this.currentTime > event.start);
+                return this.events.filter(event => this.currentTime > event.end);
             } else {
                 return this.events;
             }

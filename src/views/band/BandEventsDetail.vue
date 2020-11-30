@@ -158,7 +158,7 @@ export default {
         handleDeleteMerch(id) {
             const index = this.assignedMerchList.map(merch => merch.id).indexOf(id);
             this.assignedMerchList.splice(index, 1);
-             this.checkIfUpdated()
+            this.checkIfUpdated()
         },
         handleDeleteSong(id) {
             const index = this.setList.map(merch => merch.id).indexOf(id);
@@ -199,7 +199,7 @@ export default {
         this.$store.dispatch('setLoadingComponent', false);
         if (this.id) {
             this.save = true;
-            await this.$store.dispatch('events/getEventById', this.id);
+            await this.$store.dispatch('events/getBandEventById', this.id);
             const currentEvent = this.$store.getters['events/currentEvent'];
             this.name = currentEvent.venueName;
             this.logo = currentEvent.venueLogo;
@@ -208,25 +208,12 @@ export default {
 
             await this.$store.dispatch('merch/loadMerch');
             this.merchList = this.$store.getters['merch/merch'];
-
-            // add quantity property and set it to stock
             this.merchList.forEach(merch => merch.quantity = merch.stock);
-            // fetch all merch once and add the required ones via id to the assigned list
-            currentEvent.merch.forEach(item => {
-                this.merchList.forEach(merch => {
-                    if (merch.id === item.id) {
-                        // update the quantity from the assigned list
-                        merch.quantity = item.quantity;
-                        this.assignedMerchList.push(merch);
-                    }
-                })
-            });
+            this.assignedMerchList = currentEvent.merchList;
 
             await this.$store.dispatch('songs/loadSongs');
             this.songList = this.$store.getters['songs/songs'];
-            console.log(currentEvent.setList)
             currentEvent.setList.forEach(songId => {
-                console.log(songId)
                 this.songList.forEach(song => {
                     if (song.id === songId) {
                         this.setList.push(song);

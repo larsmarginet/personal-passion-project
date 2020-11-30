@@ -62,7 +62,7 @@ export default {
                 youtube: payload.youtube,
                 start: payload.start,
                 end: payload.end,
-                merch: [],
+                merch: false,
                 setList: [],
                 signing: false,
                 signingAmount: 0
@@ -74,13 +74,33 @@ export default {
         ctx.commit('setLoadingAddEvent', false);
     },
 
-    async getEventById(ctx, payload) {
+    async getVenueEventById(ctx, payload) {
         ctx.commit('setError', null);
         ctx.commit('setLoadingEvent', true);
         try {
             const result = await firebase.eventsCollection.doc(payload).get();  
             let event = result.data();
             event.id = result.id;
+            ctx.commit('setCurrentEvent', event);
+        } catch (error) {
+            ctx.commit('setError', error);
+        }
+        ctx.commit('setLoadingEvent', false);
+    },
+
+    async getBandEventById(ctx, payload) {
+        ctx.commit('setError', null);
+        ctx.commit('setLoadingEvent', true);
+        try {
+            const result = await firebase.eventsCollection.doc(payload).get();  
+            let event = result.data();
+            event.id = result.id;
+            const merchList = [];
+            const merch = await firebase.eventsCollection.doc(payload).collection('merch').get();
+            if (!merch.empty) {
+                merch.forEach(item => merchList.push(item.data()));
+            }
+            event.merchList = merchList;
             ctx.commit('setCurrentEvent', event);
         } catch (error) {
             ctx.commit('setError', error);
@@ -118,15 +138,24 @@ export default {
         ctx.commit('setError', null);
         ctx.commit('setLoadingAddEvent', true);
         try {
-            const merchList = [];
             const setList = [];
-            payload.merch.map(merch => merchList.push({id: merch.id, quantity: merch.quantity}));
             payload.setList.map(song => setList.push(song.id));
             await firebase.eventsCollection.doc(payload.id).update({
-                merch: merchList,
                 setList,
+                merch: payload.merch.length > 0 ? true : false,
                 signing: payload.signing,
                 signingAmount: payload.signingAmount
+            });
+            await firebase.db.runTransaction(async transaction => {
+                const currentMerch = await firebase.eventsCollection.doc(payload.id).collection('merch').get();
+                if (!currentMerch.empty) {
+                    currentMerch.forEach(async merch => await transaction.delete(firebase.eventsCollection.doc(payload.id).collection('merch').doc(merch.id)));
+                }
+                payload.merch.map(async merch => {
+                    await transaction.set(firebase.eventsCollection.doc(payload.id).collection('merch').doc(merch.id), merch)
+                    const result = await firebase.merchCollection.doc(merch.id).collection('images').get();
+                    result.forEach(async img => await firebase.eventsCollection.doc(payload.id).collection('merch').doc(merch.id).collection('images').doc(img.id).set(img.data()));
+                });
             });
             router.push('/band/events');
         } catch (error) {
