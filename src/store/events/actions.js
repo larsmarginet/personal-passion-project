@@ -81,6 +81,12 @@ export default {
             const result = await firebase.eventsCollection.doc(payload).get();  
             let event = result.data();
             event.id = result.id;
+            const setList = [];
+            await Promise.all(event.setList.map(async id => { 
+               const song = await firebase.songCollection.doc(id).get()
+               setList.push(song.data())
+            }));
+            event.setList = setList;
             ctx.commit('setCurrentEvent', event);
         } catch (error) {
             ctx.commit('setError', error);
