@@ -51,9 +51,9 @@
                                 <v-text-field label="Option" v-model="option.option"></v-text-field>
                             </v-col>
                             <v-col class="quantity py-0">
-                                <v-btn color="primary" depressed fab x-small><v-icon small>remove</v-icon></v-btn>
+                                <v-btn color="primary" depressed fab x-small @click="decrementOptionStock(i)"><v-icon small>remove</v-icon></v-btn>
                                 <v-text-field class="px-2 text-center" style="maxWidth: 60px" label="Qty" type="number" min="0" v-model="option.stock" :rules="quantityRules" @input="checkIfUpdated"></v-text-field>
-                                <v-btn color="primary" depressed fab x-small><v-icon small>add</v-icon></v-btn>
+                                <v-btn color="primary" depressed fab x-small @click="incrementOptionStock(i)"><v-icon small>add</v-icon></v-btn>
                             </v-col>
                             <v-col class="py-0">
                                 <v-btn depressed class="primary" @click="handleRemoveOption(i)">Remove</v-btn>
@@ -67,9 +67,9 @@
                                 <v-text-field label="Option" v-model="optionName"></v-text-field>
                             </v-col>
                             <v-col class="quantity py-0">
-                                <v-btn color="primary" depressed fab x-small><v-icon small>remove</v-icon></v-btn>
+                                <v-btn color="primary" depressed fab x-small @click="decrementNewOptionStock"><v-icon small>remove</v-icon></v-btn>
                                 <v-text-field class="px-2 text-center" style="maxWidth: 60px" label="Qty" type="number" min="0" v-model="optionQty"></v-text-field>
-                                <v-btn color="primary" depressed fab x-small><v-icon small>add</v-icon></v-btn>
+                                <v-btn color="primary" depressed fab x-small @click="incrementNewOptionStock"><v-icon small>add</v-icon></v-btn>
                             </v-col>
                             <v-col class="py-0">
                                 <v-btn depressed class="primary" @click="handleAddOption">Add</v-btn>
@@ -162,6 +162,24 @@ export default {
             this.images.splice(index, 1);
             this.checkIfUpdated();
         }, 
+        incrementOptionStock(index) {
+            this.options[index].stock++;
+            this.checkIfUpdated();
+        },
+        decrementOptionStock(index) {
+            if (this.options[index].stock > 0) {
+                this.options[index].stock--;
+            }
+            this.checkIfUpdated();
+        },
+        incrementNewOptionStock() {
+            this.optionQty++;
+        },
+        decrementNewOptionStock() {
+            if (this.optionQty > 0) {
+                this.optionQty--;
+            }
+        },
         handleRemoveOption(index) {
             this.options.splice(index, 1);
             this.checkIfUpdated();
