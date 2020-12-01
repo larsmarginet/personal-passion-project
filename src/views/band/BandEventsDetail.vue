@@ -35,7 +35,7 @@
                         <div class="sheets">
                             <div class="grey lighten-4 rounded-lg sheets-section py-0">
                                 <draggable class="list-group" :list="assignedMerchList" group="merch" @change="checkIfUpdated">
-                                   <MerchCardMini v-for="(item, i) in listTwo" :key="i" :item="item" class="list-group-item" :disabled="false" @deleteMerch="handleDeleteMerch" @incrementQuantity="handleIncrementQuantity" @decrementQuantity="handleDecrementQuantity"/>
+                                   <MerchCardMini v-for="(item, i) in listTwo" :key="i" :item="item" class="list-group-item" :disabled="false" @deleteMerch="handleDeleteMerch" @incrementQuantity="handleIncrementQuantity" @decrementQuantity="handleDecrementQuantity" @incrementOptionQuantity="handleIncrementOptionQuantity" @decrementOptionQuantity="handleDecrementOptionQuantity"/>
                                 </draggable>
                             </div>
                             <div class="grey lighten-4 rounded-lg sheets-section py-0">
@@ -57,7 +57,7 @@
                         <div class="sheets">
                             <div class="grey lighten-4 rounded-lg sheets-section py-0">
                                 <draggable class="list-group" :list="setList" group="songs" @change="checkIfUpdated">
-                                   <SongCardMini v-for="(song, i) in listFour" :key="i" :song="song" class="list-group-item" :disabled="false" @deleteSong="handleDeleteSong"/>
+                                    <SongCardMini v-for="(song, i) in listFour" :key="i" :song="song" class="list-group-item" :disabled="false" @deleteSong="handleDeleteSong"/>
                                 </draggable>
                             </div>
                             <div class="grey lighten-4 rounded-lg sheets-section py-0">
@@ -175,6 +175,20 @@ export default {
             item.quantity--; 
             this.checkIfUpdated();
         },
+        handleIncrementOptionQuantity({id, index}) {
+            const item = this.assignedMerchList.find(merch => merch.id === id);
+            item.options[index].quantity++;
+            item.quantity = 0;
+            item.options.forEach(option => item.quantity += option.quantity);
+            this.checkIfUpdated();
+        },
+        handleDecrementOptionQuantity({id, index}) {
+            const item = this.assignedMerchList.find(merch => merch.id === id);
+            item.options[index].quantity--;
+            item.quantity = 0;
+            item.options.forEach(option => item.quantity += option.quantity);
+            this.checkIfUpdated();
+        },
         decrementSigningAmount() {
             if (this.signingAmount > 0) {
                 this.signingAmount--;
@@ -208,7 +222,12 @@ export default {
 
             await this.$store.dispatch('merch/loadMerch');
             this.merchList = this.$store.getters['merch/merch'];
-            this.merchList.forEach(merch => merch.quantity = merch.stock);
+            this.merchList.forEach(merch => {
+                merch.quantity = merch.stock
+                merch.options.forEach(option => {
+                    option.quantity = parseFloat(option.stock);
+                });
+            });
             this.assignedMerchList = currentEvent.merchList;
 
             await this.$store.dispatch('songs/loadSongs');

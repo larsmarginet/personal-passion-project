@@ -10,11 +10,31 @@
             </div>
             <div class="card-grid-info">
                 <p class="subtitle-1 text-sm-caption text-md-subtitle-1 mb-0" v-if="disabled">{{item.stock}}</p>
-                <v-form v-else>
-                    <v-row align="center" class="ml-1">
+                <v-form @submit.prevent v-else>
+                    <v-row align="center" class="ml-1" v-if="item.options.length < 1">
                         <v-btn color="primary" depressed fab x-small @click="decrementQuantity" :disabled="quantity <= 1"><v-icon small>remove</v-icon></v-btn>
                         <p class="caption mb-0 mx-1">{{quantity}}</p>
                         <v-btn color="primary" depressed fab x-small @click="incrementQuantity" :disabled="quantity >= item.stock"><v-icon small>add</v-icon></v-btn>
+                    </v-row>
+                    <v-row class="ml-1" v-else>
+                        <v-dialog v-model="dialog" max-width="350px">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn small class="primary" @click="dialog = !dialog" depressed v-bind="attrs" v-on="on">options</v-btn>
+                            </template>
+                            <v-card>
+                                <v-card-title>
+                                    <span>Options</span>
+                                    <v-spacer></v-spacer>
+                                    <v-btn fab small text><v-icon class="primary--text" @click="dialog = !dialog">close</v-icon></v-btn>    
+                                </v-card-title>
+                                <v-divider></v-divider>
+                                <v-card-text class="mt-4">
+                                    <div v-for="(option, i) in item.options" :key="i" >
+                                        <UpdateQtyMerchCardMini :option="option" :index="i" @incrementOptionQuantity="incrementOptionQuantity" @decrementOptionQuantity="decrementOptionQuantity"/>
+                                    </div>
+                                </v-card-text>
+                            </v-card>
+                        </v-dialog>
                     </v-row>
                 </v-form>
                 <p class="subtitle-1 text-sm-caption text-md-subtitle-1 mb-0">€{{item.price}}</p>
@@ -24,6 +44,7 @@
 </template>
 
 <script>
+import UpdateQtyMerchCardMini from './UpdateQtyMerchCardMini'
 export default {
     props: {
         item: {
@@ -35,14 +56,24 @@ export default {
             type: Boolean
         },
     },
+    components: {
+        UpdateQtyMerchCardMini
+    },
     data() {
         return {
-            quantity: this.item.quantity
+            quantity: this.item.quantity,
+            dialog: false,
         }
     },
     methods: {
         handleDeleteMerch() {
             this.$emit('deleteMerch', this.item.id);
+        },
+        incrementOptionQuantity(index) {
+            this.$emit('incrementOptionQuantity', {id: this.item.id, index});
+        },
+        decrementOptionQuantity(index) {
+            this.$emit('decrementOptionQuantity', {id: this.item.id, index});
         },
         incrementQuantity() {
             if (this.quantity < this.item.stock) {
