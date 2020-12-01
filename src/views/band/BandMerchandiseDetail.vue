@@ -43,9 +43,41 @@
                         <v-textarea counter="280" class="mx-2" label="Description" :rules="descriptionRules" v-model="description" style="maxWidth: 300px" @input="checkIfUpdated"></v-textarea>
                         <v-text-field validate-on-blur class="mx-2" style="maxWidth: 150px" label="Price" type="number" min="0" v-model="price" prefix="€" :rules="priceRules" @input="checkIfUpdated"></v-text-field>
                         <v-select validate-on-blur class="mx-2" style="maxWidth: 300px" :items="categories" v-model="category" label="Category" :rules="categoryRules" @input="checkIfUpdated"></v-select>
-                        <v-combobox v-model="options" class="mx-2" style="maxWidth: 300px" label="Options" multiple chips hint="x, m, l, xl, ..." deletable-chips @input="checkIfUpdated"></v-combobox>
+                        <p class="grey--text text--darken-1 mx-2 mb-1">Options</p>
+
+                        <!-- existing options -->
+                        <v-row class="mx-0" align="center" v-for="(option, i) in options" :key="i">
+                            <v-col class="py-0" style="maxWidth: 100px">
+                                <v-text-field label="Option" v-model="option.option"></v-text-field>
+                            </v-col>
+                            <v-col class="quantity py-0">
+                                <v-btn color="primary" depressed fab x-small><v-icon small>remove</v-icon></v-btn>
+                                <v-text-field class="px-2 text-center" style="maxWidth: 60px" label="Qty" type="number" min="0" v-model="option.stock" :rules="quantityRules" @input="checkIfUpdated"></v-text-field>
+                                <v-btn color="primary" depressed fab x-small><v-icon small>add</v-icon></v-btn>
+                            </v-col>
+                            <v-col class="py-0">
+                                <v-btn depressed class="primary" @click="handleRemoveOption(i)">Remove</v-btn>
+                            </v-col>
+                        </v-row>
+                        <v-divider v-if="options.length >= 1"></v-divider>
+
+                        <!-- add new option -->
+                        <v-row class="mx-0" align="center">
+                            <v-col class="py-0" style="maxWidth: 100px">
+                                <v-text-field label="Option" v-model="optionName"></v-text-field>
+                            </v-col>
+                            <v-col class="quantity py-0">
+                                <v-btn color="primary" depressed fab x-small><v-icon small>remove</v-icon></v-btn>
+                                <v-text-field class="px-2 text-center" style="maxWidth: 60px" label="Qty" type="number" min="0" v-model="optionQty"></v-text-field>
+                                <v-btn color="primary" depressed fab x-small><v-icon small>add</v-icon></v-btn>
+                            </v-col>
+                            <v-col class="py-0">
+                                <v-btn depressed class="primary" @click="handleAddOption">Add</v-btn>
+                            </v-col>
+                        </v-row>
+
                         <v-switch v-model="signable" class="mx-2" label="Signable" color="primary" hint="Can this product be signed?" persistent-hint inset @change="checkIfUpdated"></v-switch>
-                        <v-row align="center" class="ml-1 mt-6">
+                        <v-row align="center" class="ml-1 mt-6" v-if="options.length < 1">
                             <v-btn color="primary" depressed @click="decrementStock" fab small><v-icon small>remove</v-icon></v-btn>
                             <v-text-field class="px-2 text-center" style="maxWidth: 60px" label="Stock" type="number" min="0" v-model="stock" :rules="quantityRules" @input="checkIfUpdated"></v-text-field>
                             <v-btn color="primary" depressed @click="incrementStock" fab small><v-icon small>add</v-icon></v-btn>
@@ -85,6 +117,8 @@ export default {
             price: 0.00,
             category: '',
             options: [],
+            optionName: '',
+            optionQty: 0,
             signable: false,
             stock: 0,
             categories: ['clothing', 'album', 'accessories', 'print'],
@@ -128,6 +162,19 @@ export default {
             this.images.splice(index, 1);
             this.checkIfUpdated();
         }, 
+        handleRemoveOption(index) {
+            this.options.splice(index, 1);
+            this.checkIfUpdated();
+        },
+        handleAddOption() {
+            this.options.push({
+                option: this.optionName,
+                stock: this.optionQty
+            });
+            this.optionName = '';
+            this.optionQty = 0;
+            this.checkIfUpdated();
+        },
         decrementStock() {
             if (this.stock <= 0) {
                 this.stock = 0;
@@ -161,6 +208,10 @@ export default {
                 return;
             }
             if (this.$refs.form.validate()) {
+                if (this.options.length > 0) {
+                    this.stock = 0;
+                    this.options.forEach(option => this.stock += parseFloat(option.stock));
+                }
                 const merchObj = {
                     name: this.name,
                     images: this.images,
@@ -209,5 +260,10 @@ export default {
 .draggable-grid {
     display: flex;
     flex-wrap: wrap;
+}
+
+.quantity {
+    display: flex;
+    align-items: center;
 }
 </style>

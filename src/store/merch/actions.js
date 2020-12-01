@@ -170,10 +170,9 @@ export default {
                         });
                     })
                 });
-                //router.push('/band/merch');
+                router.push('/band/merch');
             } catch (error) {
-                console.error(error)
-                // ctx.commit('setError', error);
+                ctx.commit('setError', error);
             } 
         } catch(error) {
             ctx.commit('setError', error);
