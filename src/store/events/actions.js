@@ -65,7 +65,8 @@ export default {
                 merch: false,
                 setList: [],
                 signing: false,
-                signingAmount: 0
+                signingAmount: 0,
+                signedAmount: 0
             });
             router.push('/venue/events');
         } catch (error) {
