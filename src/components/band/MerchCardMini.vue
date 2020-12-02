@@ -11,11 +11,11 @@
             <div class="card-grid-info">
                 <p class="subtitle-1 text-sm-caption text-md-subtitle-1 mb-0" v-if="disabled">{{item.stock}}</p>
                 <v-form @submit.prevent v-else>
-                    <v-row align="center" class="ml-1" v-if="item.options.length < 1">
-                        <v-btn color="primary" depressed fab x-small @click="decrementQuantity" :disabled="quantity <= 1"><v-icon small>remove</v-icon></v-btn>
-                        <p class="caption mb-0 mx-1">{{quantity}}</p>
-                        <v-btn color="primary" depressed fab x-small @click="incrementQuantity" :disabled="quantity >= item.stock"><v-icon small>add</v-icon></v-btn>
-                    </v-row>
+                    <div  v-if="item.options.length < 1">
+                        <!-- create a seperate component, beacuse vue's reactivity system is weird when arrays change -->
+                        <!-- this card would display the quantity of the item that had this index before the update -->
+                       <UpdateQtyStock :amount="item.quantity" :stock="item.stock" @incrementQuantity="incrementQuantity" @decrementQuantity="decrementQuantity"/>
+                    </div>
                     <v-row class="ml-1" v-else>
                         <v-dialog v-model="dialog" max-width="350px">
                             <template v-slot:activator="{ on, attrs }">
@@ -44,7 +44,8 @@
 </template>
 
 <script>
-import UpdateQtyMerchCardMini from './UpdateQtyMerchCardMini'
+import UpdateQtyMerchCardMini from './UpdateQtyMerchCardMini';
+import UpdateQtyStock from './UpdateQtyStock';
 export default {
     props: {
         item: {
@@ -57,11 +58,11 @@ export default {
         },
     },
     components: {
-        UpdateQtyMerchCardMini
+        UpdateQtyMerchCardMini,
+        UpdateQtyStock
     },
     data() {
         return {
-            quantity: this.item.quantity,
             dialog: false,
         }
     },
@@ -76,16 +77,10 @@ export default {
             this.$emit('decrementOptionQuantity', {id: this.item.id, index});
         },
         incrementQuantity() {
-            if (this.quantity < this.item.stock) {
-                this.quantity++;
-                this.$emit('incrementQuantity', this.item.id);
-            } 
+            this.$emit('incrementQuantity', this.item.id);
         },
         decrementQuantity() {
-            if (this.quantity > 1) {
-                this.quantity--;
-                this.$emit('decrementQuantity', this.item.id);
-            }
+            this.$emit('decrementQuantity', this.item.id)
         }
     }
 }

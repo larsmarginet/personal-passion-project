@@ -191,6 +191,15 @@ export default {
         // delete merch doc
         await firebase.merchCollection.doc(payload).delete();
         ctx.commit('deleteMerch', payload);
+
+        // delete item in all events
+        const result = await firebase.eventsCollection.where('bandId', '==', firebase.auth.currentUser.uid).get();
+        result.forEach(async event => {
+            const merch = await firebase.eventsCollection.doc(event.id).collection('merch').where('id', '==', payload).get();
+            merch.forEach(async item => {
+                await firebase.eventsCollection.doc(event.id).collection('merch').doc(item.id).delete();
+            });
+        });
     },
 
     clearError(ctx) {

@@ -12,7 +12,11 @@
             </v-col>
             <v-col cols="12" lg="8" order-lg="1">
                 <v-card flat class="mx-auto mb-10" rounded="xl" v-if="loadingEvent">
-                    <v-skeleton-loader max-width="290" type="table-heading, date-picker-days" class="mb-4"></v-skeleton-loader>
+                    <v-skeleton-loader max-width="290" type="list-item-avatar" class="mb-4"></v-skeleton-loader>
+                    <v-skeleton-loader max-width="290" type="image" class="mb-4 mx-4"></v-skeleton-loader>
+                    <v-skeleton-loader type="chip" class="mb-4 mx-4"></v-skeleton-loader>
+                    <v-skeleton-loader type="chip" class="mb-4 mx-4"></v-skeleton-loader>
+                    <v-skeleton-loader max-width="290" type="image" class="mb-4 mx-4"></v-skeleton-loader>
                     <v-skeleton-loader type="list-item-avatar" class="mb-4"></v-skeleton-loader>
                     <v-skeleton-loader type="list-item-avatar" class="mb-4 pb-5"></v-skeleton-loader>
                 </v-card>
@@ -163,7 +167,7 @@ export default {
         handleDeleteSong(id) {
             const index = this.setList.map(merch => merch.id).indexOf(id);
             this.setList.splice(index, 1);
-             this.checkIfUpdated()
+            this.checkIfUpdated()
         },
         handleIncrementQuantity(id) {
             const item = this.assignedMerchList.find(merch => merch.id === id);
@@ -223,7 +227,7 @@ export default {
             await this.$store.dispatch('merch/loadMerch');
             this.merchList = this.$store.getters['merch/merch'];
             this.merchList.forEach(merch => {
-                merch.quantity = merch.stock
+                merch.quantity = merch.stock;
                 merch.options.forEach(option => {
                     option.quantity = parseFloat(option.stock);
                 });
