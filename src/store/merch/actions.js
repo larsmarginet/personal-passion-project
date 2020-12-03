@@ -198,6 +198,11 @@ export default {
             const merch = await firebase.eventsCollection.doc(event.id).collection('merch').where('id', '==', payload).get();
             merch.forEach(async item => {
                 await firebase.eventsCollection.doc(event.id).collection('merch').doc(item.id).delete();
+                // delete all images from item
+                await firebase.db.runTransaction(async transaction => {
+                    const images = await firebase.eventsCollection.doc(event.id).collection('merch').doc(item.id).collection('images').get();
+                    images.forEach(async image => await transaction.delete(firebase.eventsCollection.doc(event.id).collection('merch').doc(item.id).collection('images').doc(image.id)));
+                });
             });
         });
     },
