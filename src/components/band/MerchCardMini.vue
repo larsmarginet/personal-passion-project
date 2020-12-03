@@ -11,11 +11,11 @@
             <div class="card-grid-info">
                 <p class="subtitle-1 text-sm-caption text-md-subtitle-1 mb-0" v-if="disabled">{{item.stock}}</p>
                 <v-form @submit.prevent v-else>
-                    <div  v-if="item.options.length < 1">
-                        <!-- create a seperate component, beacuse vue's reactivity system is weird when arrays change -->
-                        <!-- this card would display the quantity of the item that had this index before the update -->
-                       <UpdateQtyStock :amount="item.quantity" :stock="item.stock" @incrementQuantity="incrementQuantity" @decrementQuantity="decrementQuantity"/>
-                    </div>
+                    <v-row align="center" class="ml-1" v-if="item.options.length < 1">
+                        <v-btn color="primary" depressed fab x-small @click="decrementQuantity" :disabled="item.quantity <= 1"><v-icon small>remove</v-icon></v-btn>
+                        <p class="caption mb-0 mx-1">{{quantity ? quantity : item.quantity}}</p>
+                        <v-btn color="primary" depressed fab x-small @click="incrementQuantity" :disabled="item.quantity >= item.stock"><v-icon small>add</v-icon></v-btn>
+                    </v-row>
                     <v-row class="ml-1" v-else>
                         <v-dialog v-model="dialog" max-width="350px">
                             <template v-slot:activator="{ on, attrs }">
@@ -45,7 +45,6 @@
 
 <script>
 import UpdateQtyMerchCardMini from './UpdateQtyMerchCardMini';
-import UpdateQtyStock from './UpdateQtyStock';
 export default {
     props: {
         item: {
@@ -59,11 +58,11 @@ export default {
     },
     components: {
         UpdateQtyMerchCardMini,
-        UpdateQtyStock
     },
     data() {
         return {
             dialog: false,
+            quantity: null,
         }
     },
     methods: {
@@ -77,10 +76,20 @@ export default {
             this.$emit('decrementOptionQuantity', {id: this.item.id, index});
         },
         incrementQuantity() {
-            this.$emit('incrementQuantity', this.item.id);
+            if (this.item.quantity < this.item.stock) {
+                this.$emit('incrementQuantity', this.item.id);
+                // little hack to make sure the quantity updates when there is a new item added to the list 
+                // Vue's reactivity system won't update when there is a new item added to the list (https://vuejs.org/v2/guide/reactivity.html)
+                this.quantity = this.item.quantity;
+                this.quantity = null;
+            }
         },
         decrementQuantity() {
-            this.$emit('decrementQuantity', this.item.id)
+            if (this.item.quantity > 0) {
+                this.$emit('decrementQuantity', this.item.id);
+                this.quantity = this.item.quantity;
+                this.quantity = null;
+            }
         }
     }
 }
