@@ -229,7 +229,7 @@ export default {
             this.merchList.forEach(merch => {
                 merch.quantity = merch.stock;
                 merch.options.forEach(option => {
-                    option.quantity = parseFloat(option.stock);
+                    option.quantity = option.stock;
                 });
             });
             this.assignedMerchList = currentEvent.merchList;
