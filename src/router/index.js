@@ -193,8 +193,8 @@ const routes = [
         path: 'events/create', 
         name: 'VenueEventsCreate',
         meta: {
-          title: meta.VenueEventsCreate.title,
-          metaTags: meta.VenueEventsCreate.metaTags,
+          title: meta.venueEventsCreate.title,
+          metaTags: meta.venueEventsCreate.metaTags,
           requiresAuth: true,
           userType: 'venue'
         },
@@ -205,19 +205,31 @@ const routes = [
         name: 'VenueEventsDetail',
         props: true,
         meta: {
-          title: meta.VenueEventsDetail.title,
-          metaTags: meta.VenueEventsDetail.metaTags,
+          title: meta.venueEventsDetail.title,
+          metaTags: meta.venueEventsDetail.metaTags,
           requiresAuth: true,
           userType: 'venue'
         },
         component: () => import(/* webpackChunkName: "VenueEventDetail" */ '../views/venue/VenueEventDetail.vue'),
       },
       {
+        path: 'orders/:id', 
+        name: 'VenueOrders',
+        props: true,
+        meta: {
+          title: meta.venueOrders.title,
+          metaTags: meta.venueOrders.metaTags,
+          requiresAuth: true,
+          userType: 'venue'
+        },
+        component: () => import(/* webpackChunkName: "VenueOrders" */ '../views/venue/VenueOrders.vue'),
+      },
+      {
         path: 'menu', 
         name: 'VenueMenu',
         meta: {
-          title: meta.VenueMenu.title,
-          metaTags: meta.VenueMenu.metaTags,
+          title: meta.venueMenu.title,
+          metaTags: meta.venueMenu.metaTags,
           requiresAuth: true,
           userType: 'venue'
         },
@@ -227,8 +239,8 @@ const routes = [
         path: 'menu/create', 
         name: 'VenueMenuCreate',
         meta: {
-          title: meta.VenueMenuCreate.title,
-          metaTags: meta.VenueMenuCreate.metaTags,
+          title: meta.venueMenuCreate.title,
+          metaTags: meta.venueMenuCreate.metaTags,
           requiresAuth: true,
           userType: 'venue'
         },
@@ -239,8 +251,8 @@ const routes = [
         name: 'VenueMenuDetail',
         props: true,
         meta: {
-          title: meta.VenueMenuDetail.title,
-          metaTags: meta.VenueMenuDetail.metaTags,
+          title: meta.venueMenuDetail.title,
+          metaTags: meta.venueMenuDetail.metaTags,
           requiresAuth: true,
           userType: 'venue'
         },
@@ -250,8 +262,8 @@ const routes = [
         path: 'rooms', 
         name: 'VenueRooms',
         meta: {
-          title: meta.VenueRooms.title,
-          metaTags: meta.VenueRooms.metaTags,
+          title: meta.venueRooms.title,
+          metaTags: meta.venueRooms.metaTags,
           requiresAuth: true,
           userType: 'venue'
         },
@@ -261,8 +273,8 @@ const routes = [
         path: 'rooms/create', 
         name: 'VenueRoomsCreate',
         meta: {
-          title: meta.VenueRooms.title,
-          metaTags: meta.VenueRooms.metaTags,
+          title: meta.venueRooms.title,
+          metaTags: meta.venueRooms.metaTags,
           requiresAuth: true,
           userType: 'venue'
         },
@@ -273,8 +285,8 @@ const routes = [
         name: 'VenueRoomsDetail',
         props: true,
         meta: {
-          title: meta.VenueRooms.title,
-          metaTags: meta.VenueRooms.metaTags,
+          title: meta.venueRooms.title,
+          metaTags: meta.venueRooms.metaTags,
           requiresAuth: true,
           userType: 'venue'
         },

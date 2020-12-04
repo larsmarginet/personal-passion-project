@@ -194,7 +194,7 @@ const venueEvents = {
     ]
 };
 
-const VenueEventsCreate = {
+const venueEventsCreate = {
     title: 'create event',
     metaTags: [
         {
@@ -208,7 +208,7 @@ const VenueEventsCreate = {
     ]
 };
 
-const VenueEventsDetail = {
+const venueEventsDetail = {
     title: 'edit event',
     metaTags: [
         {
@@ -222,7 +222,21 @@ const VenueEventsDetail = {
     ]
 };
 
-const VenueMenu = {
+const venueOrders = {
+    title: 'orders',
+    metaTags: [
+        {
+            name: 'description',
+            content: 'Venues can view there orders in real time here.'
+        },
+        {
+            name: 'og:description',
+            content: 'Venues can view there orders in real time here.'
+        }
+    ]
+};
+
+const venueMenu = {
     title: 'food & drinks',
     metaTags: [
         {
@@ -236,7 +250,7 @@ const VenueMenu = {
     ]
 };
 
-const VenueMenuCreate = {
+const venueMenuCreate = {
     title: 'create food & drinks',
     metaTags: [
         {
@@ -250,7 +264,7 @@ const VenueMenuCreate = {
     ]
 };
 
-const VenueMenuDetail = {
+const venueMenuDetail = {
     title: 'edit food & drinks',
     metaTags: [
         {
@@ -264,7 +278,7 @@ const VenueMenuDetail = {
     ]
 };
 
-const VenueRooms = {
+const venueRooms = {
     title: 'rooms',
     metaTags: [
         {
@@ -278,7 +292,7 @@ const VenueRooms = {
     ]
 };
 
-const VenueRoomsCreate = {
+const venueRoomsCreate = {
     title: 'create room',
     metaTags: [
         {
@@ -292,7 +306,7 @@ const VenueRoomsCreate = {
     ]
 };
 
-const VenueRoomsDetail = {
+const venueRoomsDetail = {
     title: 'edit room',
     metaTags: [
         {
@@ -322,12 +336,13 @@ export {
     bandSongsCreate,
     bandSongsDetail,
     venueEvents,
-    VenueEventsCreate,
-    VenueEventsDetail,
-    VenueMenu,
-    VenueMenuCreate,
-    VenueMenuDetail,
-    VenueRooms,
-    VenueRoomsCreate,
-    VenueRoomsDetail
+    venueEventsCreate,
+    venueEventsDetail,
+    venueOrders,
+    venueMenu,
+    venueMenuCreate,
+    venueMenuDetail,
+    venueRooms,
+    venueRoomsCreate,
+    venueRoomsDetail
 }
