@@ -7,6 +7,7 @@ import rooms from './rooms/index.js'
 import menu from './menu/index.js'
 import merch from './merch/index.js'
 import songs from './songs/index.js'
+import orders from './orders/index.js'
 
 Vue.use(Vuex)
 
@@ -36,6 +37,7 @@ export default new Vuex.Store({
     rooms,
     menu,
     merch,
-    songs
+    songs,
+    orders
   }
 })

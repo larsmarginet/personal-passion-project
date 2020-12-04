@@ -2,29 +2,37 @@
     <v-card class="mb-4" rounded="lg" flat>
         <DeleteModal :dialog="dialog" @continue="handleDeleteEvent" @cancel="cancelDeleteEvent"/>
         <v-card-title class="pa-6">
-            <v-avatar size="48" :color="`${image ? 'white' : 'error'}`">
-                <img class="rounded-avatar" :src="image" :alt="name" v-if="image"/>
-                <v-icon v-else large dark>error</v-icon>
-            </v-avatar>
-            <span class="ml-5 headline font-weight-bold">{{ name }}</span>   
-            <v-spacer></v-spacer>
-            <v-menu offset-y left>
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn icon v-bind="attrs" v-on="on" >
-                        <v-icon color="grey--text">more_vert</v-icon>
-                    </v-btn>
-                </template>
-                <v-list>
-                    <v-list-item :to="`/${type}/events/${event.id}`">
-                        <v-icon class="mr-2">create</v-icon>
-                        <v-list-item-title>update</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item link @click="openModal">
-                        <v-icon class="mr-2">delete</v-icon>
-                        <v-list-item-title>delete</v-list-item-title>
-                    </v-list-item>
-                </v-list>
-            </v-menu>
+            <v-col cols="11" sm="8" order="1" order-sm="1">
+                <v-row align="center">
+                    <v-avatar size="48" :color="`${image ? 'white' : 'error'}`">
+                        <img class="rounded-avatar" :src="image" :alt="name" v-if="image"/>
+                        <v-icon v-else large dark>error</v-icon>
+                    </v-avatar>
+                    <span class="ml-5 headline font-weight-bold">{{ name }}</span>   
+                </v-row>
+            </v-col>
+            <v-col cols="12" sm="3" order="3" order-sm="2">
+                <v-btn v-if="live" class="primary" depressed :to="`/${user.type}/orders/${event.id}`">orders</v-btn>
+            </v-col>
+            <v-col cols="1" order="2" order-sm="3" class="ml-n5 ml-sm-0">
+                <v-menu offset-y left>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn icon v-bind="attrs" v-on="on" >
+                            <v-icon color="grey--text">more_vert</v-icon>
+                        </v-btn>
+                    </template>
+                    <v-list>
+                        <v-list-item :to="`/${type}/events/${event.id}`">
+                            <v-icon class="mr-2">create</v-icon>
+                            <v-list-item-title>update</v-list-item-title>
+                        </v-list-item>
+                        <v-list-item link @click="openModal">
+                            <v-icon class="mr-2">delete</v-icon>
+                            <v-list-item-title>delete</v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+            </v-col>
         </v-card-title>
         <v-card-text class="pa-0">
             <v-row no-gutters>
@@ -75,6 +83,7 @@ export default {
     data() {
         return {
             dialog: false,
+            currentTime: (new Date()).getTime()
         }
     },
     computed: {
@@ -83,6 +92,12 @@ export default {
         },
         merch() {
             return this.event.merch;
+        },
+        live() {
+            return this.currentTime >= this.event.start && this.currentTime <= this.event.end;
+        },
+        user() {
+            return this.$store.getters['auth/user'];
         }
     },
     methods: {
@@ -118,7 +133,7 @@ export default {
         handleDeleteEvent() {
             this.dialog = false;
             this.$store.dispatch('events/deleteEvent', this.event.id);
-        }
+        },
     },
 }
 </script>

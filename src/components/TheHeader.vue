@@ -14,9 +14,9 @@
                 <v-btn href="/signup/choose" class="grey--text text--lighten-5" outlined depressed>signup</v-btn>  
             </div>
             <v-layout justify-end align-center v-else>
-                <v-btn href="/login" class="primary--text mr-5" depressed>orders</v-btn>
+                <!-- <v-btn :href="`/${user.type}/orders`" class="primary--text mr-5" depressed>orders</v-btn> -->
                 <v-menu offset-y transition="slide-y-transition">
-                    <template v-slot:activator="{ on, attrs }" >
+                    <template v-slot:activator="{ on, attrs }">
                         <v-avatar color="grey lighten-5" v-bind="attrs" v-on="on">
                             <img :src="avatar" :alt="currentUser" v-if="avatar">
                             <v-icon class="primary--text" large v-else>account_circle</v-icon>

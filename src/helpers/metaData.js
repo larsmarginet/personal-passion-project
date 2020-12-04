@@ -82,6 +82,20 @@ const bandEventsDetail = {
     ]
 };
 
+const bandOrders = {
+    title: 'orders',
+    metaTags: [
+        {
+            name: 'description',
+            content: 'Bands can view there orders in real time here.'
+        },
+        {
+            name: 'og:description',
+            content: 'Bands can view there orders in real time here.'
+        }
+    ]
+};
+
 const bandMerch = {
     title: 'merch',
     metaTags: [
@@ -300,6 +314,7 @@ export {
     signup,
     bandEvents,
     bandEventsDetail,
+    bandOrders,
     bandMerch,
     bandMerchCreate,
     bandMerchDetail,
