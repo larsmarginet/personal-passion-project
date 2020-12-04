@@ -5,27 +5,34 @@
             <v-skeleton-loader v-for="n in 5" :key="n" type="table-thead" class="mb-4"></v-skeleton-loader>
         </div>
         <v-expansion-panels flat v-else-if="!loading && orders">
-            <v-row style="maxWidth: 98%" justify="start">
+            <v-row class="px-4 pb-4" style="width: 100%">
+                <v-icon class="primary--text">filter_list</v-icon>
+                <v-btn text :class="{'primary--text': filter === 'all'}" @click="setFilter('all')">All</v-btn>
+                <v-btn text :class="{'primary--text': filter === 'signed'}" @click="setFilter('signed')" v-if="type === 'band'">Signed</v-btn>
+                <v-btn text :class="{'primary--text': filter === 'uncompleted'}" @click="setFilter('uncompleted')">Uncompleted</v-btn>
+                <v-btn text :class="{'primary--text': filter === 'processing'}" @click="setFilter('processing')">Processing</v-btn>
+            </v-row>
+            <v-row style="maxWidth: 96%; marginLeft: -4%" justify="start">
                 <v-col cols="6" sm="3" md="2">
                     <p class="mb-0 caption">TIME</p>
                 </v-col>
                 <v-col cols="3" sm="1" md="2">
                     <p class="mb-0 caption">QTY</p>
                 </v-col>
-                <v-col cols="3" sm="1" md="2">
+                <v-col cols="3" sm="1" md="2" class="pl-6">
                    <p class="mb-0 caption">TOTAL</p>
                 </v-col>
-                <v-col cols="2" v-if="type === 'band'">
+                <v-col cols="2" class="pl-6" v-if="type === 'band'">
                     <p class="mb-0 caption">SIGNED</p>
                 </v-col>
-                <v-col cols="2" >
+                <v-col cols="2" class="pl-6">
                     <p class="mb-0 caption">TABLE</p>
                 </v-col>
-                <v-col cols="2">
+                <v-col cols="2" class="pl-6">
                     <p class="mb-0 caption">STATUS</p>
                 </v-col>
             </v-row>
-                <v-expansion-panel v-for="order in orders" :key="order.id">
+                <v-expansion-panel v-for="order in filteredOrders" :key="order.id">
                     <v-expansion-panel-header>
                         <v-row align="center">
                             <v-col cols="6" sm="3" md="2">
@@ -103,6 +110,11 @@ export default {
             type: String
         }
     },
+    data() {
+        return {
+            filter: 'all',
+        }
+    },
     computed: {
         orders() {
             return this.$store.getters['orders/orders'];
@@ -112,9 +124,25 @@ export default {
         },
         type() {
             return this.$route.path.includes('venue') ? 'venue' : 'band';
+        },
+        filteredOrders() {
+            if (this.filter === 'all') {
+                return this.orders;
+            } else if (this.filter === 'signed') {
+                return this.orders.filter(order => order.signed == true);
+            } else if (this.filter === 'uncompleted') {
+                return this.orders.filter(order => order.status === 'uncompleted');
+            } else if (this.filter === 'processing') {
+                return this.orders.filter(order => order.status === 'processing');
+            } else {
+                return this.orders;
+            }
         }
     },
     methods: {
+        setFilter(val) {
+            this.filter !== val ? this.filter = val : this.filter = '';
+        },
         getHours(timestamp) {
             return format(timestamp, 'HH:mm')
         },
