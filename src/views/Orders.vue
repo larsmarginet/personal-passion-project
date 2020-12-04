@@ -1,5 +1,5 @@
 <template>
-    <section>
+     <section>
         <h2 style="display: none;">Orders</h2>
         <div v-if="loading">
             <v-skeleton-loader v-for="n in 5" :key="n" type="table-thead" class="mb-4"></v-skeleton-loader>
@@ -15,7 +15,7 @@
                 <v-col cols="3" sm="1" md="2">
                    <p class="mb-0 caption">TOTAL</p>
                 </v-col>
-                <v-col cols="2">
+                <v-col cols="2" v-if="type === 'band'">
                     <p class="mb-0 caption">SIGNED</p>
                 </v-col>
                 <v-col cols="2" >
@@ -37,7 +37,7 @@
                             <v-col cols="3" sm="1" md="2">
                                 <p class="mb-0 body-1 font-weight-bold">€{{getTotalPrice(order)}}</p>
                             </v-col>
-                            <v-col cols="2">
+                            <v-col cols="2" v-if="type === 'band'">
                                 <v-btn depressed medium class="orange white--text" :class="{'primary': order.signed}">{{order.signed ? 'yes' : 'no'}}</v-btn>
                             </v-col>
                             <v-col cols="2">
@@ -56,7 +56,7 @@
                             <v-col cols="12" sm="7" md="4">
                                 <p class="ml-8 mb-0 caption">ITEM</p>
                             </v-col>
-                            <v-col cols="2" sm="1">
+                            <v-col cols="2" sm="1" v-if="type === 'band'">
                                 <p class="text-center mb-0 caption">OPTION</p>
                             </v-col>
                             <v-col cols="1" sm="1">
@@ -73,7 +73,7 @@
                                     <p class="font-weight-bold mb-0 pt-1 body-1">{{item.name}}</p>
                                 </v-row>
                             </v-col>
-                            <v-col cols="2" sm="1">
+                            <v-col cols="2" sm="1" v-if="type === 'band'">
                                 <p class="text-center mb-0 body-1">{{item.option}}</p>
                             </v-col>
                             <v-col cols="1" sm="1">
@@ -84,7 +84,7 @@
                             </v-col>
                         </v-row>
                         <p class="caption mt-4">ID: {{order.id}}</p>
-                    </v-expansion-panel-content>
+                    </v-expansion-panel-content>    
                     <v-divider></v-divider>
                 </v-expansion-panel>
         </v-expansion-panels>
@@ -109,6 +109,9 @@ export default {
         },
         loading() {
             return this.$store.getters['orders/loading'];
+        },
+        type() {
+            return this.$route.path.includes('venue') ? 'venue' : 'band';
         }
     },
     methods: {
@@ -123,7 +126,7 @@ export default {
         getTotalPrice(order) {
             let total = 0;
             order.orders.forEach(item => total += (item.price * item.quantity));
-            return total;
+            return (Math.round(total * 100) / 100).toFixed(2);
         },
         handleUpdateStatus({id, status}) {
             if (status === 'uncompleted') {
@@ -133,12 +136,12 @@ export default {
             } else if (status === 'complete') {
                 status = 'uncompleted';
             }
-            this.$store.dispatch('orders/updateOrderStatusForBands', {eventId: this.id, id, status});
+            this.$store.dispatch('orders/updateOrderStatus', {eventId: this.id, id, status, type: `${this.type}Orders`});
         }
     },
     mounted() {
         this.$store.dispatch('setLoadingComponent', false);
-        this.$store.dispatch('orders/loadOrdersForBand', this.id);
+        this.$store.dispatch('orders/loadOrders', {id: this.id, type: `${this.type}Orders`});
     }
 }
 </script>
@@ -146,32 +149,5 @@ export default {
 <style scoped>
 .line-height {
     line-height: 2;
-}
-.list-enter {
-    opacity: 0;
-    transform: translateY(-30px);
-}
-
-.list-enter-active {
-    transition: all 500ms ease-out;
-}
-
-.list-enter-to {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.list-leave{
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.list-leave-active {
-    transition: all 500ms ease-in;
-}
-
-.list-leave-to {
-    opacity: 0;
-    transform: translateY(30px);
 }
 </style>

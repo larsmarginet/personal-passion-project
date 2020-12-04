@@ -96,7 +96,7 @@ const routes = [
           requiresAuth: true,
           userType: 'band'
         },
-        component: () => import(/* webpackChunkName: "BandOrders" */ '../views/band/BandOrders.vue'),
+        component: () => import(/* webpackChunkName: "Orders" */ '../views/Orders.vue'),
       },
       {
         path: 'merch', 
@@ -222,7 +222,7 @@ const routes = [
           requiresAuth: true,
           userType: 'venue'
         },
-        component: () => import(/* webpackChunkName: "VenueOrders" */ '../views/venue/VenueOrders.vue'),
+        component: () => import(/* webpackChunkName: "Orders" */ '../views/Orders.vue'),
       },
       {
         path: 'menu', 
