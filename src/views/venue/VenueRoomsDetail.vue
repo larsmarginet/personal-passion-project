@@ -109,7 +109,7 @@ export default {
         generateQrCodes() {
             if (this.bubbles > 0) {
                 for (let i = 1; i <= this.bubbles; i++) {
-                    const qrCode = new QRious({ size: 300, value: `http://localhost:8080/?roomId=${this.id}&bubble=${i}` });
+                    const qrCode = new QRious({ size: 300, value: `https://concery-c60e6.web.app?roomId=${this.id}&bubble=${i}` });
                     this.qrcodes.push(qrCode);
                 }
             }
