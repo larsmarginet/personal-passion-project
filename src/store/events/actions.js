@@ -66,7 +66,8 @@ export default {
                 setList: [],
                 signing: false,
                 signingAmount: 0,
-                signedAmount: 0
+                signedAmount: 0,
+                currentSong: null
             });
             router.push('/venue/events');
         } catch (error) {
@@ -169,6 +170,45 @@ export default {
             ctx.commit('setError', error);
         }
         ctx.commit('setLoadingAddEvent', false);
+    },
+
+    async loadSeltList(ctx, payload) {
+        ctx.commit('setError', null);
+        try {
+            const result = await firebase.eventsCollection.doc(payload).get();  
+            const event = result.data();
+            const setList = [];
+            await Promise.all(event.setList.map(async id => { 
+               const song = await firebase.songCollection.doc(id).get();
+               setList.push({id: song.id, ...song.data()})
+            }));
+            ctx.commit('setSetList', setList);
+        } catch (error) {
+            ctx.commit('setError', error);
+        }
+    },
+
+    async loadCurrentSong(ctx, payload) {
+        ctx.commit('setError', null);
+        try {
+            await firebase.eventsCollection.doc(payload).onSnapshot(snapshot => {
+                const event = snapshot.data();
+                ctx.commit('setCurrentSong', event.currentSong);
+            });  
+        } catch (error) {
+            ctx.commit('setError', error);
+        }
+    },
+
+    async setCurrentSong(ctx, payload) {
+        ctx.commit('setError', null);
+        try {
+            await firebase.eventsCollection.doc(payload.id).update({
+                currentSong: payload.song,
+            });  
+        } catch (error) {
+            ctx.commit('setError', error);
+        }
     },
     
     async deleteEvent(_, payload) {

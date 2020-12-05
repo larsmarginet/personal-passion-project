@@ -1,5 +1,6 @@
 <template>
      <section>
+        <MusicPlayer v-if="!loading && type === 'band'" :id="id"/>
         <h2 style="display: none;">Orders</h2>
         <div v-if="loading">
             <v-skeleton-loader v-for="n in 5" :key="n" type="table-thead" class="mb-4"></v-skeleton-loader>
@@ -103,12 +104,16 @@
 
 <script>
 import { format } from 'date-fns';
+import MusicPlayer from '../components/band/MusicPlayer';
 export default {
     props: {
         id: {
             required: true,
             type: String
         }
+    },
+    components: {
+        MusicPlayer
     },
     data() {
         return {

@@ -7,6 +7,8 @@ export default {
     state: {
         error: null,
         events: [],
+        setList: [],
+        currentSong: null,
         currentEvent: null,
         loadingEvent: false,
         loadingEvents: false,
