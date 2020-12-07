@@ -14,8 +14,8 @@
                     <v-skeleton-loader type="list-item-avatar-three-line" class="mb-4" v-for="n in 3" :key="n"></v-skeleton-loader>
                 </v-container>
                 <v-container class="pa-0" v-else-if="!loading && events">
-                    <transition-group name="list" mode="out-in">
-                        <EventCard v-for="event in filteredEvents" :event="event" :key="event.id" :image="event.venueLogo" :name="event.venueName" type="band"/>
+                    <transition-group name="list">
+                        <EventCard v-for="(event) in filteredEvents" :event="event" :key="event.id" :image="event.venueLogo" :name="event.venueName" type="band"/> 
                     </transition-group>
                 </v-container>
             </v-col>
@@ -65,7 +65,7 @@ export default {
         },
         onDismissed() {
             this.$store.dispatch('events/clearError');
-        }
+        },
     },
     mounted() {
         this.$store.dispatch('setLoadingComponent', false);
@@ -74,32 +74,18 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .list-enter {
     opacity: 0;
-    transform: translateY(-30px);
+    transform: translateY(-15px);
 }
 
 .list-enter-active {
-    transition: all 500ms ease-out;
+    transition: all 500ms ease-in-out;
 }
 
 .list-enter-to {
     opacity: 1;
     transform: translateY(0);
-}
-
-.list-leave{
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.list-leave-active {
-    transition: all 500ms ease-in;
-}
-
-.list-leave-to {
-    opacity: 0;
-    transform: translateY(30px);
 }
 </style>

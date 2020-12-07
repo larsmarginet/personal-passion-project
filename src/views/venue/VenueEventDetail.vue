@@ -236,6 +236,7 @@ export default {
             const datesAreValid = this.validateDatePicker(this.selectedDates);
             if (this.$refs.form.validate() && datesAreValid) {
                 const band = this.bands.find(band => band.id === this.selectedBand);
+                console.log(band)
                 const room = this.rooms.find(room => room.id === this.selectedRoom);
                 const eventObj = {
                     roomId: room.id,
@@ -244,11 +245,11 @@ export default {
                     bandId: band.id,
                     bandLogo: band.logoUrl,
                     bandName: band.name,
-                    facebook: band.facebook,
-                    instagram: band.instagram,
-                    itunes: band.itunes,
-                    spotify: band.spotify,
-                    youtube: band.youtube,
+                    facebook: band.facebook ? band.facebook : null,
+                    instagram: band.instagram ? band.instagram : null,
+                    itunes: band.itunes ? band.itunes : null,
+                    spotify: band.spotify ? band.spotify : null,
+                    youtube: band.youtube ? band.youtube : null,
                     start: this.start,
                     end: this.end,
                 }

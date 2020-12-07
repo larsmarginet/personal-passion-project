@@ -54,7 +54,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .list-enter {
     opacity: 0;
     transform: translateY(-30px);

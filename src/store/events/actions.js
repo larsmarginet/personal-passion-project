@@ -71,6 +71,7 @@ export default {
             });
             router.push('/venue/events');
         } catch (error) {
+            console.error(error)
             ctx.commit('setError', error);
         }
         ctx.commit('setLoadingAddEvent', false);

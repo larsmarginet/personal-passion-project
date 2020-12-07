@@ -54,3 +54,33 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.list-enter {
+    opacity: 0;
+    transform: translateY(-30px);
+}
+
+.list-enter-active {
+    transition: all 500ms ease-out;
+}
+
+.list-enter-to {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.list-leave{
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.list-leave-active {
+    transition: all 500ms ease-in;
+}
+
+.list-leave-to {
+    opacity: 0;
+    transform: translateY(30px);
+}
+</style>

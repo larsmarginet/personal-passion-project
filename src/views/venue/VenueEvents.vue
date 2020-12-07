@@ -20,7 +20,7 @@
                     <v-skeleton-loader type="list-item-avatar-three-line" class="mb-4" v-for="n in 3" :key="n"></v-skeleton-loader>
                 </v-container>
                 <v-container class="pa-0" v-else-if="!loading && events">
-                    <transition-group name="list" mode="out-in">
+                    <transition-group name="list">
                         <EventCard v-for="event in filteredEvents" :event="event" :key="event.id" :image="event.bandLogo" :name="event.bandName" type="venue"/>
                     </transition-group>
                 </v-container>
@@ -80,36 +80,18 @@ export default {
 }
 </script>
 
-<style>
-.rounded-avatar {
-    border-radius: 50%;
-}
-
+<style scoped>
 .list-enter {
     opacity: 0;
-    transform: translateY(-30px);
+    transform: translateY(-15px);
 }
 
 .list-enter-active {
-    transition: all 500ms ease-out;
+    transition: all 500ms ease-in-out;
 }
 
 .list-enter-to {
     opacity: 1;
     transform: translateY(0);
-}
-
-.list-leave{
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.list-leave-active {
-    transition: all 500ms ease-in;
-}
-
-.list-leave-to {
-    opacity: 0;
-    transform: translateY(30px);
 }
 </style>
