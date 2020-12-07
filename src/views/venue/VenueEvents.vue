@@ -39,8 +39,8 @@ export default {
     },
     data() {
         return {
-            filter: 'upcoming',
-            currentTime: (new Date()).getTime()
+            currentTime: (new Date()).getTime(),
+            filter: 'live'
         }
     },
     computed: {
