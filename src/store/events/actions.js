@@ -117,6 +117,20 @@ export default {
         ctx.commit('setLoadingEvent', false);
     },
 
+    async getEventById(ctx, payload) {
+        ctx.commit('setError', null);
+        ctx.commit('setLoadingEvent', true);
+        try {
+            const result = await firebase.eventsCollection.doc(payload).get();  
+            let event = result.data();
+            event.id = result.id;
+            ctx.commit('setCurrentEvent', event);
+        } catch (error) {
+            ctx.commit('setError', error);
+        }
+        ctx.commit('setLoadingEvent', false);
+    },
+
     async updateVenueEvent(ctx, payload) {
         ctx.commit('setError', null);
         ctx.commit('setLoadingAddEvent', true);

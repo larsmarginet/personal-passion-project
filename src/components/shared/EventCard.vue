@@ -13,6 +13,12 @@
             </v-col>
             <v-col cols="12" sm="3" order="3" order-sm="2">
                 <v-btn v-if="live" class="primary" depressed :to="`/${user.type}/orders/${event.id}`">orders</v-btn>
+                <v-dialog v-if="previous" v-model="modal" max-width="1080">
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn class="primary" depressed v-bind="attrs" v-on="on">Statistics</v-btn>
+                    </template>
+                    <Stats :id="event.id" :type="type" @closeModal="modal = !modal"/>
+                </v-dialog>
             </v-col>
             <v-col cols="1" order="2" order-sm="3" class="ml-n5 ml-sm-0">
                 <v-menu offset-y left>
@@ -57,7 +63,8 @@
 
 <script>
 import format from 'date-fns/format';
-import DeleteModal from '../shared/DeleteModal';
+import DeleteModal from './DeleteModal';
+import Stats from './Stats';
 export default {
     props: {
         event: {
@@ -78,11 +85,13 @@ export default {
         }
     },
     components: {
-        DeleteModal
+        DeleteModal,
+        Stats
     },
     data() {
         return {
             dialog: false,
+            modal: false,
             currentTime: (new Date()).getTime()
         }
     },
@@ -95,6 +104,9 @@ export default {
         },
         live() {
             return this.currentTime >= this.event.start && this.currentTime <= this.event.end;
+        },
+        previous() {
+            return this.currentTime > this.event.end;
         },
         user() {
             return this.$store.getters['auth/user'];
