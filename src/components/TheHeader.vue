@@ -14,19 +14,19 @@
                 <v-btn href="/signup/choose" class="grey--text text--lighten-5" outlined depressed>signup</v-btn>  
             </div>
             <v-layout justify-end align-center v-else>
-                <v-menu offset-y transition="slide-y-transition">
+                <v-menu offset-y transition="slide-y-transition" v-model="menu">
                     <template v-slot:activator="{ on, attrs }">
-                        <v-avatar color="grey lighten-5" v-bind="attrs" v-on="on">
+                        <v-avatar color="grey lighten-5 avatar-menu" v-bind="attrs" v-on="on" tabindex="0" @keypress.enter="handleLogout">
                             <img :src="avatar" :alt="currentUser" v-if="avatar">
                             <v-icon class="primary--text" large v-else>account_circle</v-icon>
                         </v-avatar>
                     </template>
                     <v-list>
-                        <v-list-item :to="profile">
+                        <v-list-item>
                             <v-icon class="mr-2">account_circle</v-icon>
                             <v-list-item-title>Profile</v-list-item-title>
                         </v-list-item>
-                        <v-list-item link>
+                        <v-list-item link> 
                             <v-icon class="mr-2">exit_to_app</v-icon>
                             <v-list-item-title @click="handleLogout">Log out</v-list-item-title>
                         </v-list-item>
@@ -59,6 +59,7 @@ export default {
     data() {
         return {
             drawer: false,
+            menu: false,
             venueLinks: [
                 { icon: 'event', text: 'Events', route: '/venue/events' },
                 { icon: 'fastfood', text: 'Food & drinks', route: '/venue/menu' },
@@ -96,8 +97,16 @@ export default {
     }, 
     methods: {
         handleLogout() {
-            this.$store.dispatch('auth/logout')
+            console.log('log out')
+            this.$store.dispatch('auth/logout');
         }
     }
 }
 </script>
+
+<style scoped>
+.avatar-menu:focus {
+    outline: none;
+    opacity: .9;
+}
+</style>

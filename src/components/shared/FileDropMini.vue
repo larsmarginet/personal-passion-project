@@ -1,5 +1,5 @@
 <template>
-    <v-sheet tabindex="0" title="Click to upload your logo" color="grey lighten-4" width="100" height="100" class="pa-2 d-flex flex-column justify-center rounded-lg" @click="handleClickPicker" @dragover.prevent="dragover" @dragleave="dragleave" @drop.prevent="drop">
+    <v-sheet tabindex="0" title="Click to upload your logo" color="grey lighten-4" width="100" height="100" class="pa-2 d-flex flex-column justify-center rounded-lg" @click="handleClickPicker" @keypress.enter="handleClickPicker" @dragover.prevent="dragover" @dragleave="dragleave" @drop.prevent="drop">
         <label for="logo" style="display: none">
             Click to upload
             <input id="logo" type="file" accept="image/png, image/jpeg" ref="picker" @change="handleChangePicker"/>
