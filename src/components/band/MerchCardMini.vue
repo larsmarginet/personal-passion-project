@@ -1,7 +1,7 @@
 <template>
     <v-card class="my-2 mx-1 card-grid pa-2">
         <v-responsive :aspect-ratio="1/1" class="card-grid-img">
-            <img width="100%" height="100%" :src="item.image.image" :alt="item.name" class="rounded-lg" style="objectFit: cover" />
+            <img :src="item.image.image" :alt="item.name" class="rounded-lg" style="objectFit: cover; width: 100%; height: 100%" />
         </v-responsive>
         <div class="card-grid-wrapper">
             <div class="card-grid-info">
@@ -10,7 +10,7 @@
             </div>
             <div class="card-grid-info">
                 <p class="subtitle-1 text-sm-caption text-md-subtitle-1 mb-0" v-if="disabled">{{item.stock}}</p>
-                <v-form @submit.prevent v-else>
+                <div v-else>
                     <v-row align="center" class="ml-1" v-if="item.options.length < 1">
                         <v-btn color="primary" depressed fab x-small @click="decrementQuantity" :disabled="item.quantity <= 1"><v-icon small>remove</v-icon></v-btn>
                         <p class="caption mb-0 mx-1">{{quantity ? quantity : item.quantity}}</p>
@@ -36,7 +36,7 @@
                             </v-card>
                         </v-dialog>
                     </v-row>
-                </v-form>
+                </div>
                 <p class="subtitle-1 text-sm-caption text-md-subtitle-1 mb-0">€{{item.price}}</p>
             </div>
         </div>

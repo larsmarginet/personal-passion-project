@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <section>
         <h2 style="display: none">Food &amp; drinks detail</h2>
         <v-row>
             <v-col cols="6" md="1" order-md="1">
@@ -37,7 +37,7 @@
                 </v-card>
             </v-col>
         </v-row>
-    </v-container>
+    </section>
 </template>
 
 <script>

@@ -8,7 +8,7 @@
             <v-card-title class="justify-center">
                 <h2 class="primary--text mt-5 mb-2">Sign up</h2>
             </v-card-title>
-            <v-stepper v-model="stepper" flat max-width="600px" class="elevation-0">
+            <v-stepper v-model="stepper" class="elevation-0">
                 <v-stepper-header class="elevation-0">
                     <v-stepper-step :complete="stepper > 1" step="1">General info</v-stepper-step>
                     <v-divider></v-divider>

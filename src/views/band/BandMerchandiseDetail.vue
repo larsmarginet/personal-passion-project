@@ -33,7 +33,7 @@
                                 <img :src="createPreview(image)" alt="image" width="100" height="100" class="rounded-lg" style="objectFit: cover"/>
                                 <v-btn fab x-small style="marginTop: -235px; marginLeft: 80px" @click="handleRemoveImage(i)"><v-icon>clear</v-icon></v-btn>
                             </v-col>
-                            <v-col max-width="80" v-if="images.length < 8">
+                            <v-col style="maxWidth: 80px" v-if="images.length < 8">
                                 <FileDropMini :rules="imageRules" @fileDropped="handleUploadFile"/>
                             </v-col>
                         </draggable>

@@ -1,6 +1,6 @@
 <template>
-    <v-container>
-        <h2 style="display: none">Rooms</h2>
+    <section>
+        <h2 style="display: none">Songs</h2>
         <v-row>
             <v-col cols="12" md="3" order-md="2" offset-md="12">
                 <v-row justify="end" justify-md="start" class="px-4">
@@ -15,13 +15,13 @@
                     <v-skeleton-loader type="list-item-avatar" class="mb-4" v-for="n in 5" :key="n"></v-skeleton-loader>
                 </v-container>
                 <v-container class="pa-0" v-else-if="!loading && songs">
-                    <transition-group name="list">
+                    <div is="transition-group" name="list">
                         <SongCard v-for="song in songs" :key="song.id" :song="song"/>
-                    </transition-group>
+                    </div>
                 </v-container>
             </v-col>
         </v-row>
-    </v-container>
+    </section>
 </template>
 
 <script>

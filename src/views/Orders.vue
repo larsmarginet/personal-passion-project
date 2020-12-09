@@ -1,11 +1,11 @@
 <template>
-     <section>
+    <section>
         <MusicPlayer v-if="!loading && type === 'band'" :id="id"/>
         <h2 style="display: none;">Orders</h2>
         <div v-if="loading">
             <v-skeleton-loader v-for="n in 5" :key="n" type="table-thead" class="mb-4"></v-skeleton-loader>
         </div>
-        <v-expansion-panels flat v-else-if="!loading && orders">
+        <v-expansion-panels flat v-else-if="!loading && orders" role="list">
             <v-row class="px-4 pb-4" style="width: 100%">
                 <v-icon class="primary--text">filter_list</v-icon>
                 <v-btn text :class="{'primary--text': filter === 'all'}" @click="setFilter('all')">All</v-btn>
@@ -33,68 +33,68 @@
                     <p class="mb-0 caption">STATUS</p>
                 </v-col>
             </v-row>
-                <v-expansion-panel v-for="order in filteredOrders" :key="order.id">
-                    <v-expansion-panel-header>
-                        <v-row align="center">
-                            <v-col cols="6" sm="3" md="2">
-                                <p class="mb-0 body-1 font-weight-bold">{{getHours(order.created)}}</p>
-                            </v-col>
-                            <v-col cols="3" sm="1" md="2">
-                                <p class="mb-0 body-1 font-weight-bold">{{getTotalItems(order)}}</p>
-                            </v-col>
-                            <v-col cols="3" sm="1" md="2">
-                                <p class="mb-0 body-1 font-weight-bold">€{{getTotalPrice(order)}}</p>
-                            </v-col>
-                            <v-col cols="2" v-if="type === 'band'">
-                                <v-btn depressed medium class="orange white--text" :class="{'primary': order.signed}">{{order.signed ? 'yes' : 'no'}}</v-btn>
-                            </v-col>
-                            <v-col cols="2">
-                                <p class="mb-0 body-1 font-weight-bold">#{{order.bubble}}</p>
-                            </v-col>
-                            <v-col cols="2">
-                                <v-btn depressed medium @click.native.stop="handleUpdateStatus({id: order.id, status: order.status})" class="white--text" :class="`${order.status === 'uncompleted' ? 'error' : order.status === 'processing' ? 'orange' : 'primary' }`">
-                                    {{order.status}}
-                                </v-btn>
-                            </v-col>
-                        </v-row>
-                    </v-expansion-panel-header>
-                    <v-expansion-panel-content>
-                        <v-divider class="mb-4"></v-divider>
-                        <v-row>
-                            <v-col cols="12" sm="7" md="4">
-                                <p class="ml-8 mb-0 caption">ITEM</p>
-                            </v-col>
-                            <v-col cols="2" sm="1" v-if="type === 'band'">
-                                <p class="text-center mb-0 caption">OPTION</p>
-                            </v-col>
-                            <v-col cols="1" sm="1">
-                            <p class="text-center mb-0 caption">QTY</p>
-                            </v-col>
-                            <v-col cols="2" sm="1">
-                                <p class="text-center mb-0 caption">TOTAL</p>
-                            </v-col>
-                        </v-row>
-                        <v-row v-for="item in order.orders" :key="`${item.id}-${item.option}`" >
-                            <v-col cols="12" sm="7" md="4">
-                                <v-row class="ml-2 line-height">
-                                    <img :src="item.image" :alt="item.name" width="30" height="30" class="rounded-sm mr-2 mr-sm-4" cover>
-                                    <p class="font-weight-bold mb-0 pt-1 body-1">{{item.name}}</p>
-                                </v-row>
-                            </v-col>
-                            <v-col cols="2" sm="1" v-if="type === 'band'">
-                                <p class="text-center mb-0 body-1">{{item.option}}</p>
-                            </v-col>
-                            <v-col cols="1" sm="1">
-                                <p class="text-center mb-0 body-1">{{item.quantity}}</p>
-                            </v-col>
-                            <v-col cols="2" sm="1">
-                                <p class="text-center mb-0 body-1">€{{(Math.round(item.quantity * item.price * 100) / 100).toFixed(2)}}</p>
-                            </v-col>
-                        </v-row>
-                        <p class="caption mt-4">ID: {{order.id}}</p>
-                    </v-expansion-panel-content>    
-                    <v-divider></v-divider>
-                </v-expansion-panel>
+            <v-expansion-panel v-for="order in filteredOrders" :key="order.id" role="listitem">
+                <v-expansion-panel-header>
+                    <v-row align="center">
+                        <v-col cols="6" sm="3" md="2">
+                            <p class="mb-0 body-1 font-weight-bold">{{getHours(order.created)}}</p>
+                        </v-col>
+                        <v-col cols="3" sm="1" md="2">
+                            <p class="mb-0 body-1 font-weight-bold">{{getTotalItems(order)}}</p>
+                        </v-col>
+                        <v-col cols="3" sm="1" md="2">
+                            <p class="mb-0 body-1 font-weight-bold">€{{getTotalPrice(order)}}</p>
+                        </v-col>
+                        <v-col cols="2" v-if="type === 'band'">
+                            <v-btn depressed class="orange white--text" :class="{'primary': order.signed}">{{order.signed ? 'yes' : 'no'}}</v-btn>
+                        </v-col>
+                        <v-col cols="2">
+                            <p class="mb-0 body-1 font-weight-bold">#{{order.bubble}}</p>
+                        </v-col>
+                        <v-col cols="2">
+                            <v-btn depressed @click.native.stop="handleUpdateStatus({id: order.id, status: order.status})" class="white--text" :class="`${order.status === 'uncompleted' ? 'error' : order.status === 'processing' ? 'orange' : 'primary' }`">
+                                {{order.status}}
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                    <v-divider class="mb-4"></v-divider>
+                    <v-row>
+                        <v-col cols="12" sm="7" md="4">
+                            <p class="ml-8 mb-0 caption">ITEM</p>
+                        </v-col>
+                        <v-col cols="2" sm="1" v-if="type === 'band'">
+                            <p class="text-center mb-0 caption">OPTION</p>
+                        </v-col>
+                        <v-col cols="1" sm="1">
+                        <p class="text-center mb-0 caption">QTY</p>
+                        </v-col>
+                        <v-col cols="2" sm="1">
+                            <p class="text-center mb-0 caption">TOTAL</p>
+                        </v-col>
+                    </v-row>
+                    <v-row v-for="item in order.orders" :key="`${item.id}-${item.option}`" >
+                        <v-col cols="12" sm="7" md="4">
+                            <v-row class="ml-2 line-height">
+                                <img :src="item.image" :alt="item.name" width="30" height="30" class="rounded-sm mr-2 mr-sm-4" style="objectFit: cover">
+                                <p class="font-weight-bold mb-0 pt-1 body-1">{{item.name}}</p>
+                            </v-row>
+                        </v-col>
+                        <v-col cols="2" sm="1" v-if="type === 'band'">
+                            <p class="text-center mb-0 body-1">{{item.option}}</p>
+                        </v-col>
+                        <v-col cols="1" sm="1">
+                            <p class="text-center mb-0 body-1">{{item.quantity}}</p>
+                        </v-col>
+                        <v-col cols="2" sm="1">
+                            <p class="text-center mb-0 body-1">€{{(Math.round(item.quantity * item.price * 100) / 100).toFixed(2)}}</p>
+                        </v-col>
+                    </v-row>
+                    <p class="caption mt-4">ID: {{order.id}}</p>
+                </v-expansion-panel-content>    
+                <v-divider></v-divider>
+            </v-expansion-panel>
         </v-expansion-panels>
         <v-row v-else justify="center">
             <p class="body-1 mt-10">No orders yet...</p>

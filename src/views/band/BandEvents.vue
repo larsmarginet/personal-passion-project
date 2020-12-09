@@ -1,5 +1,6 @@
 <template>
-     <v-container>
+    <section>
+        <h2 style="display: none">Event detail</h2>
         <v-row>
             <v-col cols="12" md="9" lg="6">
                 <v-expand-transition>
@@ -13,14 +14,14 @@
                 <v-container v-if="loading">
                     <v-skeleton-loader type="list-item-avatar-three-line" class="mb-4" v-for="n in 3" :key="n"></v-skeleton-loader>
                 </v-container>
-                <v-container class="pa-0" v-else-if="!loading && events">
-                    <transition-group name="list">
+                <div class="pa-0" v-else-if="!loading && events">
+                    <div is="transition-group" name="list">
                         <EventCard v-for="(event) in filteredEvents" :event="event" :key="event.id" :image="event.venueLogo" :name="event.venueName" type="band"/> 
-                    </transition-group>
-                </v-container>
+                    </div>
+                </div>
             </v-col>
         </v-row>
-    </v-container>
+    </section>
 </template>
 
 <script>

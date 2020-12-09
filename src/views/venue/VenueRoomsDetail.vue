@@ -31,7 +31,7 @@
                         <v-btn @click="generateQrCodes" depressed color="primary">generate codes</v-btn>
                         <v-btn @click="dowloadAllQrCodes" text depressed color="primary" v-if="qrcodes.length > 0"><v-icon>get_app</v-icon> download all</v-btn>
                     </v-row>
-                    <transition-group name="list">
+                    <div is="transition-group" name="list">
                         <v-card v-for="(code, i) in qrcodes" :key="code.value" flat>
                             <v-card-title class="ma-2">
                                 <img :src="code.toDataURL()" alt="QRCode" style="maxWidth: 60px" class="img-border" />
@@ -41,7 +41,7 @@
                             </v-card-title>
                             <v-divider></v-divider>
                         </v-card>
-                    </transition-group>
+                    </div>
                 </v-card>
             </v-col>
         </v-row>

@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <section>
         <h2 style="display: none">Food &amp; drinks</h2>
         <v-row>
             <v-col cols="12" md="3" order-md="2" offset-md="12">
@@ -15,13 +15,13 @@
                     <v-skeleton-loader type="list-item-avatar" class="mb-4" v-for="n in 5" :key="n"></v-skeleton-loader>
                 </v-container>
                 <v-container class="pa-0" v-else-if="!loading && menu">
-                    <transition-group name="list">
+                    <div is="transition-group" name="list">
                         <MenuCard v-for="item in menu" :key="item.id" :item="item"/>
-                    </transition-group>
+                    </div >
                 </v-container>
             </v-col>
         </v-row>
-    </v-container>
+    </section>
 </template>
 
 <script>

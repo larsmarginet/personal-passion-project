@@ -19,14 +19,14 @@
                 <v-divider vertical></v-divider>
                 <v-col cols="6" class="mx-4">
                     <p class="subtitle-1 font-weight-bold mb-2">Top selling products:</p>
-                    <transition-group name="list">
-                        <v-row v-for="(product, i) in topSelling" :key="i" align="center" class="mb-2 mx-1">
+                    <div is="transition-group" name="products">
+                        <v-row v-for="(product, i) in topSelling" :key="product.id" align="center" class="mb-2 mx-1">
                             <span class="mr-4">{{i+1}}.</span>
                             <img :src="product.image" :alt="product.name" style="objectFit: cover; width: 35px; height: 35px" class="mr-4 rounded-lg">
                             <span class="mr-4 body-1 grey--text text--darken-4">{{product.name}} </span>
                             <span>Qty: {{product.quantity}}</span>
                         </v-row>
-                    </transition-group>
+                    </div>
                 </v-col>
             </v-row>
             <v-row v-else justify="center" align="center">
@@ -115,13 +115,12 @@ export default {
                         products.push(item);
                     }
                 }));
-                products.sort((a,b) => a.quantity > b.quantity ? -1 : 1)
+                products.sort((a,b) => a.quantity > b.quantity ? -1 : 1);
                 return products.length >= 3 ? products.slice(0, 3) : products;
             } else {
                 return null;
             }
         }
-
     },
     methods: {
         theFormat(number) {
@@ -139,30 +138,30 @@ export default {
 </script>
 
 <style scoped>
-.list-enter {
+.products-enter {
     opacity: 0;
     transform: translateY(-30px);
 }
 
-.list-enter-active {
+.products-enter-active {
     transition: all 500ms ease-out;
 }
 
-.list-enter-to {
+.products-enter-to {
     opacity: 1;
     transform: translateY(0);
 }
 
-.list-leave{
+.products-leave {
     opacity: 1;
     transform: translateY(0);
 }
 
-.list-leave-active {
+.products-leave-active {
     transition: all 500ms ease-in;
 }
 
-.list-leave-to {
+.products-leave-to {
     opacity: 0;
     transform: translateY(30px);
 }

@@ -3,7 +3,7 @@
         <v-sheet tabindex="0" title="Click to upload your logo" color="grey lighten-4" width="100%" height="200" class="pa-2 d-flex flex-column justify-center rounded-lg" @click="handleClickPicker" @dragover.prevent="dragover" @dragleave="dragleave" @drop.prevent="drop" v-if="!file">
             <label for="logo" style="display: none">
                 Click to upload
-                <input id="log" type="file" accept="image/png, image/jpeg" ref="picker" @change="handleChangePicker"/>
+                <input id="logo" type="file" accept="image/png, image/jpeg" ref="picker" @change="handleChangePicker"/>
             </label>
             <v-icon x-large color="grey lighten-2" class="mx-auto">add_a_photo</v-icon>
             <p class="caption grey--text text--lighten-1 text-center mt-2">Drag your image here or click to upload</p>
