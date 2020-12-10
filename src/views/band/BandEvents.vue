@@ -7,9 +7,9 @@
                     <Alert @dismissed="onDismissed" :text="error" v-if="error"/>
                 </v-expand-transition>
                 <v-row class="px-4 pb-4">
-                    <v-btn text :class="{'primary--text': filter === 'live'}" @click="setFilter('live')">Live</v-btn>
-                    <v-btn text :class="{'primary--text': filter === 'upcoming'}" @click="setFilter('upcoming')">Upcoming</v-btn>
-                    <v-btn text :class="{'primary--text': filter === 'previous'}" @click="setFilter('previous')">Previous</v-btn>
+                    <v-btn name="live" text :class="{'primary--text': filter === 'live'}" @click="setFilter('live')">Live</v-btn>
+                    <v-btn name="upcoming" text :class="{'primary--text': filter === 'upcoming'}" @click="setFilter('upcoming')">Upcoming</v-btn>
+                    <v-btn name="previous" text :class="{'primary--text': filter === 'previous'}" @click="setFilter('previous')">Previous</v-btn>
                 </v-row>
                 <v-container v-if="loading">
                     <v-skeleton-loader type="list-item-avatar-three-line" class="mb-4" v-for="n in 3" :key="n"></v-skeleton-loader>

@@ -6,11 +6,11 @@
        <v-card-subtitle class="text-center">Welcome to Concery. Please chose one of the following options.</v-card-subtitle>
        <v-card-actions>
            <v-layout column justify-center align-center>
-               <v-btn class="primary mb-2" depressed large href="/signup/band">
+               <v-btn name="band" class="primary mb-2" depressed large href="/signup/band">
                    <span>We are a band</span>
                    <v-icon right>arrow_forward_ios</v-icon>
                </v-btn>
-               <v-btn class="primary mb-8" depressed large href="/signup/venue">
+               <v-btn name="venue" class="primary mb-8" depressed large href="/signup/venue">
                     <span>We are a venue</span>
                    <v-icon right>arrow_forward_ios</v-icon>
                </v-btn>

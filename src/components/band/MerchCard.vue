@@ -5,7 +5,7 @@
             <v-row justify="start" align="center" style="lineHeight: 0">
                 <v-col cols="4" style="maxWidth: 120px" sm="2" order="1" order-sm="1">
                     <v-responsive :aspect-ratio="1/1">
-                        <img :src="item.image.image" :alt="item.name" class="rounded-lg" style="objectFit: cover; width: 100%; height: 100%" />
+                        <img :src="item.image.image" :alt="item.name" class="rounded-lg" width="96" height="96" style="objectFit: cover; width: 100%; height: 100%" />
                     </v-responsive>
                 </v-col>
                 <v-col cols="6" sm="5" order="2" order-sm="2">
@@ -21,7 +21,7 @@
                 <v-col cols="1" order="3" order-sm="5">
                     <v-menu offset-y left>
                         <template v-slot:activator="{ on, attrs }">
-                            <v-btn icon v-bind="attrs" v-on="on" >
+                            <v-btn icon v-bind="attrs" v-on="on" name="menu">
                                 <v-icon color="grey--text">more_vert</v-icon>
                             </v-btn>
                         </template>

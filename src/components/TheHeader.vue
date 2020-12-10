@@ -10,14 +10,14 @@
             </router-link>
             <v-spacer></v-spacer>
             <div v-if="!currentUser">
-                <v-btn href="/login" class="primary--text mr-2" depressed>login</v-btn>
-                <v-btn href="/signup/choose" class="grey--text text--lighten-5" outlined depressed>signup</v-btn>  
+                <v-btn href="/login" class="primary--text mr-2" depressed name="login">login</v-btn>
+                <v-btn href="/signup/choose" class="grey--text text--lighten-5" outlined depressed name="signup">signup</v-btn>  
             </div>
             <v-layout justify-end align-center v-else>
                 <v-menu offset-y transition="slide-y-transition" v-model="menu">
                     <template v-slot:activator="{ on, attrs }">
                         <v-avatar color="grey lighten-5 avatar-menu" v-bind="attrs" v-on="on" tabindex="0" @keypress.enter="handleLogout">
-                            <img :src="avatar" :alt="currentUser" v-if="avatar">
+                            <img :src="avatar" :alt="currentUser" v-if="avatar" width="48" height="48">
                             <v-icon class="primary--text" large v-else>account_circle</v-icon>
                         </v-avatar>
                     </template>

@@ -6,26 +6,26 @@
         <div class="card-grid-wrapper">
             <div class="card-grid-info">
                 <p class="subtitle-1 text-sm-caption text-md-subtitle-1 mt-1 mb-2" style="lineHeight: 1.1;">{{item.name}}</p>
-                <v-btn fab text x-small link class="grey--text" v-if="!disabled" @click="handleDeleteMerch"><v-icon>delete</v-icon></v-btn>
+                <v-btn name="delete" fab text x-small link class="grey--text" v-if="!disabled" @click="handleDeleteMerch"><v-icon>delete</v-icon></v-btn>
             </div>
             <div class="card-grid-info">
                 <p class="subtitle-1 text-sm-caption text-md-subtitle-1 mb-0" v-if="disabled">{{item.stock}}</p>
                 <div v-else>
                     <v-row align="center" class="ml-1" v-if="item.options.length < 1">
-                        <v-btn color="primary" depressed fab x-small @click="decrementQuantity" :disabled="item.quantity <= 1"><v-icon small>remove</v-icon></v-btn>
+                        <v-btn color="primary" name="decrement" depressed fab x-small @click="decrementQuantity" :disabled="item.quantity <= 1"><v-icon small>remove</v-icon></v-btn>
                         <p class="caption mb-0 mx-1">{{quantity ? quantity : item.quantity}}</p>
-                        <v-btn color="primary" depressed fab x-small @click="incrementQuantity" :disabled="item.quantity >= item.stock"><v-icon small>add</v-icon></v-btn>
+                        <v-btn color="primary" name="increment" depressed fab x-small @click="incrementQuantity" :disabled="item.quantity >= item.stock"><v-icon small>add</v-icon></v-btn>
                     </v-row>
                     <v-row class="ml-1" v-else>
                         <v-dialog v-model="dialog" max-width="350px">
                             <template v-slot:activator="{ on, attrs }">
-                                <v-btn small class="primary" @click="dialog = !dialog" depressed v-bind="attrs" v-on="on">options</v-btn>
+                                <v-btn small class="primary" @click="dialog = !dialog" depressed v-bind="attrs" v-on="on" name="options">options</v-btn>
                             </template>
                             <v-card>
                                 <v-card-title>
                                     <span>Options</span>
                                     <v-spacer></v-spacer>
-                                    <v-btn fab small text><v-icon class="primary--text" @click="dialog = !dialog">close</v-icon></v-btn>    
+                                    <v-btn fab small text><v-icon class="primary--text" @click="dialog = !dialog" name="close">close</v-icon></v-btn>    
                                 </v-card-title>
                                 <v-divider></v-divider>
                                 <v-card-text class="mt-4">

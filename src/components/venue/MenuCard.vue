@@ -7,7 +7,7 @@
                     <v-checkbox v-model="active" @change="updateActiveStatus"></v-checkbox>
                 </v-form>
                 <v-avatar size="48" :color="`${item.name ? 'white' : 'error'}`" :class="{'transparant': !active}">
-                    <img class="rounded-avatar" :src="item.image" :alt="item.name" style="objectFit: cover" v-if="item.image"/>
+                    <img class="rounded-avatar" :src="item.image" :alt="item.name" style="objectFit: cover" v-if="item.image" width="48" height="48"/>
                     <v-icon v-else large dark>error</v-icon>
                 </v-avatar>
                 <h3 class="ml-5 headline font-weight-bold">{{item.name}}</h3>   
@@ -18,7 +18,7 @@
                 <v-spacer></v-spacer>
                 <v-menu offset-y left>
                     <template v-slot:activator="{ on, attrs }">
-                        <v-btn icon v-bind="attrs" v-on="on" >
+                        <v-btn icon v-bind="attrs" v-on="on" name="menu">
                             <v-icon color="grey--text">more_vert</v-icon>
                         </v-btn>
                     </template>

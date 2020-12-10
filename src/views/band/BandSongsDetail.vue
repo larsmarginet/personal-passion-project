@@ -7,7 +7,7 @@
             </v-col>
             <v-col cols="6" sm="2" order-md="3">
                 <v-row justify="end" justify-md="start" class="px-4">
-                    <v-btn :disabled="save" depressed color="primary" @click="handleAddSong" :loading="loadingAddSong">save</v-btn>
+                    <v-btn name="save" :disabled="save" depressed color="primary" @click="handleAddSong" :loading="loadingAddSong">save</v-btn>
                 </v-row>
             </v-col>
             <v-col cols="12" sm="8" md="6" lg="4" order-md="1">

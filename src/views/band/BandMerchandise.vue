@@ -4,7 +4,7 @@
         <v-row>
             <v-col cols="12" md="3" order-md="2" offset-md="12">
                 <v-row justify="end" justify-md="start" class="px-4">
-                    <v-btn href="/band/merch/create" depressed color="primary">Add merch</v-btn>
+                    <v-btn name="add merch" href="/band/merch/create" depressed color="primary">Add merch</v-btn>
                 </v-row>
             </v-col>
             <v-col cols="12" md="9" order-md="1">

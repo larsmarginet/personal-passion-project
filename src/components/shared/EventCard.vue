@@ -6,17 +6,17 @@
                 <v-col cols="11" sm="8" order="1" order-sm="1">
                     <v-row align="center">
                         <v-avatar size="48" :color="`${image ? 'white' : 'error'}`">
-                            <img class="rounded-avatar" :src="image" :alt="name" v-if="image"/>
+                            <img class="rounded-avatar" :src="image" :alt="name" v-if="image" width="48" height="48"/>
                             <v-icon v-else large dark>error</v-icon>
                         </v-avatar>
                         <h3 class="ml-5 headline font-weight-bold">{{ name }}</h3>   
                     </v-row>
                 </v-col>
                 <v-col cols="12" sm="3" order="3" order-sm="2">
-                    <v-btn v-if="live" class="primary" depressed :to="`/${user.type}/orders/${event.id}`">orders</v-btn>
+                    <v-btn v-if="live" class="primary" depressed :to="`/${user.type}/orders/${event.id}`" name="orders">orders</v-btn>
                     <v-dialog v-if="previous" v-model="modal" max-width="1080">
                         <template v-slot:activator="{ on, attrs }">
-                            <v-btn class="primary" depressed v-bind="attrs" v-on="on">Statistics</v-btn>
+                            <v-btn class="primary" depressed v-bind="attrs" v-on="on" name="statistics">Statistics</v-btn>
                         </template>
                         <Stats :id="event.id" :type="type" @closeModal="modal = !modal"/>
                     </v-dialog>
@@ -24,7 +24,7 @@
                 <v-col cols="1" order="2" order-sm="3" class="ml-n5 ml-sm-0">
                     <v-menu offset-y left>
                         <template v-slot:activator="{ on, attrs }">
-                            <v-btn icon v-bind="attrs" v-on="on" >
+                            <v-btn icon v-bind="attrs" v-on="on" name="orders">
                                 <v-icon color="grey--text">more_vert</v-icon>
                             </v-btn>
                         </template>

@@ -8,8 +8,8 @@
         <v-card-text>This action will remove this permanently!</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" depressed @click="cancel">Cancel</v-btn>
-          <v-btn color="primary" text @click="agree">Continue</v-btn>
+          <v-btn name="cancel" color="primary" depressed @click="cancel">Cancel</v-btn>
+          <v-btn name="continue" color="primary" text @click="agree">Continue</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

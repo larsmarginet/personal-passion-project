@@ -7,7 +7,7 @@
             </v-col>
             <v-col cols="6" sm="4" md="2" order-md="3">
                 <v-row justify="end" justify-md="start" class="px-4">
-                    <v-btn :disabled="save" depressed color="primary" @click="handleAddMerch" :loading="loadingAddMerch">save</v-btn>
+                    <v-btn name="save" :disabled="save" depressed color="primary" @click="handleAddMerch" :loading="loadingAddMerch">save</v-btn>
                 </v-row>
             </v-col>
             <v-col cols="12" sm="10" md="8" lg="6" order-md="1">
@@ -31,7 +31,7 @@
                         <draggable :list="images" class="draggable-grid" draggable=".item" @change="checkIfUpdated">
                             <v-col v-for="(image, i) in imagePreviews" :key="i" style="maxWidth: 120px; minWidth: 120px; maxHeight: 120px; minHeight: 120px" class="item">
                                 <img :src="createPreview(image)" alt="image" width="100" height="100" class="rounded-lg" style="objectFit: cover"/>
-                                <v-btn fab x-small style="marginTop: -235px; marginLeft: 80px" @click="handleRemoveImage(i)"><v-icon>clear</v-icon></v-btn>
+                                <v-btn name="clear" fab x-small style="marginTop: -235px; marginLeft: 80px" @click="handleRemoveImage(i)"><v-icon>clear</v-icon></v-btn>
                             </v-col>
                             <v-col style="maxWidth: 80px" v-if="images.length < 8">
                                 <FileDropMini :rules="imageRules" @fileDropped="handleUploadFile"/>
@@ -51,12 +51,12 @@
                                 <v-text-field label="Option" v-model="option.option"></v-text-field>
                             </v-col>
                             <v-col class="quantity py-0">
-                                <v-btn color="primary" depressed fab x-small @click="decrementOptionStock(i)"><v-icon small>remove</v-icon></v-btn>
+                                <v-btn name="decrement" color="primary" depressed fab x-small @click="decrementOptionStock(i)"><v-icon small>remove</v-icon></v-btn>
                                 <v-text-field class="px-2 text-center" style="maxWidth: 60px" label="Qty" type="number" min="0" v-model="option.stock" :rules="quantityRules" @input="checkIfUpdated"></v-text-field>
-                                <v-btn color="primary" depressed fab x-small @click="incrementOptionStock(i)"><v-icon small>add</v-icon></v-btn>
+                                <v-btn name="increment" color="primary" depressed fab x-small @click="incrementOptionStock(i)"><v-icon small>add</v-icon></v-btn>
                             </v-col>
                             <v-col class="py-0">
-                                <v-btn depressed class="primary" @click="handleRemoveOption(i)">Remove</v-btn>
+                                <v-btn name="remove" depressed class="primary" @click="handleRemoveOption(i)">Remove</v-btn>
                             </v-col>
                         </v-row>
                         <v-divider v-if="options.length >= 1"></v-divider>
@@ -67,20 +67,20 @@
                                 <v-text-field label="Option" v-model="optionName"></v-text-field>
                             </v-col>
                             <v-col class="quantity py-0">
-                                <v-btn color="primary" depressed fab x-small @click="decrementNewOptionStock"><v-icon small>remove</v-icon></v-btn>
+                                <v-btn name="decrement" color="primary" depressed fab x-small @click="decrementNewOptionStock"><v-icon small>remove</v-icon></v-btn>
                                 <v-text-field class="px-2 text-center" style="maxWidth: 60px" label="Qty" type="number" min="0" v-model="optionQty"></v-text-field>
-                                <v-btn color="primary" depressed fab x-small @click="incrementNewOptionStock"><v-icon small>add</v-icon></v-btn>
+                                <v-btn name="increment" color="primary" depressed fab x-small @click="incrementNewOptionStock"><v-icon small>add</v-icon></v-btn>
                             </v-col>
                             <v-col class="py-0">
-                                <v-btn depressed class="primary" @click="handleAddOption">Add</v-btn>
+                                <v-btn name="add" depressed class="primary" @click="handleAddOption">Add</v-btn>
                             </v-col>
                         </v-row>
 
                         <v-switch v-model="signable" class="mx-2" label="Signable" color="primary" hint="Can this product be signed?" persistent-hint inset @change="checkIfUpdated"></v-switch>
                         <v-row align="center" class="ml-1 mt-6" v-if="options.length < 1">
-                            <v-btn color="primary" depressed @click="decrementStock" fab small><v-icon small>remove</v-icon></v-btn>
+                            <v-btn name="decrement" color="primary" depressed @click="decrementStock" fab small><v-icon small>remove</v-icon></v-btn>
                             <v-text-field class="px-2 text-center" style="maxWidth: 60px" label="Stock" type="number" min="0" v-model="stock" :rules="quantityRules" @input="checkIfUpdated"></v-text-field>
-                            <v-btn color="primary" depressed @click="incrementStock" fab small><v-icon small>add</v-icon></v-btn>
+                            <v-btn name="increment" color="primary" depressed @click="incrementStock" fab small><v-icon small>add</v-icon></v-btn>
                         </v-row>
                     </v-form>
                 </v-card>
