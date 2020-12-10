@@ -9,7 +9,7 @@
                 <v-spacer></v-spacer>
                 <v-menu offset-y left>
                     <template v-slot:activator="{ on, attrs }">
-                        <v-btn icon v-bind="attrs" v-on="on" name="menu">
+                        <v-btn icon v-bind="attrs" v-on="on" aria-label="menu">
                             <v-icon color="grey--text">more_vert</v-icon>
                         </v-btn>
                     </template>

@@ -3,7 +3,7 @@
         <v-card-title class="subtitle-1 text-sm-caption text-md-subtitle-1 mb-0">
             <p class="mb-0">{{song.title}}</p>
             <v-spacer></v-spacer>
-            <v-btn fab text x-small link class="grey--text" v-if="!disabled" @click="handleDeleteSong" name="delete"><v-icon>delete</v-icon></v-btn>    
+            <v-btn fab text x-small link class="grey--text" v-if="!disabled" @click="handleDeleteSong" aria-label="delete"><v-icon>delete</v-icon></v-btn>    
         </v-card-title>
     </v-card>
 </template>

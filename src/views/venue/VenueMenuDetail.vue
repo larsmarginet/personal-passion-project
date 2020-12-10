@@ -1,13 +1,13 @@
 <template>
     <section>
-        <h2 style="display: none">Food &amp; drinks detail</h2>
+        <h2 style="visibility: hidden; fontSize: 0">Food &amp; drinks detail</h2>
         <v-row>
             <v-col cols="6" md="1" order-md="1">
                 <BackButton link="/venue/menu"/>
             </v-col>
             <v-col cols="6" sm="4" md="2" order-md="3">
                 <v-row justify="end" justify-md="start" class="px-4">
-                    <v-btn name="save" :disabled="save" depressed color="primary" @click="handleAddItem" :loading="loadingAddItem">save</v-btn>
+                    <v-btn aria-label="save" :disabled="save" depressed color="primary" @click="handleAddItem" :loading="loadingAddItem">save</v-btn>
                 </v-row>
             </v-col>
             <v-col cols="12" sm="10" md="8" lg="6" order-md="1">

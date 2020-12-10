@@ -1,9 +1,9 @@
 <template>
     <v-row align="center" class="mb-3" justify="center">
         <p class="mb-0 subtitle-1" style="width: 35px">{{option.option}}</p>
-        <v-btn name="decrement" color="primary" depressed fab x-small @click="decrementOptionQuantity" :disabled="quantity<= 1"><v-icon small>remove</v-icon></v-btn>
+        <v-btn aria-label="decrement" color="primary" depressed fab x-small @click="decrementOptionQuantity" :disabled="quantity<= 1"><v-icon small>remove</v-icon></v-btn>
         <p class="caption mb-0 mx-1 text-center" style="width: 25px">{{quantity}}</p>
-        <v-btn name="increment" color="primary" depressed fab x-small @click="incrementOptionQuantity" :disabled="quantity >= option.stock"><v-icon small>add</v-icon></v-btn>
+        <v-btn aria-label="increment" color="primary" depressed fab x-small @click="incrementOptionQuantity" :disabled="quantity >= option.stock"><v-icon small>add</v-icon></v-btn>
     </v-row>
 </template>
 

@@ -1,13 +1,13 @@
 <template>
     <v-container>
-        <h2 style="display: none">Room detail</h2>
+        <h2 style="visibility: hidden; fontSize: 0">Room detail</h2>
         <v-row>
             <v-col cols="6" md="1" order-md="1">
                 <BackButton link="/venue/rooms"/>
             </v-col>
             <v-col cols="6" sm="4" md="2" order-md="3">
                 <v-row justify="end" justify-md="start" class="px-4">
-                    <v-btn name="save" :disabled="save" depressed color="primary" @click="handleAddRoom" :loading="loadingAddRoom">save</v-btn>
+                    <v-btn aria-label="save" :disabled="save" depressed color="primary" @click="handleAddRoom" :loading="loadingAddRoom">save</v-btn>
                 </v-row>
             </v-col>
             <v-col cols="12" sm="10" md="8" lg="6" order-md="1">
@@ -22,14 +22,14 @@
                     <v-form @submit.prevent ref="form" class="px-4 pt-2 px-md-5 pt-md-3 pb-5">
                         <v-text-field validate-on-blur class="mx-2" @change="checkIfUpdated" style="maxWidth: 250px" v-model="name" label="Name" :rules="nameRules" clearable></v-text-field>
                         <v-row align="center" class="mx-2">
-                            <v-btn name="decrement" color="primary" depressed @click="decrementBubbles(); checkIfUpdated();" fab small><v-icon small>remove</v-icon></v-btn>
+                            <v-btn aria-label="decrement" color="primary" depressed @click="decrementBubbles(); checkIfUpdated();" fab small><v-icon small>remove</v-icon></v-btn>
                             <v-text-field class="px-2 text-center" @change="checkIfUpdated" style="maxWidth: 60px" label="Bubbles" type="number" min="0" v-model="bubbles" :rules="quantityRules"></v-text-field>
-                            <v-btn name="increment" color="primary" depressed @click="incrementBubbles(); checkIfUpdated();" fab small><v-icon small>add</v-icon></v-btn>
+                            <v-btn aria-label="increment" color="primary" depressed @click="incrementBubbles(); checkIfUpdated();" fab small><v-icon small>add</v-icon></v-btn>
                         </v-row>
                     </v-form>
                     <v-row justify="end" no-gutters class="mx-6">
-                        <v-btn name="generate qr-codes" @click="generateQrCodes" depressed color="primary">generate codes</v-btn>
-                        <v-btn name="download all" @click="dowloadAllQrCodes" text depressed color="primary" v-if="qrcodes.length > 0"><v-icon>get_app</v-icon> download all</v-btn>
+                        <v-btn aria-label="generate qr-codes" @click="generateQrCodes" depressed color="primary">generate codes</v-btn>
+                        <v-btn aria-label="download all" @click="dowloadAllQrCodes" text depressed color="primary" v-if="qrcodes.length > 0"><v-icon>get_app</v-icon> download all</v-btn>
                     </v-row>
                     <div is="transition-group" name="list">
                         <v-card v-for="(code, i) in qrcodes" :key="code.value" flat>
@@ -37,7 +37,7 @@
                                 <img :src="code.toDataURL()" alt="QRCode" style="maxWidth: 60px" class="img-border" />
                                 <span class="primary--text ml-2">Table {{i+1}}</span>
                                 <v-spacer></v-spacer>
-                                <v-btn name="download" :href="code.toDataURL()" text :download="`qrcode-${i+1}`" color="primary" fab><v-icon>get_app</v-icon></v-btn>
+                                <v-btn aria-label="download" :href="code.toDataURL()" text :download="`qrcode-${i+1}`" color="primary" fab><v-icon>get_app</v-icon></v-btn>
                             </v-card-title>
                             <v-divider></v-divider>
                         </v-card>

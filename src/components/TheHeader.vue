@@ -2,7 +2,7 @@
     <div>
         <v-app-bar app color="primary" flat>
             <v-progress-linear :active="loadingComponent" :indeterminate="loadingComponent" absolute bottom color="light-blue accent-4"></v-progress-linear>
-            <v-app-bar-nav-icon class="grey--text text--lighten-5 hidden-lg-and-up" @click="drawer = !drawer"></v-app-bar-nav-icon>
+            <v-app-bar-nav-icon aria-label="menu" class="grey--text text--lighten-5 hidden-lg-and-up" @click="drawer = !drawer"></v-app-bar-nav-icon>
             <router-link to="/" v-show="!currentUser || !drawer">
                 <v-toolbar-title >
                     <h1 class="headline grey--text text--lighten-5 font-weight-bold ml-3">Concery</h1>
@@ -10,8 +10,8 @@
             </router-link>
             <v-spacer></v-spacer>
             <div v-if="!currentUser">
-                <v-btn href="/login" class="primary--text mr-2" depressed name="login">login</v-btn>
-                <v-btn href="/signup/choose" class="grey--text text--lighten-5" outlined depressed name="signup">signup</v-btn>  
+                <v-btn href="/login" class="primary--text mr-2" depressed aria-label="login">login</v-btn>
+                <v-btn href="/signup/choose" class="grey--text text--lighten-5" outlined depressed aria-label="signup">signup</v-btn>  
             </div>
             <v-layout justify-end align-center v-else>
                 <v-menu offset-y transition="slide-y-transition" v-model="menu">

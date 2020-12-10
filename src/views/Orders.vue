@@ -1,17 +1,17 @@
 <template>
     <section>
         <MusicPlayer v-if="!loading && type === 'band'" :id="id"/>
-        <h2 style="display: none;">Orders</h2>
+        <h2 style="visibility: hidden; fontSize: 0">Orders</h2>
         <div v-if="loading">
             <v-skeleton-loader v-for="n in 5" :key="n" type="table-thead" class="mb-4"></v-skeleton-loader>
         </div>
         <v-expansion-panels flat v-else-if="!loading && orders" role="list">
             <v-row class="px-4 pb-4" style="width: 100%">
                 <v-icon class="primary--text">filter_list</v-icon>
-                <v-btn name="all" text :class="{'primary--text': filter === 'all'}" @click="setFilter('all')">All</v-btn>
-                <v-btn name="signed" text :class="{'primary--text': filter === 'signed'}" @click="setFilter('signed')" v-if="type === 'band'">Signed</v-btn>
-                <v-btn name="uncompleted" text :class="{'primary--text': filter === 'uncompleted'}" @click="setFilter('uncompleted')">Uncompleted</v-btn>
-                <v-btn name="processing" text :class="{'primary--text': filter === 'processing'}" @click="setFilter('processing')">Processing</v-btn>
+                <v-btn aria-label="all" text :class="{'primary--text': filter === 'all'}" @click="setFilter('all')">All</v-btn>
+                <v-btn aria-label="signed" text :class="{'primary--text': filter === 'signed'}" @click="setFilter('signed')" v-if="type === 'band'">Signed</v-btn>
+                <v-btn aria-label="uncompleted" text :class="{'primary--text': filter === 'uncompleted'}" @click="setFilter('uncompleted')">Uncompleted</v-btn>
+                <v-btn aria-label="processing" text :class="{'primary--text': filter === 'processing'}" @click="setFilter('processing')">Processing</v-btn>
             </v-row>
             <v-row style="maxWidth: 96%; marginLeft: -4%" justify="start">
                 <v-col cols="6" sm="3" md="2">
@@ -46,13 +46,13 @@
                             <p class="mb-0 body-1 font-weight-bold">€{{getTotalPrice(order)}}</p>
                         </v-col>
                         <v-col cols="2" v-if="type === 'band'">
-                            <v-btn :name="`${order.signed ? 'yes' : 'no'}`" depressed class="orange white--text" :class="{'primary': order.signed}">{{order.signed ? 'yes' : 'no'}}</v-btn>
+                            <v-btn :aria-label="`${order.signed ? 'yes' : 'no'}`" depressed class="orange white--text" :class="{'primary': order.signed}">{{order.signed ? 'yes' : 'no'}}</v-btn>
                         </v-col>
                         <v-col cols="2">
                             <p class="mb-0 body-1 font-weight-bold">#{{order.bubble}}</p>
                         </v-col>
                         <v-col cols="2">
-                            <v-btn :name="`${order.status === 'uncompleted' ? 'uncompleted' : order.status === 'processing' ? 'processing' : 'completed' }`" depressed @click.native.stop="handleUpdateStatus({id: order.id, status: order.status})" class="white--text" :class="`${order.status === 'uncompleted' ? 'error' : order.status === 'processing' ? 'orange' : 'primary' }`">
+                            <v-btn :aria-label="`${order.status === 'uncompleted' ? 'uncompleted' : order.status === 'processing' ? 'processing' : 'completed' }`" depressed @click.native.stop="handleUpdateStatus({id: order.id, status: order.status})" class="white--text" :class="`${order.status === 'uncompleted' ? 'error' : order.status === 'processing' ? 'orange' : 'primary' }`">
                                 {{order.status}}
                             </v-btn>
                         </v-col>

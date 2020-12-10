@@ -18,7 +18,7 @@
                 <v-text-field validate-on-blur label="Email" v-model="email" prepend-icon="email" :rules="emailRules" clearable></v-text-field>
                 <v-text-field validate-on-blur :append-icon="show ? 'visibility' : 'visibility_off'" :type="show ? 'text' : 'password'" label="Password" v-model="password" prepend-icon="vpn_key" :rules="passwordRules" clearable @click:append="show = !show"></v-text-field>
                 <v-text-field validate-on-blur :append-icon="show ? 'visibility' : 'visibility_off'" :type="show ? 'text' : 'password'"  label="Password Confirm" v-model="passwordConfirm" prepend-icon="vpn_key" :rules="passwordConfirmRules" clearable @click:append="show = !show"></v-text-field>
-                <v-btn name="continue" color="primary" class="mt-2 ml-8" @click="handleSignup" depressed :loading="loading">Continue</v-btn>
+                <v-btn aria-label="continue" color="primary" class="mt-2 ml-8" @click="handleSignup" depressed :loading="loading">Continue</v-btn>
             </v-form>
             <v-divider></v-divider>
             <v-card-text>

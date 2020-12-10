@@ -4,7 +4,7 @@
             <v-spacer></v-spacer>
             <span class="mx-auto white--text">Statistics</span>
             <v-spacer></v-spacer>
-            <v-btn name="close" small fab depressed text><v-icon class="white--text" @click="closeModal">close</v-icon></v-btn>
+            <v-btn aria-label="close" small fab depressed text><v-icon class="white--text" @click="closeModal">close</v-icon></v-btn>
         </v-card-title>
         <v-card-text class="px-4 pt-4">
             <v-row v-if="orders && orders.length > 0">

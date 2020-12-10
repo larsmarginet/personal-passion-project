@@ -1,13 +1,13 @@
 <template>
     <v-container>
-        <h2 style="display: none">Event detail</h2>
+        <h2 style="visibility: hidden; fontSize: 0">Event detail</h2>
         <v-row>
             <v-col cols="6" lg="1" order-lg="1">
                 <BackButton link="/band/events"/>
             </v-col>
             <v-col cols="6" lg="2" order-lg="3">
                 <v-row justify="end" justify-lg="start" class="px-4">
-                    <v-btn name="save" :disabled="save" depressed color="primary" @click="handleUpdateEvent" :loading="loadingAddEvent">save</v-btn>
+                    <v-btn aria-label="save" :disabled="save" depressed color="primary" @click="handleUpdateEvent" :loading="loadingAddEvent">save</v-btn>
                 </v-row>
             </v-col>
             <v-col cols="12" lg="8" order-lg="1">
@@ -34,7 +34,7 @@
                     <v-form @submit.prevent ref="form" class="px-4 pt-2 px-md-5 pt-md-3 pb-5">
                         <div class="titles mx-1">
                             <p class="subtitle-2 mb-0">Merch</p>
-                            <v-btn name="add all" small text class="subtitle-2 mb-0 primary--text" @click="handleAddAllMerch">Add all</v-btn>
+                            <v-btn aria-label="add all" small text class="subtitle-2 mb-0 primary--text" @click="handleAddAllMerch">Add all</v-btn>
                         </div>
                         <div class="sheets">
                             <div class="grey lighten-4 rounded-lg sheets-section py-0">
@@ -50,13 +50,13 @@
                         </div>
                         <v-switch v-model="signing" class="ml-1" label="Signing session" color="primary" hint="Will you be signing merch at this event?" persistent-hint inset @change="checkIfUpdated"></v-switch>
                         <v-row align="center" class="ml-1 mt-2">
-                            <v-btn name="decrement" color="primary" depressed @click="decrementSigningAmount" fab small :disabled="!signing"><v-icon small>remove</v-icon></v-btn>
+                            <v-btn aria-label="decrement" color="primary" depressed @click="decrementSigningAmount" fab small :disabled="!signing"><v-icon small>remove</v-icon></v-btn>
                             <v-text-field class="px-2 text-center" :disabled="!signing" style="maxWidth: 100px" label="Signing amount" type="number" min="0" v-model="signingAmount" :rules="[v => v>=0 || 'amount can not be less than 0']" @input="checkIfUpdated"></v-text-field>
-                            <v-btn name="increment" color="primary" depressed @click="incrementSigningAmount" fab small :disabled="!signing"><v-icon small>add</v-icon></v-btn>
+                            <v-btn aria-label="increment" color="primary" depressed @click="incrementSigningAmount" fab small :disabled="!signing"><v-icon small>add</v-icon></v-btn>
                         </v-row>
                         <div class="titles mx-1 mt-8">
                             <p class="subtitle-2 mb-0">Setlist</p>
-                            <v-btn name="add all" small text class="subtitle-2 mb-0 primary--text" @click="handleAddAllSongs">Add all</v-btn>
+                            <v-btn aria-label="add all" small text class="subtitle-2 mb-0 primary--text" @click="handleAddAllSongs">Add all</v-btn>
                         </div>
                         <div class="sheets">
                             <div class="grey lighten-4 rounded-lg sheets-section py-0">

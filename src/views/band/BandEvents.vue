@@ -1,15 +1,15 @@
 <template>
     <section>
-        <h2 style="display: none">Event detail</h2>
+        <h2 style="visibility: hidden; fontSize: 0">Event detail</h2>
         <v-row>
             <v-col cols="12" md="9" lg="6">
                 <v-expand-transition>
                     <Alert @dismissed="onDismissed" :text="error" v-if="error"/>
                 </v-expand-transition>
                 <v-row class="px-4 pb-4">
-                    <v-btn name="live" text :class="{'primary--text': filter === 'live'}" @click="setFilter('live')">Live</v-btn>
-                    <v-btn name="upcoming" text :class="{'primary--text': filter === 'upcoming'}" @click="setFilter('upcoming')">Upcoming</v-btn>
-                    <v-btn name="previous" text :class="{'primary--text': filter === 'previous'}" @click="setFilter('previous')">Previous</v-btn>
+                    <v-btn aria-label="live" text :class="{'primary--text': filter === 'live'}" @click="setFilter('live')">Live</v-btn>
+                    <v-btn aria-label="upcoming" text :class="{'primary--text': filter === 'upcoming'}" @click="setFilter('upcoming')">Upcoming</v-btn>
+                    <v-btn aria-label="previous" text :class="{'primary--text': filter === 'previous'}" @click="setFilter('previous')">Previous</v-btn>
                 </v-row>
                 <v-container v-if="loading">
                     <v-skeleton-loader type="list-item-avatar-three-line" class="mb-4" v-for="n in 3" :key="n"></v-skeleton-loader>

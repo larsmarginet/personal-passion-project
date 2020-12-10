@@ -5,7 +5,7 @@
                 <p class="white--text body-1 font-weight-light mb-0 mr-sm-2 text-right overflow" style="width: 100%">{{previousSong.title}}</p>
             </v-col>
             <v-col cols="1" class="btn">
-                <v-btn name="previous" fab small text @click="handlePreviousSong" class="mx-auto">
+                <v-btn aria-label="previous" fab small text @click="handlePreviousSong" class="mx-auto">
                     <v-icon class="white--text">skip_previous</v-icon>
                 </v-btn>
             </v-col>
@@ -13,7 +13,7 @@
                 <p class="white--text text-center mb-0 body-1 font-weight-bold mt-2 overflow">{{currentSong ? currentSong.title : 'Playing nothing'}}</p>
             </v-col>
             <v-col cols="1" class="btn">
-                <v-btn name="next" fab small text @click="handleNextSong">
+                <v-btn aria-label="next" fab small text @click="handleNextSong">
                     <v-icon class="white--text">skip_next</v-icon>
                 </v-btn>
             </v-col>

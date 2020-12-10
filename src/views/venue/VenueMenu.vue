@@ -1,10 +1,10 @@
 <template>
     <section>
-        <h2 style="display: none">Food &amp; drinks</h2>
+        <h2 style="visibility: hidden; fontSize: 0">Food &amp; drinks</h2>
         <v-row>
             <v-col cols="12" md="3" order-md="2" offset-md="12">
                 <v-row justify="end" justify-md="start" class="px-4">
-                    <v-btn name="add item" href="/venue/menu/create" depressed color="primary">Add item</v-btn>
+                    <v-btn aria-label="add item" href="/venue/menu/create" depressed color="primary">Add item</v-btn>
                 </v-row>
             </v-col>
             <v-col cols="12" md="9" lg="6" order-md="1">

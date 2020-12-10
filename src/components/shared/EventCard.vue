@@ -13,10 +13,10 @@
                     </v-row>
                 </v-col>
                 <v-col cols="12" sm="3" order="3" order-sm="2">
-                    <v-btn v-if="live" class="primary" depressed :to="`/${user.type}/orders/${event.id}`" name="orders">orders</v-btn>
+                    <v-btn v-if="live" class="primary" depressed :to="`/${user.type}/orders/${event.id}`" aria-label="orders">orders</v-btn>
                     <v-dialog v-if="previous" v-model="modal" max-width="1080">
                         <template v-slot:activator="{ on, attrs }">
-                            <v-btn class="primary" depressed v-bind="attrs" v-on="on" name="statistics">Statistics</v-btn>
+                            <v-btn class="primary" depressed v-bind="attrs" v-on="on" aria-label="statistics">Statistics</v-btn>
                         </template>
                         <Stats :id="event.id" :type="type" @closeModal="modal = !modal"/>
                     </v-dialog>
@@ -24,7 +24,7 @@
                 <v-col cols="1" order="2" order-sm="3" class="ml-n5 ml-sm-0">
                     <v-menu offset-y left>
                         <template v-slot:activator="{ on, attrs }">
-                            <v-btn icon v-bind="attrs" v-on="on" name="orders">
+                            <v-btn icon v-bind="attrs" v-on="on" aria-label="orders">
                                 <v-icon color="grey--text">more_vert</v-icon>
                             </v-btn>
                         </template>
