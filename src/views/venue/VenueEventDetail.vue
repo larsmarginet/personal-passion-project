@@ -236,7 +236,6 @@ export default {
             const datesAreValid = this.validateDatePicker(this.selectedDates);
             if (this.$refs.form.validate() && datesAreValid) {
                 const band = this.bands.find(band => band.id === this.selectedBand);
-                console.log(band)
                 const room = this.rooms.find(room => room.id === this.selectedRoom);
                 const eventObj = {
                     roomId: room.id,

@@ -97,7 +97,6 @@ export default {
     }, 
     methods: {
         handleLogout() {
-            console.log('log out')
             this.$store.dispatch('auth/logout');
         }
     }
