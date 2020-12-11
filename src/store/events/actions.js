@@ -229,6 +229,10 @@ export default {
     async deleteEvent(_, payload) {
         await firebase.eventsCollection.doc(payload).delete();
     },
+
+    clearCurrentEvent(ctx) {
+        ctx.commit('setCurrentEvent', null);
+    },
     
     clearError(ctx) {
         ctx.commit('setError', null);

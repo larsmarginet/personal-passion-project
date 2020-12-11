@@ -30,5 +30,9 @@ export default {
             ctx.commit('setError', error);
         }
         ctx.commit('setLoading', false);
+    },
+
+    clearOrders(ctx) {
+        ctx.commit('setOrders', [])
     }
 }

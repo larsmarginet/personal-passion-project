@@ -18,7 +18,8 @@
                         <template v-slot:activator="{ on, attrs }">
                             <v-btn class="primary" depressed v-bind="attrs" v-on="on" aria-label="statistics">Statistics</v-btn>
                         </template>
-                        <Stats :id="event.id" :type="type" @closeModal="modal = !modal"/>
+                        <!-- v-if destroys component fully, so component is reset -->
+                        <Stats :id="event.id" :type="type" @closeModal="modal = !modal" v-if="modal"/>
                     </v-dialog>
                 </v-col>
                 <v-col cols="1" order="2" order-sm="3" class="ml-n5 ml-sm-0">

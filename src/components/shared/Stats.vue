@@ -59,11 +59,11 @@ export default {
         orders() {
             return [...this.$store.getters['orders/orders']].sort((a,b) => a.created < b.created ? -1 : 1);
         },
-        event () {
+        event() {
             return this.$store.getters['events/currentEvent'];
         },
         labels() {
-            if (this.event) {
+            if (this.event && this.orders.length > 0) {
                 const timeDifference = this.event.end - this.event.start;
                 const timeJump = timeDifference / 10;
                 const labels = [];
@@ -128,6 +128,9 @@ export default {
         },
         closeModal() {
             this.$emit('closeModal');
+            // clear all data to prevent bugs
+            this.$store.dispatch('events/clearCurrentEvent');
+            this.$store.dispatch('orders/clearOrders');
         }
     },
     async mounted() {
